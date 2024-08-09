@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 import {
@@ -59,7 +61,9 @@ export default function App() {
           />
 
           {/* Botão onde direcionará o usuário a página de CADASTRO! */}
-          <TouchableOpacity>
+          <TouchableOpacity
+          
+          >
             <Text style={styles.textoBotao}>Você ainda não se CADASTROU?</Text>
           </TouchableOpacity>
         </View>
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   background: {
-    top: 160,
+    top: 180,
     width: 395,
     height: 631,
     position: 'absolute'
