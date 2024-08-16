@@ -26,11 +26,9 @@ const styles = StyleSheet.create({
     titulo: {
         fontSize: 17,
         color: "#132B47",
-        fontFamily: 'Poppins_700Bold',
         textAlign: 'left'
     },
     input: {
-        fontFamily: 'Poppins_700Bold',
         width: "90%"
     }
 });

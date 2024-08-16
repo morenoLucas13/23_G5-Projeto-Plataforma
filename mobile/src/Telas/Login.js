@@ -1,38 +1,65 @@
 import { StatusBar } from 'expo-status-bar';
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-
-import {
-  useFonts,
-  Poppins_100Thin,
-  Poppins_100Thin_Italic,
-  Poppins_200ExtraLight,
-  Poppins_200ExtraLight_Italic,
-  Poppins_300Light,
-  Poppins_300Light_Italic,
-  Poppins_400Regular,
-  Poppins_400Regular_Italic,
-  Poppins_500Medium,
-  Poppins_500Medium_Italic,
-  Poppins_600SemiBold,
-  Poppins_600SemiBold_Italic,
-  Poppins_700Bold,
-  Poppins_700Bold_Italic,
-  Poppins_800ExtraBold,
-  Poppins_800ExtraBold_Italic,
-  Poppins_900Black,
-  Poppins_900Black_Italic,
-} from '@expo-google-fonts/poppins';
+import axios from 'axios';
 
 // COMPONENTES
 import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad'
 
-export default function App() {
 
-  [fontesCarregadas] = useFonts({ Poppins_700Bold })
-  if (!fontesCarregadas) return null
+export default function Login() {
+  
+  const navigation = useNavigation()
+  
+  function navegar() {
+    navigation.navigate('tela_cadastro')
+  }
+
+  // ==================================================================
+
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  async function requisitaAutenticacao() {
+    // Alert.alert(`O email é ${email} \ne a senha é ${senha}`)
+
+    // try {
+    //   let resp = await axios(
+    //     {
+    //       method: 'post',
+    //       url: '',
+    //       data: { email: email, senha: senha },
+    //       timeout: 3000
+    //     }
+    //   );
+
+      // // somente para visualizar os conteúdos das variáveis de resposta  
+      // console.log("== Status Code ==")
+      // console.log(resp.status)
+      // console.log("== Dados ==")
+      // console.log(resp.data)
+
+      // if (resp.status == 200) {
+      //   if (resp.data.sucesso == true) {
+      //     console.log("+++ SUCESSO +++")
+
+          navigation.navigate('tela_entrada')
+    //     } else {
+    //       console.log('+++ Login inválido +++')
+    //       console.log(resp.data.erro)
+    //     }
+    //   } else {
+    //     console.log('Ops. Não foi possivel se concluir a operação.')
+    //     console.log(resp.data.erro)
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    //   console.log('Ops. Não foi possivel se comunicar com o servidor.')
+    // }
+  }
+
+  // ==================================================================
 
   return (
     <View style={styles.base}>
@@ -62,15 +89,16 @@ export default function App() {
 
           {/* Botão onde direcionará o usuário a página de CADASTRO! */}
           <TouchableOpacity
-          
-          >
+          onPress={navegar}>
             <Text style={styles.textoBotao}>Você ainda não se CADASTROU?</Text>
           </TouchableOpacity>
         </View>
 
         <View>
-          <TouchableOpacity style={styles.botao}>
-            <Text style={{ fontFamily: 'Poppins_700Bold', color: 'white', fontSize: 25 }}>
+          <TouchableOpacity style={styles.botao}
+          onPress={requisitaAutenticacao}
+          >
+            <Text style={{ color: 'white', fontSize: 25 }}>
               Entrar
             </Text>
           </TouchableOpacity>
@@ -101,7 +129,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     textDecorationLine: 'underline',
-    fontFamily: 'Poppins_700Bold'
   },
   botao: {
     backgroundColor: '#132B47',

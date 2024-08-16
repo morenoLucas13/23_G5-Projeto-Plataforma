@@ -1,36 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-
-import {
-    useFonts,
-    Poppins_100Thin,
-    Poppins_100Thin_Italic,
-    Poppins_200ExtraLight,
-    Poppins_200ExtraLight_Italic,
-    Poppins_300Light,
-    Poppins_300Light_Italic,
-    Poppins_400Regular,
-    Poppins_400Regular_Italic,
-    Poppins_500Medium,
-    Poppins_500Medium_Italic,
-    Poppins_600SemiBold,
-    Poppins_600SemiBold_Italic,
-    Poppins_700Bold,
-    Poppins_700Bold_Italic,
-    Poppins_800ExtraBold,
-    Poppins_800ExtraBold_Italic,
-    Poppins_900Black,
-    Poppins_900Black_Italic,
-} from '@expo-google-fonts/poppins';
 
 // COMPONENTES
 import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad'
+import CheckBoxNivel from '../Componentes/CheckBoxNivel';
 
-export default function App() {
+export default function Cadastro() {
 
-    [fontesCarregadas] = useFonts({ Poppins_700Bold })
-    if (!fontesCarregadas) return null
+    const [statusProfessor, setStatusProfessor] = useState(false);
+    const [statusAluno, setStatusAluno] = useState(false);
+
+    const handleCheckBoxChange = (cargo) => {
+        if (cargo === 'Professor') {
+            setStatusProfessor(!statusProfessor);
+            if (!statusProfessor) setStatusAluno(false);
+        } else if (cargo === 'Aluno') {
+            setStatusAluno(!statusAluno);
+            if (!statusAluno) setStatusProfessor(false);
+        }
+    };
 
     return (
         <View style={styles.base}>
@@ -64,12 +53,28 @@ export default function App() {
                         placeholder="Insira a sua senha"
                         emoji={require('../Imagens/IconeCadeado.png')}
                     />
+                </View>
 
+                <View style={{ marginTop: -80, marginBottom: 30 }}>
+                    <Text style={styles.textoDeNivel}>Nível De Acesso:</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <CheckBoxNivel
+                            cargo="Professor"
+                            checado={statusProfessor}
+                            onMarcarItem={() => handleCheckBoxChange('Professor')}
+                        />
+
+                        <CheckBoxNivel
+                            cargo="Aluno"
+                            checado={statusAluno}
+                            onMarcarItem={() => handleCheckBoxChange('Aluno')}
+                        />
+                    </View>
                 </View>
 
                 <View>
                     <TouchableOpacity style={styles.botao}>
-                        <Text style={{ fontFamily: 'Poppins_700Bold', color: 'white', fontSize: 25 }}>
+                        <Text style={{ color: 'white', fontSize: 25 }}>
                             Cadastrar
                         </Text>
                     </TouchableOpacity>
@@ -100,7 +105,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: 'center',
         textDecorationLine: 'underline',
-        fontFamily: 'Poppins_700Bold'
     },
     botao: {
         backgroundColor: '#132B47',
@@ -108,12 +112,18 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 15,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: -100
     },
     background: {
         top: 180,
         width: 395,
         height: 631,
         position: 'absolute'
+    },
+    textoDeNivel: {
+        fontSize: 25,
+        textAlign: 'center',
+        fontWeight: '900'
     }
 });
