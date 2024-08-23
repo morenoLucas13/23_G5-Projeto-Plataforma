@@ -1,11 +1,11 @@
 # G5-Projeto-Plataforma
  #### Tarefas Banco de Dados
-- [ ] Criação do Banco de Dados;
-- [ ] Alimentação do Banco de Dados;
+- [X] Criação do Banco de Dados;
+- [x] Alimentação do Banco de Dados;
 
 #### Tarefas Back-End
-- [ ] ROTA: Verificação Login;
-- [ ] ROTA: Cadastro e envio de dados;
+- [x] ROTA: Verificação Login;
+- [x] ROTA: Cadastro e envio de dados;
 - [ ] ROTA: Listagem das questões;
 - [ ] ROTA: Resposta das pontuações do usuário;
 

@@ -77,7 +77,7 @@ rotas.post('/cadastrarUser', async (req, res) => {
 rotas.get('/:id', async (req, res) => {
     const { id } = req.params
     try {
-        res.json(await models.exibirDadosUser(id))
+        res.json(await model.exibirDadosUser(id))
     } catch (error) {
         console.log('Ops! Erro ao acessar as informações do usuário :(')
         res.status(500).json({ sucesso: false, erro: 'Erro ao obter detalhes do usuário!' })
