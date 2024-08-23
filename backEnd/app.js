@@ -8,11 +8,25 @@ const cors = require('cors');
 const app = express();
 
 // Criar uma constante que define em qual porta, o servidor vai rodar
-const porta = 3000;
+const porta = 3313;
+
 
 // Inserindo middlewares
 app.use(cors());
 app.use(express.json());
+
+const midLogConsole = require('./src/app/middlewares/midLogConsole');
+app.use(midLogConsole);
+
+
+//  Importando as rotas
+const rotasLogin =
+    require('./src/app/controllers/loginController');
+app.use("/api/login", rotasLogin)
+
+
+
+
 
 // Inicia o servidor na porta
 app.listen(porta, () => {

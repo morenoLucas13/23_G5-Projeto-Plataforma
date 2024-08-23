@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
 
-export default function App({ texto, placeholder, emoji }) {
+export default function App({ texto, placeholder, emoji, value, onChangeText }) {
 
     return (
         <View style={{ padding: 10 }}>
@@ -14,6 +14,8 @@ export default function App({ texto, placeholder, emoji }) {
                 <TextInput
                     style={styles.input}
                     placeholder={placeholder}
+                    value={value}
+                    onChangeText={onChangeText}
                 />
 
             </View>

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 
 // COMPONENTES
@@ -18,45 +18,45 @@ export default function Login() {
 
   // ==================================================================
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('lucas.moreno@portalsesisp.org.br');
+  const [senha, setSenha] = useState('Sesisp@2643');
 
   async function requisitaAutenticacao() {
-    // Alert.alert(`O email é ${email} \ne a senha é ${senha}`)
+    // Alert.alert(`O email é ${email} e a senha é ${senha}`)
 
-    // try {
-    //   let resp = await axios(
-    //     {
-    //       method: 'post',
-    //       url: '',
-    //       data: { email: email, senha: senha },
-    //       timeout: 3000
-    //     }
-    //   );
+    try {
+      let resp = await axios(
+        {
+          method: 'post',
+          url: 'http://10.188.11.164:3313/login',
+          data: { email: email, senha: senha },
+          timeout: 3000
+        }
+      );
 
-      // // somente para visualizar os conteúdos das variáveis de resposta  
-      // console.log("== Status Code ==")
-      // console.log(resp.status)
-      // console.log("== Dados ==")
-      // console.log(resp.data)
+      // somente para visualizar os conteúdos das variáveis de resposta  
+      console.log("== Status Code ==")
+      console.log(resp.status)
+      console.log("== Dados ==")
+      console.log(resp.data)
 
-      // if (resp.status == 200) {
-      //   if (resp.data.sucesso == true) {
-      //     console.log("+++ SUCESSO +++")
+      if (resp.status == 200) {
+        if (resp.data.sucesso == true) {
+          console.log("+++ SUCESSO +++")
 
           navigation.navigate('tela_entrada')
-    //     } else {
-    //       console.log('+++ Login inválido +++')
-    //       console.log(resp.data.erro)
-    //     }
-    //   } else {
-    //     console.log('Ops. Não foi possivel se concluir a operação.')
-    //     console.log(resp.data.erro)
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    //   console.log('Ops. Não foi possivel se comunicar com o servidor.')
-    // }
+        } else {
+          console.log('+++ Login inválido +++')
+          console.log(resp.data.erro)
+        }
+      } else {
+        console.log('Ops. Não foi possivel se concluir a operação.')
+        console.log(resp.data.erro)
+      }
+    } catch (error) {
+      console.log(error)
+      console.log('Ops. Não foi possivel se comunicar com o servidor.')
+    }
   }
 
   // ==================================================================
@@ -75,16 +75,21 @@ export default function Login() {
 
         {/* Campos do TextInput */}
         <View style={{ width: '80%', marginBottom: 100 }}>
+
           <CaixaDeTextoLogCad
-            texto="Nome do usuário:"
-            placeholder="Insira o seu nome"
+            texto="Email do usuário:"
+            placeholder="Insira o seu email"
             emoji={require('../Imagens/IconePessoa.png')}
+            onChangeText={setEmail}
+            value={email}
           />
 
           <CaixaDeTextoLogCad
             texto="Senha do usuário:"
             placeholder="Insira a sua senha"
             emoji={require('../Imagens/IconeCadeado.png')}
+            onChangeText={setSenha}
+            value={senha}
           />
 
           {/* Botão onde direcionará o usuário a página de CADASTRO! */}

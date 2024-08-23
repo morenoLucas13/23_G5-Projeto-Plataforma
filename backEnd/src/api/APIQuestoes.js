@@ -120,3 +120,5 @@ function imprimirQuestao(questao) {
 
 // Imprime a questão
 imprimirQuestao(questoesHumanas[0]);
+
+

@@ -4,8 +4,8 @@ module.exports = function midLogConsole(req, res, next) {
     console.log('--- Atendendo rota em ', data.toISOString())
     console.log('--- Método: ', req.method)
     console.log('--- Endereço: ', req.url)
-    console.log('--- Parâmetros: ', req.params)
-    console.log('--- Corpo: ', req.body)
+    console.log('--- Parâmetros: ', JSON.stringify(req.params, null, ' ', 2))
+    console.log('--- Corpo: ', JSON.stringify(req.body, null, ' ', 2))
 
 
 
