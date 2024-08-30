@@ -2,64 +2,62 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
-import axios from 'axios';
+import * as yup from 'yup';
+import * as api from '../api';
 
 // COMPONENTES
-import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad'
-
+import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad';
 
 export default function Login() {
-  
-  const navigation = useNavigation()
-  
-  function navegar() {
-    navigation.navigate('tela_cadastro')
-  }
 
-  // ==================================================================
+  const navigation = useNavigation();
+
+  function navegar() {
+    navigation.navigate('tela_cadastro');
+  }
 
   const [email, setEmail] = useState('lucas.moreno@portalsesisp.org.br');
   const [senha, setSenha] = useState('Sesisp@2643');
 
-  async function requisitaAutenticacao() {
-    // Alert.alert(`O email é ${email} e a senha é ${senha}`)
+  const loginSchema = yup.object().shape({
+    email: yup.string().required('O campo email é obrigatório').email('Insira um email válido'),
+    senha: yup.string().required('O campo senha é obrigatório').min(7, 'A senha deve ter pelo menos 7 caracteres'),
+  });
 
+  async function requisitarAutenticacao() {
     try {
-      let resp = await axios(
-        {
-          method: 'post',
-          url: 'http://10.188.11.164:3313/login',
-          data: { email: email, senha: senha },
-          timeout: 3000
-        }
-      );
+      await loginSchema.validate({ email, senha });
 
-      // somente para visualizar os conteúdos das variáveis de resposta  
-      console.log("== Status Code ==")
-      console.log(resp.status)
-      console.log("== Dados ==")
-      console.log(resp.data)
+      let resp = await api.requisitarPost('/api/login', { email, senha });
+
+      console.log("== Status Code ==");
+      console.log(resp.status);
+      console.log("== Dados ==");
+      console.log(resp.data);
 
       if (resp.status == 200) {
-        if (resp.data.sucesso == true) {
-          console.log("+++ SUCESSO +++")
-
-          navigation.navigate('tela_entrada')
+        if (resp.data.sucesso) {
+          console.log("+++ SUCESSO +++");
+          navigation.navigate('tela_entrada');
         } else {
           console.log('+++ Login inválido +++')
           console.log(resp.data.erro)
         }
       } else {
-        console.log('Ops. Não foi possivel se concluir a operação.')
-        console.log(resp.data.erro)
+        console.log('Não foi possível concluir a operação!')
+       
       }
     } catch (error) {
-      console.log(error)
-      console.log('Ops. Não foi possivel se comunicar com o servidor.')
+      if (error.name === 'ValidationError') {
+        Alert.alert('Erro de Validação 🚨', error.errors.join('\n'))
+      } else {
+        console.log('Ops. Não foi possível se comunicar com o servidor!')
+        Alert.alert('Erro de Conexão 🚨', 'Não foi possível se comunicar com o servidor!')
+       
+      }
+      console.log(error);
     }
   }
-
-  // ==================================================================
 
   return (
     <View style={styles.base}>
@@ -81,7 +79,7 @@ export default function Login() {
             placeholder="Insira o seu email"
             emoji={require('../Imagens/IconePessoa.png')}
             onChangeText={setEmail}
-            value={email}
+            valor={email}
           />
 
           <CaixaDeTextoLogCad
@@ -89,26 +87,22 @@ export default function Login() {
             placeholder="Insira a sua senha"
             emoji={require('../Imagens/IconeCadeado.png')}
             onChangeText={setSenha}
-            value={senha}
+            valor={senha}
           />
 
           {/* Botão onde direcionará o usuário a página de CADASTRO! */}
-          <TouchableOpacity
-          onPress={navegar}>
+          <TouchableOpacity onPress={navegar}>
             <Text style={styles.textoBotao}>Você ainda não se CADASTROU?</Text>
           </TouchableOpacity>
         </View>
 
         <View>
-          <TouchableOpacity style={styles.botao}
-          onPress={requisitaAutenticacao}
-          >
-            <Text style={{ color: 'white', fontSize: 25 }}>
-              Entrar
-            </Text>
+          <TouchableOpacity style={styles.botao} onPress={requisitarAutenticacao}>
+            <Text style={{ color: 'white', fontSize: 25 }}>Entrar</Text>
           </TouchableOpacity>
         </View>
 
+       
       </View>
       <StatusBar style="auto" />
     </View>

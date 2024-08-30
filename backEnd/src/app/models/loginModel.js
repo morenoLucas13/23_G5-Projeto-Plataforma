@@ -52,8 +52,7 @@ module.exports.exibirDadosUser = async (id) => {
     try {
         conexao = await db.criarConexao()
         const [dadosUser] = await conexao.execute(
-            `SELECT us_nome AS nome, us_email AS email FROM usuarios WHERE idusuario = ?`,
-            [id])
+            `SELECT us_nome AS nome, us_email AS email FROM usuarios WHERE idusuario = ?`,[id])
 
         return dadosUser;
     } catch (error) {

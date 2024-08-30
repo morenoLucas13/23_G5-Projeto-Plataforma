@@ -1,25 +1,85 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import * as yup from 'yup';
+import * as api from '../api';
 
 // COMPONENTES
-import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad'
+import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad';
 import CheckBoxNivel from '../Componentes/CheckBoxNivel';
 
 export default function Cadastro() {
 
-    const [statusProfessor, setStatusProfessor] = useState(false);
-    const [statusAluno, setStatusAluno] = useState(false);
+    const navigation = useNavigation();
 
-    const handleCheckBoxChange = (cargo) => {
+// ========================================================================
+
+    const [nome, setNome] = useState('André Lucas Costa');
+    const [email, setEmail] = useState('andre.lucas2@portalsesisp.org.br');
+    const [senha, setSenha] = useState('Sesisp@1111');
+    const [cargoSelecionado, setCargoSelecionado] = useState(null);
+
+    // Criação de um esquema de validação usando Yup
+    const cadastroSchema = yup.object().shape({
+        nome: yup.string().required('Nome é obrigatório'),
+        email: yup.string().required('O campo email é obrigatório').email('Insira um email válido'),
+        senha: yup.string().required('O campo senha é obrigatório').min(7, 'A senha deve ter pelo menos 7 caracteres'),
+        nivel_acesso: yup.number().required('O campo nível é obrigatório').oneOf([1, 2], 'O nível de acesso deve ser 1 ou 2.')
+    });
+
+    const manipularCheckBoxChange = (cargo) => {
         if (cargo === 'Professor') {
-            setStatusProfessor(!statusProfessor);
-            if (!statusProfessor) setStatusAluno(false);
+            setCargoSelecionado(cargoSelecionado === 1 ? null : 1); // Alterna entre 1 e null
         } else if (cargo === 'Aluno') {
-            setStatusAluno(!statusAluno);
-            if (!statusAluno) setStatusProfessor(false);
+            setCargoSelecionado(cargoSelecionado === 2 ? null : 2); // Alterna entre 2 e null
         }
     };
+
+    async function requisitarCadastro() {
+        try {
+            // Validação dos dados antes de enviar a requisição
+            await cadastroSchema.validate({ nome, email, senha, nivel_acesso: cargoSelecionado });
+
+            const resp = await api.requisitarPost('/api/login/cadastrarUser', {
+                nome,
+                email,
+                senha,
+                nivel_acesso: cargoSelecionado
+            });
+
+            // Somente para visualizar os conteúdos das variáveis de resposta  
+            console.log("== Status Code ==");
+            console.log(resp.status);
+            console.log("== Dados ==");
+            console.log(resp.data);
+
+            if (resp.status === 200) {
+                if (resp.data.sucesso) {
+                    console.log("+++ SUCESSO +++");
+                    navigation.navigate('tela_entrada');
+                } else {
+                    console.log('+++ Cadastro inválido +++');
+                    console.log(resp.data.erro);
+                    Alert.alert('Cadastro inválido', resp.data.erro || 'Ocorreu um erro ao cadastrar.');
+                }
+            } else {
+                console.log('Ops. Não foi possível concluir a operação.');
+                console.log(resp.data.erro);
+                Alert.alert('Ocorreu um erro ao cadastrar!', resp.data.erro || 'Erro desconhecido.');
+            }
+        } catch (error) {
+            if (error.name === 'ValidationError') {
+                Alert.alert('Erro de Validação', error.errors.join('\n'));
+            } else {
+                console.log('Ops. Não foi possível se comunicar com o servidor.');
+                Alert.alert('Erro de Conexão', 'Não foi possível se comunicar com o servidor :(');
+            }
+            console.log(error);
+        }
+    }
+
+// ========================================================================
 
     return (
         <View style={styles.base}>
@@ -40,18 +100,24 @@ export default function Cadastro() {
                         texto="Nome do usuário:"
                         placeholder="Insira o seu nome"
                         emoji={require('../Imagens/IconePessoa.png')}
+                        onChangeText={setNome}
+                        valor={nome}
                     />
 
                     <CaixaDeTextoLogCad
                         texto="Email do usuário:"
                         placeholder="Insira seu email escolar"
                         emoji={require('../Imagens/IconeEmail.png')}
+                        onChangeText={setEmail}
+                        valor={email}
                     />
 
                     <CaixaDeTextoLogCad
                         texto="Senha do usuário:"
                         placeholder="Insira a sua senha"
                         emoji={require('../Imagens/IconeCadeado.png')}
+                        onChangeText={setSenha}
+                        valor={senha}
                     />
                 </View>
 
@@ -60,20 +126,20 @@ export default function Cadastro() {
                     <View style={{ flexDirection: 'row' }}>
                         <CheckBoxNivel
                             cargo="Professor"
-                            checado={statusProfessor}
-                            onMarcarItem={() => handleCheckBoxChange('Professor')}
+                            checado={cargoSelecionado === 1}
+                            onMarcarItem={() => manipularCheckBoxChange('Professor')}
                         />
 
                         <CheckBoxNivel
                             cargo="Aluno"
-                            checado={statusAluno}
-                            onMarcarItem={() => handleCheckBoxChange('Aluno')}
+                            checado={cargoSelecionado === 2}
+                            onMarcarItem={() => manipularCheckBoxChange('Aluno')}
                         />
                     </View>
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.botao}>
+                    <TouchableOpacity style={styles.botao} onPress={requisitarCadastro}>
                         <Text style={{ color: 'white', fontSize: 25 }}>
                             Cadastrar
                         </Text>

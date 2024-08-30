@@ -25,9 +25,6 @@ const rotasLogin =
 app.use("/api/login", rotasLogin)
 
 
-
-
-
 // Inicia o servidor na porta
 app.listen(porta, () => {
     console.log(`Server rodando em http://localhost:${porta}`);

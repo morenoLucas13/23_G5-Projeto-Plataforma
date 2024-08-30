@@ -1,53 +1,56 @@
-// import React, { Component } from "react";
-// import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Image, FlatList, Dimensions, StyleSheet } from 'react-native';
 
-// import { SliderBox } from "react-native-image-slider-box";
+const { width } = Dimensions.get('window');
 
-// export default class CarouselDeImagens extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       images: [
-//         "https://i.pinimg.com/564x/51/79/cc/5179cc6fa5ef973931805bf98c60a0e4.jpg",
-//         "https://i.pinimg.com/564x/a1/36/4a/a1364a778769583350f163d5089c4a4f.jpg",
-//         "https://i.pinimg.com/736x/f5/b4/58/f5b4580c94d201cb28d263d727baca58.jpg",
-//         "https://i.pinimg.com/564x/a1/86/40/a186406b80284eabc5130f39f5fff205.jpg",
-//         require('../Imagens/IconePontuacao.png'),
-//       ]
-//     };
-//   }
+const CarouselDeImagens = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef(null);
 
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <SliderBox
-//           images={this.state.images}
-//           onCurrentImagePressed={index =>
-//             console.warn(`image ${index} pressed`)
-//           }
-//         />
-//       </View>
-//     );
-//   }
-// }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
+    }, 6000); // 6 segundos de intervalo
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1
-//   }
-// });
+    return () => clearInterval(interval);
+  }, [currentIndex, images.length]);
 
-// ======================================================================================
-
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
-export default function CarouselDeImagens() {
-  return (
-    <View>
-      <Text>CarouselDeImagens</Text>
+  const renderItem = ({ item }) => (
+    <View style={styles.imageContainer}>
+      <Image source={item} style={styles.image} />
     </View>
-  )
-}
+  );
 
-const styles = StyleSheet.create({})
+  return (
+    <FlatList
+      data={images}
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      ref={flatListRef}
+      onMomentumScrollEnd={(event) => {
+        const index = Math.floor(event.nativeEvent.contentOffset.x / width);
+        setCurrentIndex(index);
+      }}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    width: width,
+    height: 100,
+    alignItems: 'center',
+  },
+  image: {
+    width: '90%',
+    height: 200,
+    borderRadius: 20
+  },
+});
+
+export default CarouselDeImagens;

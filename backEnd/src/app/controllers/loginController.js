@@ -73,7 +73,7 @@ rotas.post('/cadastrarUser', async (req, res) => {
     console.log('Fim da rota POST de Cadastro!');
 });
 
-// Rota para obter informações do usuário
+// Rota para obter informações do usuário por meio do ID
 rotas.get('/:id', async (req, res) => {
     const { id } = req.params
     try {

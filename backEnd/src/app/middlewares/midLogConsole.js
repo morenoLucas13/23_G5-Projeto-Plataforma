@@ -8,8 +8,6 @@ module.exports = function midLogConsole(req, res, next) {
     console.log('--- Corpo: ', JSON.stringify(req.body, null, ' ', 2))
 
 
-
-
     
     next() // Chama o próximo middlewares que estiver empilhado
 }

@@ -1,14 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function BotoesDeNavegacao({ texto, icone }) {
+
+  const navigation = useNavigation()
+
 
     return (
         <View style={styles.container}>
 
-            <TouchableOpacity style={styles.botao}>
+            <TouchableOpacity
+                style={styles.botao}
+            >
                 <Image
                     style={styles.icone}
                     source={icone}
