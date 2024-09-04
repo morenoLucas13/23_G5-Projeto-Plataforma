@@ -1,20 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default function BotoesDeNavegacao({ texto, icone, navegacao }) {
-    const navigation = useNavigation();
+export default function BotoesSmp({ texto, onPress }) {
 
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.botao}
-                onPress={() => navigation.navigate(navegacao)}
+                onPress={onPress}
             >
-                <Image
-                    style={styles.icone}
-                    source={icone}
-                />
                 <Text style={styles.texto}>{texto}</Text>
             </TouchableOpacity>
         </View>
@@ -27,19 +21,16 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     botao: {
-        width: 110,
-        height: 110,
+        width: 160,
+        height: 45,
         backgroundColor: '#6D72B8',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    icone: {
-        width: 60,
-        height: 60
-    },
     texto: {
-        fontSize: 17,
+        fontSize: 15,
         color: '#FFFF',
+        textAlign: 'center'
     }
 });

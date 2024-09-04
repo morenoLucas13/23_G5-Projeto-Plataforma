@@ -19,7 +19,7 @@ const CarouselDeImagens = ({ images }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.imageContainer}>
-      <Image source={item} style={styles.image} />
+      <Image source={item} style={styles.image} resizeMode="cover" />
     </View>
   );
 
@@ -43,13 +43,14 @@ const CarouselDeImagens = ({ images }) => {
 const styles = StyleSheet.create({
   imageContainer: {
     width: width,
-    height: 100,
+    height: width * 0.6, 
     alignItems: 'center',
+    justifyContent: 'center'
   },
   image: {
     width: '90%',
-    height: 200,
-    borderRadius: 20
+    height: '80%',
+    borderRadius: 20,
   },
 });
 

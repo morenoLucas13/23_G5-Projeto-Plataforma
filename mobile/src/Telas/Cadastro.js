@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import * as yup from 'yup';
 import * as api from '../api';
+import { Ionicons } from '@expo/vector-icons';
 
 // COMPONENTES
 import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad';
@@ -13,11 +14,12 @@ export default function Cadastro() {
 
     const navigation = useNavigation();
 
-// ========================================================================
+    // ========================================================================
 
     const [nome, setNome] = useState('André Lucas Costa');
     const [email, setEmail] = useState('andre.lucas2@portalsesisp.org.br');
     const [senha, setSenha] = useState('Sesisp@1111');
+    const [ocultarSenha, setOcultarSenha] = useState(true);
     const [cargoSelecionado, setCargoSelecionado] = useState(null);
 
     // Criação de um esquema de validação usando Yup
@@ -79,7 +81,7 @@ export default function Cadastro() {
         }
     }
 
-// ========================================================================
+    // ========================================================================
 
     return (
         <View style={styles.base}>
@@ -116,9 +118,14 @@ export default function Cadastro() {
                         texto="Senha do usuário:"
                         placeholder="Insira a sua senha"
                         emoji={require('../Imagens/IconeCadeado.png')}
-                        onChangeText={setSenha}
+                        onChangeText={(texto) => setSenha(texto)}
                         valor={senha}
+                        secureTextEntry={ocultarSenha}
                     />
+
+                    <TouchableOpacity style={styles.icon} onPress={() => setOcultarSenha(!ocultarSenha)}>
+                        <Ionicons name={ocultarSenha ? "eye" : "eye-off"} color="#132B47" size={25} />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ marginTop: -80, marginBottom: 30 }}>

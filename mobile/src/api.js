@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.timeout = 3000;
 
-export const urlBase = 'http://10.132.224.41:3313';
+export const urlBase = 'http://10.132.224.13:3313';
 
 // Função que executa os métodos HTTP do AXIOS com 
 // a configuração de endereço da API
