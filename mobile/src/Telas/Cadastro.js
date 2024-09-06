@@ -129,7 +129,7 @@ export default function Cadastro() {
                 </View>
 
                 <View style={{ marginTop: -80, marginBottom: 30 }}>
-                    <Text style={styles.textoDeNivel}>Nível De Acesso:</Text>
+                    <Text style={styles.textoDeNivel}>Nível de Acesso:</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <CheckBoxNivel
                             cargo="Professor"
@@ -198,5 +198,11 @@ const styles = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
         fontWeight: '900'
-    }
+    },
+    icon: {
+       
+        right: 20,
+        height: 25,
+        
+      },
 });
