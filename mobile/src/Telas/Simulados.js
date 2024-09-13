@@ -1,12 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 // COMPONENTES
 import CardCabecalho from '../Componentes/CardCabecalho';
 import BotoesSmp from '../Componentes/BotoesSmp';
 
+
 export default function Simulado() {
+    const navigation = useNavigation();
+
+
     const [mostrarOpcoesAleatorio, setMostrarOpcoesAleatorio] = useState(false);
     const [mostrarOpcoesProfessor, setMostrarOpcoesProfessor] = useState(false);
 
@@ -21,11 +27,11 @@ export default function Simulado() {
     };
 
     const navegarParaTela1 = () => {
-
+        navigation.navigate('tela_selecionar_simulado');
     };
 
-    const navegarParaTela2 = () => {
-
+    const navegarPtela_selecionar_simulado = () => {
+        navigation.navigate('tela_selecionar_simulado');
     };
 
     return (
@@ -43,10 +49,10 @@ export default function Simulado() {
 
             {/* Botões */}
             <View style={{ flexDirection: 'row' }}>
-                <BotoesSmp
+                {/* <BotoesSmp
                     texto={'Simulado Aleatório'}
                     onPress={mostrarSimuladoAleatorio}
-                />
+                /> */}
                 <BotoesSmp
                     texto={'Simulado pelo Professor'}
                     onPress={mostrarSimuladoProfessor}
@@ -80,7 +86,7 @@ export default function Simulado() {
                 <View>
                     <TouchableOpacity
                         style={styles.btn}
-                        onPress={navegarParaTela2}
+                        onPress={navegarPtela_selecionar_simulado}
                     >
                         <View style={{ paddingRight: 10 }}>
                             <Image style={{ width: 40, height: 40 }} source={require('../Imagens/IconeSimulado.png')} />

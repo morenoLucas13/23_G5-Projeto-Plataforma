@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, } from 'react-native';
 
-
 // COMPONENTES
 import BotoesDeNavegacao from '../Componentes/BotoesDeNavegacao';
 import CarouselDeImagens from '../Componentes/CarouselDeImagens';
@@ -12,9 +11,6 @@ const images = [
   require('../Imagens/imagem2.jpg'),
   require('../Imagens/imagem3.jpg'),
 ];
-
-const { width } = Dimensions.get('window');
-
 
 export default function Home() {
   return (

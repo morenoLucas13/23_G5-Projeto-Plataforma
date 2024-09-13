@@ -114,18 +114,20 @@ export default function Cadastro() {
                         valor={email}
                     />
 
-                    <CaixaDeTextoLogCad
-                        texto="Senha do usuário:"
-                        placeholder="Insira a sua senha"
-                        emoji={require('../Imagens/IconeCadeado.png')}
-                        onChangeText={(texto) => setSenha(texto)}
-                        valor={senha}
-                        secureTextEntry={ocultarSenha}
-                    />
+                    <View>
+                        <CaixaDeTextoLogCad
+                            texto="Senha do usuário:"
+                            placeholder="Insira a sua senha"
+                            emoji={require('../Imagens/IconeCadeado.png')}
+                            onChangeText={(texto) => setSenha(texto)}
+                            valor={senha}
+                            secureTextEntry={ocultarSenha}
+                        />
 
-                    <TouchableOpacity style={styles.icon} onPress={() => setOcultarSenha(!ocultarSenha)}>
-                        <Ionicons name={ocultarSenha ? "eye" : "eye-off"} color="#132B47" size={25} />
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.icon} onPress={() => setOcultarSenha(!ocultarSenha)}>
+                            <Ionicons name={ocultarSenha ? "eye" : "eye-off"} color="#132B47" size={25} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <View style={{ marginTop: -80, marginBottom: 30 }}>
@@ -200,9 +202,8 @@ const styles = StyleSheet.create({
         fontWeight: '900'
     },
     icon: {
-       
+        position: 'absolute',
         right: 20,
-        height: 25,
-        
-      },
+        top: 40
+    },
 });

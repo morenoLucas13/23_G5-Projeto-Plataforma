@@ -8,6 +8,8 @@ import Home from '../Telas/Home.js';
 import Simulados from '../Telas/Simulados.js';
 import RaioX from '../Telas/RaioX.js';
 import Chat from '../Telas/Chat.js';
+import SelecionarSimulados from '../Telas/SelecionarSimulados.js';
+import Questoes from '../Telas/Questoes.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,8 @@ export default function AcaoDeNavegar() {
                 <Stack.Screen options={{ headerShown: false }} name="tela_simulados" component={Simulados} />
                 <Stack.Screen options={{ headerShown: false }} name="tela_relatorio" component={RaioX} />
                 <Stack.Screen options={{ headerShown: false }} name="tela_chat" component={Chat} />
+                <Stack.Screen options={{ headerShown: false }} name="tela_selecionar_simulado" component={SelecionarSimulados} />
+                <Stack.Screen options={{ headerShown: false }} name="tela_questoes" component={Questoes} />
             </Stack.Navigator>
         </NavigationContainer>
     )
