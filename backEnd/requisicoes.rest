@@ -1,5 +1,8 @@
 ###########################################
 POST http://10.132.224.58:3313/api/login
+
+###
+POST http://localhost:3313/api/login
 Content-Type: application/json
 
 {

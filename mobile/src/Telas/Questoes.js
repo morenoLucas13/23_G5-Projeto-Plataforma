@@ -3,6 +3,7 @@ import React from 'react'
 
 //
 import CardCabecalho from '../Componentes/CardCabecalho'
+import Alternativas from '../Componentes/Alternativas'
 
 export default function Questoes() {
   return (
@@ -26,11 +27,26 @@ export default function Questoes() {
             DEMARCHI, J. L. Paulo Freire. Disponivel em: https://diplomatique.org.br. Acesso em: 6 out. 2021 (adaptado).
           </Text>
 
-          <Text style={styles.txtQuestao}>
+          <Text style={[styles.txtQuestao, { paddingTop: 10 }]}>
             Com base no conceito de ética pedagógica presente nos textos, os educandos tornam-se responsáveis pela
           </Text>
         </ScrollView>
       </View>
+
+      <ScrollView>
+        <View style={{ marginTop: 20 }}>
+          <Alternativas
+            letraAlternativa={'A.'} />
+          <Alternativas
+            letraAlternativa={'B.'} />
+          <Alternativas
+            letraAlternativa={'C.'} />
+          <Alternativas
+            letraAlternativa={'D.'} />
+          <Alternativas
+            letraAlternativa={'E.'} />
+        </View>
+      </ScrollView>
 
     </View>
   )
@@ -43,10 +59,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#B6B9EF',
     borderRadius: 10,
     marginTop: 45,
-    padding: 10
+    padding: 10,
+    elevation: 10
   },
   txtQuestao: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: 'justify'
   }
 })

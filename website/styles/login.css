@@ -1,0 +1,73 @@
+/* Estilização do fundo */
+.background {
+    background-color: #F2F6FA;
+    background-image: url('../Imagens/bgImagem.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centraliza itens */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Imagem da Logo */
+.imagemLogo {
+    width: 300px;
+    height: 200px;
+}
+
+/* Estilo do Título */
+.titulo {
+    font-size: 17px;
+    color: #132B47;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+/* Estilo do input container */
+.inputWrapper {
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Contêiner do input e ícone */
+.inputContainer {
+    display: flex;
+    align-items: center;
+    padding: 7px;
+}
+
+/* Estilo do emoji (ícone) */
+.emoji {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Estilo do input */
+.inputTexto {
+    width: 90%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: #F2F6FA;
+}
+
+/* Divider (linha separadora) */
+.divider {
+    height: 1px;
+    width: 100%;
+    background-color: #BCBCC1;
+    margin-top: 5px;
+}

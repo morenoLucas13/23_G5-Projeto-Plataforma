@@ -24,9 +24,9 @@ const rotasLogin =
     require('./src/app/controllers/loginController');
 app.use("/api/login", rotasLogin)
 
-const rotasSimulados = 
-    require('./src/app/controllers/simuladosController');
-app.use("/api/simulados", rotasSimulados);
+// const rotasSimulados = 
+//     require('./src/app/controllers/simuladosController');
+// app.use("/api/simulados", rotasSimulados);
 
 // Inicia o servidor na porta
 app.listen(porta, () => {
