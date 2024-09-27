@@ -26,11 +26,13 @@
     text-align: center; 
 }
 
+/* Imagem */
 .imagemLogo {
-    width: 280px;
-    height: 200px;
+    width: 250px;
+    height: 180px;
 }
 
+/* Estilização do Input */
 .titulo {
     font-size: 17px;
     color: #132B47;
@@ -41,7 +43,7 @@
 .inputWrapper {
     width: 100%;
     max-width: 700px;
-    margin-top: 30px;
+    margin-top: 23px;
 }
 
 .inputContainer {
@@ -89,6 +91,6 @@
 }
 
 .link {
-    color: #000; /* ou color: black; */
-    font-weight: bold; /* Define o texto como negrito */
+    color: #000;
+    font-weight: bold;
 }
