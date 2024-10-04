@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+/* Estilização global */
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Estilização do cabeçalho */
+.header1 {
+    background-color: #0f2a44;
+    color: white;
+    padding: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    text-align: center;
+}
+
+.header1 h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+h1,
+h3,
+p {
+    font-weight: bold;
+}
+
+.welcome-message {
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.divider {
+    height: 1px;
+    width: 1450px;
+    background-color: #BCBCC1;
+    margin-left: 20px;
+}
+
+/* Estilização dos botões */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 150px;
+    padding: 15px;
+}
+
+.button-container button {
+    text-decoration: none;
+    color: white;
+}
+
+.button {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #6D72B8;
+    transition: background-color 0.6s ease;
+    flex-direction: column;
+}
+
+.button:hover {
+    background-color: #53578f;
+}
+
+/* Estilização do carrossel */
+.carousel-container {
+    margin: 20px auto;
+    max-width: 540px;
+}
+
+.carousel-item img {
+    height: 300px; /* Defina a altura fixa que deseja */
+    width: 100%;
+    object-fit: cover; /* Assegura que a imagem se encaixe no contêiner */
+    border-radius: 10px;
+}
+
+
+/*  */
+.header2 {
+    background-color: #0f2a44;
+    color: white;
+    padding: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    text-align: center;
+}

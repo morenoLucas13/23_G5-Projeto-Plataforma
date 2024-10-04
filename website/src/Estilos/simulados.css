@@ -1,0 +1,151 @@
+/* Estilo do cabeçalho */
+.header {
+    background-color: #0f2a44;
+    color: white;
+    padding: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    flex-direction: row;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 30px;
+    text-align: center;
+    flex: 1;
+}
+
+/* Botão de navegação */
+.btnNave {
+    background: none;
+    border: none;
+    position: absolute; 
+    left: 20px;
+}
+
+.btnNave img {
+    width: 50px;
+    height: 50px;
+}
+
+/* Estilo personalizado para botão com cor específica */
+.btn-personalizado {
+    background-color: #6D72B8; /* Cor de fundo */
+    border-color: #6D72B8; /* Cor da borda */
+    color: white; /* Cor do texto */
+}
+
+/* Adicionando efeito hover ao botão */
+.btn-personalizado:hover {
+    background-color: #5A5FA0; /* Cor ao passar o mouse */
+    border-color: #5A5FA0; /* Borda ao passar o mouse */
+}
+
+
+/* Estilo do container dos simulados */
+.simulado-card {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 1, 1);
+    display: flex;
+}
+
+.simulados-container {
+    max-height: 600px;
+    overflow-y: auto;
+    width: 100%;
+    padding: 15px;
+}
+
+/* Alinhamento dos títulos das matérias */
+.materia-titulo {
+    text-align: left;
+    margin-left: 5px;
+    color: #132B47;
+    font-size: 16px;
+    font-style: italic;
+}
+
+.descricao {
+    width: 1000px;
+}
+
+/* Divisor Vertical */
+.divisor {
+    height: 130px;
+    width: 1px;
+    background-color: #666;
+    margin: 0 15px;
+}
+
+/* Estilo do switch */
+.switch-checkbox {
+    display: none;
+}
+
+.switch-label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    background-color: #B86D6D;
+    border-radius: 50px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.switch-label::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #132B47;
+    border-radius: 50%;
+    top: 2.5px;
+    left: 2.5px;
+    transition: transform 0.3s ease;
+}
+
+.switch-checkbox:checked + .switch-label {
+    background-color: #82B86D;
+}
+
+.switch-checkbox:checked + .switch-label::before {
+    transform: translateX(25px);
+}
+
+/* Estilo da descrição dos simulados */
+.descricao-simulado {
+    color: #666;
+    margin: 5px;
+    text-align: justify;
+    font-weight: 100;
+}
+
+/* Número de questões */
+.numero-questoes {
+    font-size: 30px;
+    font-weight: bold;
+    color: #132B47;
+}
+
+/* Estilo do container de botões e switch */
+.botoes-switch {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.botoes-switch .btn {
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.botoes-switch .btn img {
+    width: 50px;
+    height: 50px;
+}
