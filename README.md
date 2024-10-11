@@ -10,9 +10,9 @@
 - [ ] ROTA: Resposta das pontuações do usuário;
 
 #### Tarefas Mobile
-- [ ] Estilização de Telas;
-- [ ] Cadastrar usuários no Front-End;
-- [ ] Fazer o Login;
+- [x] Estilização de Telas;
+- [x] Cadastrar usuários no Front-End;
+- [x] Fazer o Login;
 - [ ] Elaboração do Quiz de Questões;
 - [ ] Função que contabilize pontuações nas questões;
 - [ ] Função que traga o total de perguntas respondidas e acertos e erros, para gerar o gráfico;
