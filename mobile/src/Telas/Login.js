@@ -28,35 +28,35 @@ export default function Login() {
 
   async function requisitarAutenticacao() {
     try {
-      await loginSchema.validate({ email, senha });
+      // await loginSchema.validate({ email, senha });
 
-      let resp = await api.requisitarPost('/api/login', { email, senha });
+      // let resp = await api.requisitarPost('/api/login', { email, senha });
 
-      console.log("== Status Code ==");
-      console.log(resp.status);
-      console.log("== Dados ==");
-      console.log(resp.data);
+      // console.log("== Status Code ==");
+      // console.log(resp.status);
+      // console.log("== Dados ==");
+      // console.log(resp.data);
 
-      if (resp.status == 200) {
-        if (resp.data.sucesso) {
-          console.log("+++ SUCESSO +++");
+      // if (resp.status == 200) {
+      //   if (resp.data.sucesso) {
+      //     console.log("+++ SUCESSO +++");
           navigation.navigate('tela_entrada');
-        } else {
-          console.log('+++ Login inválido +++')
-          console.log(resp.data.erro);
-        }
-      } else {
-        console.log('Não foi possível concluir a operação!');
-      }
+    //     } else {
+    //       console.log('+++ Login inválido +++')
+    //       console.log(resp.data.erro);
+    //     }
+    //   } else {
+    //     console.log('Não foi possível concluir a operação!');
+    //   }
     } catch (error) {
-      if (error.name === 'ValidationError') {
-        Alert.alert('Erro de Validação 🚨', error.errors.join('\n'));
-      } else {
-        console.log('Ops. Não foi possível se comunicar com o servidor!');
-        Alert.alert('Erro de Conexão 🚨', 'Não foi possível se comunicar com o servidor!');
+    //   if (error.name === 'ValidationError') {
+    //     Alert.alert('Erro de Validação 🚨', error.errors.join('\n'));
+    //   } else {
+    //     console.log('Ops. Não foi possível se comunicar com o servidor!');
+    //     Alert.alert('Erro de Conexão 🚨', 'Não foi possível se comunicar com o servidor!');
       }
-      console.log(error);
-    }
+    //   console.log(error);
+    // }
   }
 
   return (

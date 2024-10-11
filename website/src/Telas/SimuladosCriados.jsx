@@ -30,7 +30,7 @@ export default function SimuladosCriados() {
 
             {/* Container Principal */}
             <div className="container mt-4">
-                <button className="btn mb-4 btn-personalizado">Criar Novo Simulado</button>
+                <button className="btn mb-4 btn-personalizado" onClick={() => navigate('/criacao')}>Criar Novo Simulado</button>
 
                 <div className="simulados-container">
                     {/* Loop para renderizar cada simulado */}

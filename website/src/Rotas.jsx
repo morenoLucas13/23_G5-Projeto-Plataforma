@@ -6,6 +6,7 @@ import Login from './Telas/Login'
 import Cadastro from './Telas/Cadastro'
 import Home from './Telas/Home'
 import SimuladosCriados from './Telas/SimuladosCriados'
+import CriacaoSimulados from './Telas/CriacaoSimulados'
 
 export default function Rotas() {
   return (
@@ -15,6 +16,7 @@ export default function Rotas() {
             <Route path='/cadastro' element={<Cadastro/>} />
             <Route path='/home' element={<Home/>} />
             <Route path='/simuladosCriados' element={<SimuladosCriados/>} />
+            <Route path='/criacao' element={<CriacaoSimulados/>} />
 
             {/* ============================================= */}
             
