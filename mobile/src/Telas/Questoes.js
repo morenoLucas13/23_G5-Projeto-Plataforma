@@ -10,7 +10,7 @@ export default function Questoes() {
     <View style={{ alignItems: 'center' }}>
       <CardCabecalho
         texto={'Questão'}
-        navegacao={'tela_selecionar_simulado'}
+        navegacao={'tela_simulados'}
       />
 
       <View style={styles.cardQuestao}>

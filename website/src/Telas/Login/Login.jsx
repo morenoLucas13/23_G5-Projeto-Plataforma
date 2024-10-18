@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import icoPessoa from '../Imagens/IconePessoa.png';
-import icoCadeado from '../Imagens/IconeCadeado.png';
-import LogoApp from '../Imagens/LogoDoApp.png';
+import icoPessoa from '../../Imagens/IconePessoa.png';
+import icoCadeado from '../../Imagens/IconeCadeado.png';
+import LogoApp from '../../Imagens/LogoDoApp.png';
 import { useNavigate } from 'react-router-dom';
-import InputLogECad from '../Componentes/InputLogECad';
+import InputLogECad from '../../Componentes/InputLogECad';
+
+import estilos from './Login.module.css'
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -21,10 +23,10 @@ export default function Login() {
 
     return (
         <>
-            <div className="background">
-                <div className="container">
+            <div className={estilos.background}>
+                <div className={estilos.container}>
                     <div>
-                        <img src={LogoApp} className="imagemLogo" alt="Logo do aplicativo" />
+                        <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
                     </div>
 
                     <InputLogECad
@@ -73,13 +75,13 @@ export default function Login() {
 
                     <div>
                         {/* Substituí o `href` por `onClick` para navegação interna */}
-                        <a className="link" onClick={NavegarParaCadastro} style={{ cursor: 'pointer' }}>
+                        <a className={estilos.link}onClick={NavegarParaCadastro} style={{ cursor: 'pointer' }}>
                             Você ainda não se CADASTROU?
                         </a>
                     </div>
 
-                    <div className="inputWrapper">
-                        <button type="button" className="custom-button" onClick={evtLogin}>
+                    <div className={estilos.inputWrapper}>
+                        <button type="button" className={estilos.custombutton} onClick={evtLogin}>
                             Entrar
                         </button>
                     </div>

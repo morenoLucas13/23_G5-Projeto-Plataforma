@@ -7,7 +7,7 @@
 
 .background {
     background-color: #F2F6FA;
-    background-image: url('../Imagens/bgImagem.png');
+    background-image: url('../../Imagens/bgImagem.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -73,8 +73,7 @@
     margin-top: 5px;
 }
 
-/* Estilo personalizado do botão */
-.custom-button {
+.custombutton {
     background-color: #132B47; 
     border-radius: 15px;
     color: #ffffff;
@@ -86,11 +85,11 @@
     height: 45px;
 }
 
-.custom-button:hover {
+.custombutton:hover {
     background-color: #0f1a30;
 }
 
 .link {
-    color: #000; /* ou color: black; */
-    font-weight: bold; /* Define o texto como negrito */
+    color: #000; 
+    font-weight: bold;
 }

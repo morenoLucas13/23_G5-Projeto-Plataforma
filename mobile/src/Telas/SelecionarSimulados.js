@@ -10,7 +10,7 @@ export default function SelecionarSimulados() {
         <View style={styles.container}>
             <CardCabecalho
                 texto={'Selecione o Simulado'}
-                navegacao={'tela_simulados'}
+                navegacao={'tela_entrada'}
             />
 
             <ScrollView showsVerticalScrollIndicator={false}>

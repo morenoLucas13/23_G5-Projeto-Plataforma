@@ -18,8 +18,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: 290,
         height: 32,
-        marginTop: 12,
+        marginTop: 6,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderRadius: 10,
+        padding: 5,
+        borderColor: '#000',
+        borderWidth: 1
     }
 })

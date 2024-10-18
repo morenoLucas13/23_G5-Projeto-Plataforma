@@ -1,10 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // COMPONENTES
 import BotoesDeNavegacao from '../Componentes/BotoesDeNavegacao';
 import CarouselDeImagens from '../Componentes/CarouselDeImagens';
+
+import Enem from '../Imagens/vestibulares/ENEM.png';
+import Fuvest from '../Imagens/vestibulares/fuvestVESTIBULAR.png';
+import Uel from '../Imagens/vestibulares/UELVest.png';
+import Uem from '../Imagens/vestibulares/UEMVest.png';
+import Unesp from '../Imagens/vestibulares/UNESPvesti.png';
+import Unicamp from '../Imagens/vestibulares/UNICAMPvest.png';
+import Unifesp from '../Imagens/vestibulares/UNIFESP.png';
+import Toledo from '../Imagens/vestibulares/vestibularToledo.png';
+import Unoeste from '../Imagens/vestibulares/vestibularUNOESTE.png';
+import IcoSimu from '../Imagens/IconeSimulado.png';
+import IcoRelatorio from '../Imagens/IconeRelatorio.png';
 
 const images = [
   require('../Imagens/imagem1.jpg'),
@@ -13,6 +26,9 @@ const images = [
 ];
 
 export default function Home() {
+  const navigation = useNavigation();
+
+
   return (
     <View style={styles.container}>
 
@@ -22,7 +38,8 @@ export default function Home() {
         <Text style={styles.textNome}>Lucas Neponuceno Moreno</Text>
 
         <View style={styles.cardPontuacao}>
-          <TouchableOpacity style={styles.btnPontuacao}>
+          <TouchableOpacity style={styles.btnPontuacao}
+          onPress={() => navigation.navigate('tela_ranking')}>
             <Image
               style={{ height: 45, width: 45 }}
               source={require('../Imagens/IconePontuacao.png')}
@@ -56,12 +73,12 @@ export default function Home() {
           navegacao={'tela_relatorio'}
 
         />
-        <BotoesDeNavegacao
+        {/* <BotoesDeNavegacao
           icone={require('../Imagens/IconeChat.png')}
           texto={'Bate-papo'}
           navegacao={'tela_chat'}
 
-        />
+        /> */}
       </View>
 
       <View style={styles.divisor} />
