@@ -8,6 +8,15 @@
     flex-direction: row;
 }
 
+.container {
+    margin-top: -100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+}
+
 .header h1 {
     margin: 0;
     font-size: 30px;
@@ -19,7 +28,7 @@
 .btnNave {
     background: none;
     border: none;
-    position: absolute; 
+    position: absolute;
     left: 20px;
 }
 
@@ -29,21 +38,26 @@
 }
 
 /* Estilo personalizado para botão com cor específica */
-.btn-personalizado {
-    background-color: #6D72B8; /* Cor de fundo */
-    border-color: #6D72B8; /* Cor da borda */
-    color: white; /* Cor do texto */
+.btnpersonalizado {
+    background-color: #6D72B8;
+    /* Cor de fundo */
+    border-color: #6D72B8;
+    /* Cor da borda */
+    color: white;
+    /* Cor do texto */
 }
 
 /* Adicionando efeito hover ao botão */
-.btn-personalizado:hover {
-    background-color: #5A5FA0; /* Cor ao passar o mouse */
-    border-color: #5A5FA0; /* Borda ao passar o mouse */
+.btnpersonalizado:hover {
+    background-color: #5A5FA0;
+    /* Cor ao passar o mouse */
+    border-color: #5A5FA0;
+    /* Borda ao passar o mouse */
 }
 
 
 /* Estilo do container dos simulados */
-.simulado-card {
+.simuladocard {
     border: 1px solid #ddd;
     border-radius: 15px;
     padding: 15px;
@@ -52,15 +66,17 @@
     display: flex;
 }
 
-.simulados-container {
+.simuladoscontainer {
     /* max-height: 600px; */
     /* overflow-y: auto; */
+    max-height: 600px;
+    overflow-y: auto;
     width: 100%;
     padding: 15px;
 }
 
 /* Alinhamento dos títulos das matérias */
-.materia-titulo {
+.materiatitulo {
     text-align: left;
     margin-left: 5px;
     color: #132B47;
@@ -80,12 +96,19 @@
     margin: 0 15px;
 }
 
+.divider {
+    height: 1px;
+    width: 1450px;
+    background-color: #BCBCC1;
+    margin-left: 20px;
+}
+
 /* Estilo do switch */
-.switch-checkbox {
+.switchcheckbox {
     display: none;
 }
 
-.switch-label {
+.switchlabel {
     position: relative;
     display: inline-block;
     width: 50px;
@@ -96,7 +119,7 @@
     cursor: pointer;
 }
 
-.switch-label::before {
+.switchlabel::before {
     content: "";
     position: absolute;
     width: 20px;
@@ -108,16 +131,16 @@
     transition: transform 0.3s ease;
 }
 
-.switch-checkbox:checked + .switch-label {
+.switchcheckbox:checked+.switchlabel {
     background-color: #82B86D;
 }
 
-.switch-checkbox:checked + .switch-label::before {
+.switchcheckbox:checked+.switchlabel::before {
     transform: translateX(25px);
 }
 
 /* Estilo da descrição dos simulados */
-.descricao-simulado {
+.descricaosimulado {
     color: #666;
     margin: 5px;
     text-align: justify;
@@ -125,27 +148,27 @@
 }
 
 /* Número de questões */
-.numero-questoes {
+.numeroquestoes {
     font-size: 30px;
     font-weight: bold;
     color: #132B47;
 }
 
 /* Estilo do container de botões e switch */
-.botoes-switch {
+.botoesswitch {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.botoes-switch .btn {
+.botoesswitch .btn {
     padding: 0;
     background: none;
     border: none;
 }
 
-.botoes-switch .btn img {
+.botoesswitch .btn img {
     width: 50px;
     height: 50px;
 }

@@ -4,6 +4,8 @@ import IconeLapis from '../Imagens/IconeLapis.png';
 
 import { useNavigate } from 'react-router-dom';
 
+import estilos from '../Estilos/simulados.module.css';
+
 export default function SimuladosCriados() {
     // Dados de exemplo para simulados
     const simulados = [
@@ -21,40 +23,40 @@ export default function SimuladosCriados() {
     return (
         <>
             {/* Cabeçalho da página */}
-            <div className="header d-flex align-items-center justify-content-center">
-                <button className="btnNave">
+            <div className={`${estilos.header} d-flex align-items-center justify-content-center`}>
+                <button className={estilos.btnNave}>
                     <img src={BotaoRetornar} alt="Botão de Retorno" onClick={() => navigate('/home')} />
                 </button>
                 <h1>Simulados Criados</h1>
             </div>
 
             {/* Container Principal */}
-            <div className="container mt-4">
-                <button className="btn mb-4 btn-personalizado" onClick={() => navigate('/criacao')}>Criar Novo Simulado</button>
+            <div className={`${estilos.container} mt-4`}>
+                <button className={`btn mb-4 ${estilos.btnpersonalizado}`} onClick={() => navigate('/criacao')}>Criar Novo Simulado</button>
 
-                <div className="simulados-container">
+                <div className={estilos.simuladoscontainer}>
                     {/* Loop para renderizar cada simulado */}
                     {simulados.map((simulado, index) => (
                         <div key={simulado.id}>
                             {/* Alinhamento à esquerda dos títulos das matérias */}
-                            <h5 className="materia-titulo">{simulado.materia}</h5>
-                            <div className="simulado-card d-flex align-items-center justify-content-between">
+                            <h5 className={estilos.materiatitulo}>{simulado.materia}</h5>
+                            <div className={`${estilos.simuladocard} d-flex align-items-center justify-content-between`}>
                                 {/* Texto e Descrição do Simulado */}
-                                <div className="descricao d-flex flex-column">
-                                    <p className="descricao-simulado">
+                                <div className={`${estilos.descricao} d-flex flex-column`}>
+                                    <p className={estilos.descricaosimulado}>
                                         {simulado.descricao}
                                     </p>
-                                </div>
+                                </div> 
 
                                 {/* Divisor Vertical */}
-                                <div className="divisor"></div>
+                                <div className={estilos.divisor}></div>
 
                                 {/* Botões e Switch */}
-                                <div className="botoes-switch d-flex flex-column align-items-center">
+                                <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
                                     {/* Componente de Switch */}
                                     <div>
-                                        <input type="checkbox" id={`switch${index}`} className="switch-checkbox" />
-                                        <label htmlFor={`switch${index}`} className="switch-label"></label>
+                                        <input type="checkbox" id={`switch${index}`} className={estilos.switchcheckbox} />
+                                        <label htmlFor={`switch${index}`} className={estilos.switchlabel}></label>
                                     </div>
 
                                     {/* Botão de Editar */}
@@ -63,7 +65,7 @@ export default function SimuladosCriados() {
                                     </button>
 
                                     {/* Número de Questões */}
-                                    <span className="numero-questoes mt-2">16</span>
+                                     <span className={`${estilos.numeroquestoes} mt-2`}>16</span>
                                 </div>
                             </div>
                         </div>

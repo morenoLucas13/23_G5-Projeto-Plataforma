@@ -5,6 +5,8 @@ import BtnAdicionar from '../../Imagens/BtnAdicionar.png'
 import { useNavigate } from 'react-router-dom';
 import NovaQuestao from './componentes/NovaQuestao';
 
+import estilos from '../../Estilos/simulados.module.css';
+
 const questoes = [
     {
         id: 1,
@@ -51,23 +53,16 @@ const subTelaAddicionarExistente = 3;
 export default function CriacaoSimulados() {
     const navigate = useNavigate();
 
-    // Estado para controlar a visibilidade do quadrado
-    const [isVisible, setIsVisible] = useState(false);
     const [listaQuestoes, setListaQuestoes] = useState(questoes);
-
     const [subTela, setSubTela] = useState(subTelaListarQuestoes);
 
-    const btnAddFimLista = useRef(null)
+    // const btnAddFimLista = useRef(null)
 
-    useEffect(() => {
-        btnAddFimLista.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, [listaQuestoes]);
+    // useEffect(() => {
+    //     btnAddFimLista.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // }, [listaQuestoes]);
 
 
-    // Função para alternar a visibilidade
-    const toggleSquare = () => {
-        setIsVisible(!isVisible);
-    };
 
     function addicionarQuestaoDoBancoAoSimuladoAtual(obj) {
 
@@ -92,24 +87,15 @@ export default function CriacaoSimulados() {
 
     return (
         <>
-            {/* <div className="header d-flex align-items-center justify-content-center"> */}
-            <div className="header">
-                <button className="btnNave" onClick={() => navigate('/simuladosCriados')}>
+            <div className={`${estilos.header} align-items-center justify-content-center`}>
+                <button className={estilos.btnNave} onClick={() => navigate('/simuladosCriados')}>
                     <img src={BotaoRetornar} alt="Botão de Retorno" />
                 </button>
                 <h1>Criar Simulados</h1>
             </div>
 
             {/* Tela Principal */}
-            {/* <div className="container mt-4"> */}
-            <div className="mt-4">
-
-                {/* Botão que alterna a visibilidade do quadrado */}
-                {/* <button 
-                className='btn btn-primary'
-                onClick={toggleSquare}>
-                    {isVisible ? 'Esconder Quadrado' : 'Mostrar Quadrado'}
-                </button> */}
+            <div className={`${estilos.container} mt-4`}>
                 <button
                     className='btn btn-primary'
                     onClick={() => { setSubTela(subTelaCriarNova) }}>Criar nova questão</button>
@@ -117,18 +103,7 @@ export default function CriacaoSimulados() {
                     className='btn btn-primary'
                     onClick={() => { setSubTela(subTelaAddicionarExistente) }}>Adicionar existente</button>
 
-                {isVisible && (
-                    <div
-                        style={{
-                            width: '100px',
-                            height: '100px',
-                            backgroundColor: 'blue',
-                            marginTop: '20px',
-                        }}
-                    ></div>
-                )}
-
-                <div className="divider"></div>
+                <div className={estilos.divider}></div>
 
                 {subTela == subTelaCriarNova && (<NovaQuestao
                     acaoAddNovaQuestao={addicionarQuestaoDoBancoAoSimuladoAtual}
@@ -146,26 +121,25 @@ export default function CriacaoSimulados() {
                         <>
 
                             <h3>Questões Cadastradas:</h3>
-                            {/* <div className="simulados-container"> */}
-                            <div className="">
+                            <div className={estilos.simuladoscontainer}>
                                 {/* Loop para renderizar cada simulado */}
                                 {listaQuestoes.map((questoes, index) => (
                                     <div key={index}>
                                         {/* Alinhamento à esquerda dos títulos das matérias */}
-                                        <h5 className="materia-titulo">{questoes.disciplina}</h5>
-                                        <div className="simulado-card d-flex align-items-center justify-content-between">
+                                        <h5 className={estilos.materiatitulo}>{questoes.disciplina}</h5>
+                                        <div className={`${estilos.simuladocard} d-flex align-items-center justify-content-between`}>
                                             {/* Texto e Descrição do Simulado */}
-                                            <div className="descricao d-flex flex-column">
-                                                <p className="descricao-simulado">
+                                            <div className={`${estilos.descricao} d-flex flex-column`}>
+                                                <p className={estilos.descricaosimulado}>
                                                     {questoes.enunciado}
                                                 </p>
                                             </div>
 
                                             {/* Divisor Vertical */}
-                                            <div className="divisor"></div>
+                                            <div className={estilos.divisor}></div>
 
                                             {/* Botões */}
-                                            <div className="botoes-switch d-flex flex-column align-items-center">
+                                            <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
                                                 {/* Botão de Editar */}
                                                 <button className="btn me-3 mt-2">
                                                     <img src={BtnAdicionar} alt="Ícone de Lápis" />
@@ -180,7 +154,7 @@ export default function CriacaoSimulados() {
                 <button
                     className='btn btn-primary'
                     onClick={() => { setSubTela('nova') }}
-                    ref={btnAddFimLista}>Add</button>
+                    /* ref={btnAddFimLista} */>Add</button>
             </div>
         </>
     );

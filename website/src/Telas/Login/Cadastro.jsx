@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import icoPessoa from '../Imagens/IconePessoa.png';
-import icoCadeado from '../Imagens/IconeCadeado.png';
-import icoEmail from '../Imagens/IconeEmail.png'
-import LogoApp from '../Imagens/LogoDoApp.png';
+import icoPessoa from '../../Imagens/IconePessoa.png';
+import icoCadeado from '../../Imagens/IconeCadeado.png';
+import icoEmail from '../../Imagens/IconeEmail.png'
+import LogoApp from '../../Imagens/LogoDoApp.png';
 
-import InputLogECad from '../Componentes/InputLogECad';
+import InputLogECad from '../../Componentes/InputLogECad';
+
+import estilos from './Login.module.css'
+
 
 export default function Cadastro() {
   return (
     <>
-      <div className="background">
-        <div className="container">
+      <div className={estilos.background}>
+        <div className={estilos.container}>
           <div>
-            <img src={LogoApp} className="imagemLogo" />
+            <img src={LogoApp} className={estilos.imagemLogo} />
           </div>
 
           <InputLogECad
@@ -35,8 +38,8 @@ export default function Cadastro() {
             placeholder="Insira a sua senha"
           />
 
-          <div className="inputWrapper">
-            <button type="button" className="custom-button" onclick="window.location.href='./home.html';">Cadastrar</button>
+          <div className={estilos.inputWrapper}>
+            <button type="button" className={estilos.custombutton} onclick="window.location.href='./home.html';">Cadastrar</button>
           </div>
         </div>
       </div>
