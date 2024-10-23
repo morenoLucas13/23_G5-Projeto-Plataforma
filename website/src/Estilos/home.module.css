@@ -1,17 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-* {
-    font-family: "Poppins", sans-serif;
-    box-sizing: border-box;
-}
-
-/* Estilização global */
-body {
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
 
 /* Estilização do cabeçalho */
 .header1 {
@@ -28,11 +15,7 @@ body {
     font-size: 36px;
 }
 
-h1,
-h3,
-p {
-    font-weight: bold;
-}
+
 
 .welcomemessage {
     margin-top: 5px;

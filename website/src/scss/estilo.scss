@@ -1,0 +1,47 @@
+// @import "../../node_modules/bootstrap/scss/variables";
+
+
+// $primary: #ff5733; // Exemplo de nova cor primária
+// $secondary: #33c4ff; // Nova cor secundária
+
+
+$primary:       #6D72B8;
+// $secondary:     $gray-600;
+// $success:       $green;
+// $info:          $cyan;
+// $warning:       $yellow;
+// $danger:        $red;
+// $light:         $gray-100;
+// $dark:          #FFFFFF;
+
+//  $primary-text-emphasis: #ff5733; 
+
+// $primary:       $blue !default;
+// $secondary:     $gray-600 !default;
+// $success:       $green !default;
+// $info:          $cyan !default;
+// $warning:       $yellow !default;
+// $danger:        $red !default;
+// $light:         $gray-100 !default;
+// $dark:          $gray-900 !default;
+
+// $btn-primary-color: #ffffff; // Cor do texto
+// $btn-primary-bg: #ff5733; // Cor de fundo
+// $btn-color: #ffffff ;
+// $btn-link-color: #fff;
+
+// $body-color: #ffffff;
+// $body-emphasis-color: #ffffff;
+// $btn-color: #ffffff;
+// $btn-link-color: #ffffff;
+
+// $body-bg: #000;
+// $body-color: #111;
+// $btn-color: #fff;
+// $btn-primary-color: #fff;
+
+// $gray-900: #fff;
+$body-emphasis-color: #fff;
+$light: #ffff;
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+

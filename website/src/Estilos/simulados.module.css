@@ -9,12 +9,17 @@
 }
 
 .container {
-    margin-top: -100px;
+    /* margin-top: -100px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center; 
+    text-align: center;
+    width: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
 }
 
 .header h1 {
@@ -37,23 +42,9 @@
     height: 50px;
 }
 
-/* Estilo personalizado para botão com cor específica */
-.btnpersonalizado {
-    background-color: #6D72B8;
-    /* Cor de fundo */
-    border-color: #6D72B8;
-    /* Cor da borda */
-    color: white;
-    /* Cor do texto */
-}
+/* GLOBAL */
 
-/* Adicionando efeito hover ao botão */
-.btnpersonalizado:hover {
-    background-color: #5A5FA0;
-    /* Cor ao passar o mouse */
-    border-color: #5A5FA0;
-    /* Borda ao passar o mouse */
-}
+/*  */
 
 
 /* Estilo do container dos simulados */

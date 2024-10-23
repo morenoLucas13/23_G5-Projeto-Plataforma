@@ -1,0 +1,29 @@
+/* Estilos da modal */
+.fundo_tranparente {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conteudo_modal {
+    background-color: white;
+    /* padding: 20px; */
+    /* max-width: 500px; */
+    /* Limite a altura da modal */
+    /* max-height: 80vh; */
+    /* Ativa o scroll dentro da modal */
+    overflow-y: auto;
+
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bloqueia_scroll {
+    overflow-y: hidden !important;
+}

@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+/* Estilização global */
+.body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+}
+
+h1,
+h3,
+p {
+    font-weight: bold;
+}
+
+.btnpersonalizado {
+    background-color: #6D72B8;
+    border-color: #6D72B8;
+    color: white;
+}
+
+.btnpersonalizado:hover {
+    background-color: #5A5FA0;
+    border-color: #5A5FA0;
+}

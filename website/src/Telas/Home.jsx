@@ -1,5 +1,5 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Enem from '../Imagens/vestibulares/ENEM.png';
 import Fuvest from '../Imagens/vestibulares/fuvestVESTIBULAR.png';
@@ -16,7 +16,7 @@ import IcoChat from '../Imagens/IconeChat.png';
 
 import BtnNave from '../Componentes/BtnNave';
 
-import estilos from '../Estilos/home.module.css';
+// import estilos from '../Estilos/home.module.css';
 
 export default function Home() {
     const vestibulares = [

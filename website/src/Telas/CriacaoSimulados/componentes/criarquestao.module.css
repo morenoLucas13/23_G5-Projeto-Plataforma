@@ -1,0 +1,70 @@
+.container {
+    padding: 20px;
+    border-radius: 15px;
+    height: 95vh;
+    max-height: 100vh;
+}
+
+.divInicio {
+}
+
+.textbox {
+    background-color: #B6B9EF;
+    border-radius: 10px;
+    padding: 10px;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.alternativa {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.alternativa textarea {
+    background-color: #ffffff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    height: 40px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.alternativalabel {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.botaocor {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.botaoverde {
+    background-color: #00ff00;
+    border: 2px solid #000;
+}
+
+.botaovermelho {
+    background-color: #ff0000;
+    border: 2px solid #000;
+}
+
+.btnpersonalizado {
+    background-color: #6D72B8;
+    border-color: #6D72B8;
+    color: white;
+}
+
+.btnpersonalizado:hover {
+    background-color: #5A5FA0;
+    border-color: #5A5FA0;
+}
