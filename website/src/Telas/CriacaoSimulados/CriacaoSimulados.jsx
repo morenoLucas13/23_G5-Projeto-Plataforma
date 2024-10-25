@@ -13,6 +13,10 @@ export default function CriacaoSimulados() {
     const [showModalNovaQuestao, setShowModalNovaQuestao] = useState(false);
     const [showModalAddQuestao, setShowModalAddQuestao] = useState(false);
 
+    function enviarSimuladorApi() {
+        {}
+    }
+
     function addicionarQuestaoDoBancoAoSimuladoAtual(obj) {
         setListaQuestoes([
             ...listaQuestoes,
@@ -39,7 +43,7 @@ export default function CriacaoSimulados() {
         }} obj 
      */
     function addicionarQuestaoNovaAoSimuladoAtual(obj) {
-            setListaQuestoes([
+        setListaQuestoes([
             ...listaQuestoes,
             {
                 id: undefined,
@@ -78,7 +82,7 @@ export default function CriacaoSimulados() {
                         onClick={() => setShowModalAddQuestao(true)}>Adicionar do Banco</button>
                     <button
                         className={`btn btn-primary mx-3 mb-3`}
-                        onClick={() => { }}>Criar Simulado</button>
+                        onClick={enviarSimuladorApi}>Criar Simulado</button>
                 </div>
 
                 {/* Renderiza a Modal */}

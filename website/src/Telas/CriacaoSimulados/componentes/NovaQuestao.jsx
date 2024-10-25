@@ -27,7 +27,8 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
             alternativaB,
             alternativaC,
             alternativaD,
-            alternativaE
+            alternativaE,
+            alternativaCorreta
         });
     }
 
