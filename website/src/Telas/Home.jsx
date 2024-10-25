@@ -1,6 +1,9 @@
 import React from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import Enem from '../Imagens/vestibulares/ENEM.png';
 import Fuvest from '../Imagens/vestibulares/fuvestVESTIBULAR.png';
 import Uel from '../Imagens/vestibulares/UELVest.png';
@@ -16,7 +19,7 @@ import IcoChat from '../Imagens/IconeChat.png';
 
 import BtnNave from '../Componentes/BtnNave';
 
-// import estilos from '../Estilos/home.module.css';
+import estilos from '../Estilos/home.module.css';
 
 export default function Home() {
     const vestibulares = [
@@ -38,7 +41,7 @@ export default function Home() {
                 <h1>Lucas Neponuceno Moreno</h1>
             </div>
 
-            <div className="text-center my-4">
+            <div className={`${estilos} text-center my-4`}>
                 <h3>Tá curtindo seu dia?</h3>
                 <h3>Até as princesas precisam estudar 📚🥺</h3>
             </div>

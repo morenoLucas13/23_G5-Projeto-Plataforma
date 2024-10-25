@@ -6,6 +6,9 @@
 }
 
 .divInicio {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; 
 }
 
 .textbox {
@@ -37,7 +40,7 @@
 }
 
 .alternativalabel {
-    font-size: 1.2rem;
+    font-size: 18px;
     font-weight: bold;
 }
 
@@ -58,13 +61,14 @@
     border: 2px solid #000;
 }
 
-.btnpersonalizado {
-    background-color: #6D72B8;
-    border-color: #6D72B8;
-    color: white;
+.container .btnpersonalizado {
+    background-color: #6D72B8 !important;
+    border-color: #6D72B8 !important;
+    color: white !important;
+    border-radius: 10px !important;
 }
 
-.btnpersonalizado:hover {
-    background-color: #5A5FA0;
-    border-color: #5A5FA0;
+.container .btnpersonalizado:hover {
+    background-color: #5A5FA0 !important;
+    border-color: #5A5FA0 !important;
 }

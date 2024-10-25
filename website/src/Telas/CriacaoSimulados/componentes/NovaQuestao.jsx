@@ -13,6 +13,12 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
     const [alternativaD, setAlternativaD] = useState('');
     const [alternativaE, setAlternativaE] = useState('');
 
+    const [alternativaCorreta, setAlternativaCorreta] = useState(null); // Estado para a alternativa correta
+
+    function definirCorreta(alternativa) {
+        setAlternativaCorreta(alternativa);
+    }
+
     function retornarQuestao() {
         acaoAddNovaQuestao({
             enunciado,
@@ -28,7 +34,7 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
     return (
         <div className={estilos.container}>
             <div className={estilos.divInicio}>
-                <button className='btn' onClick={retornarQuestao}>
+                <button className='btn' onClick={acaoCancelar}>
                     <img src={BotaoFechar} />
                 </button>
             </div>
@@ -56,12 +62,15 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
                             className={estilos.formcontrol}
                             placeholder={`Adicionar Alternativa ${x}`}
                         />
-                        <div className={`index === 2 ? ${estilos.botaocor} ${estilos.botaoverde} : ${estilos.botaocor} ${estilos.botaovermelho}`} />
+                        <button
+                            className={`${estilos.botaocor} ${alternativaCorreta === x ? estilos.botaoverde : estilos.botaovermelho}`}
+                            onClick={() => definirCorreta(x)}
+                        />
                     </div>
                 ))}
             </div>
 
-            <button className={`${estilos.btnpersonalizado} btn`} onClick={retornarQuestao}>Adicionar</button>
+            <button className={`${estilos.btnpersonalizado}`} onClick={retornarQuestao}>Adicionar</button>
         </div>
     );
 }

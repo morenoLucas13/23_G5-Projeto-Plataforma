@@ -12,10 +12,10 @@ export default function Rotas() {
   return (
     <BrowserRouter>
         <Routes>
-            {/* <Route path='/' element={<Login/>} /> */}
-            {/* <Route path='/cadastro' element={<Cadastro/>} />
-            <Route path='/home' element={<Home/>} /> */}
-            {/* <Route path='/simuladosCriados' element={<SimuladosCriados/>} /> */}
+            <Route path='/' element={<Login/>} />
+            <Route path='/cadastro' element={<Cadastro/>} />
+            <Route path='/home' element={<Home/>} />
+            <Route path='/simuladosCriados' element={<SimuladosCriados/>} />
             <Route path='/criacao' element={<CriacaoSimulados/>} />
 
             {/* ============================================= */}

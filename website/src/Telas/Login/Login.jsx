@@ -1,92 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import icoPessoa from '../../Imagens/IconePessoa.png';
 import icoCadeado from '../../Imagens/IconeCadeado.png';
 import LogoApp from '../../Imagens/LogoDoApp.png';
 import { useNavigate } from 'react-router-dom';
 import InputLogECad from '../../Componentes/InputLogECad';
+import axios from 'axios';
+import * as Yup from 'yup';
+import estilos from './Login.module.css';
 
-import estilos from './Login.module.css'
+// Configurações globais do axios
+axios.defaults.baseURL = "http://10.132.224.72:3901";
+axios.defaults.timeout = 3000;
+
+const loginSchema = Yup.object().shape({
+    email: Yup.string().email("Email inválido").required("O email é obrigatório"),
+    senha: Yup.string().min(7, "Senha deve ter pelo menos 7 caracteres").required("A senha é obrigatória")
+});
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [resposta, setResposta] = useState("");
+    const navigate = useNavigate();
 
-    const nav = useNavigate();
+    async function requisitaAutenticacao() {
+        try {
+            await loginSchema.validate({ email, senha });
+            const response = await axios.post("/api/login", { email, senha });
 
-    function NavegarParaCadastro() {
-        nav('/cadastro');
-    }
+            if (response.data.sucesso) {
+                const { token, redefinirToken } = response.data;
+                
+                // Armazena o accessToken em sessionStorage e o refreshToken em localStorage
+                sessionStorage.setItem("accessToken", token);
+                localStorage.setItem("refreshToken", redefinirToken);
 
-    function evtLogin() {
-        nav('/home');
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                setResposta("Login realizado com sucesso!");
+                navigate('/home');
+            } else {
+                setResposta(response.data.mensagem || "Erro ao logar.");
+            }
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                setResposta(error.message);
+            } else {
+                console.log("Erro ao logar:", error);
+                setResposta("Erro ao logar. Tente novamente.");
+            }
+        }
     }
 
     return (
-        <>
-            <div className={estilos.background}>
-                <div className={estilos.container}>
-                    <div>
-                        <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
-                    </div>
+        <div className={estilos.background}>
+            <div className={estilos.container}>
+                <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
+                
+                <InputLogECad
+                    titulo="Email do usuário:"
+                    icon={icoPessoa}
+                    placeholder="Insira o seu email"
+                    onChange={(evt) => setEmail(evt.target.value)}
+                />
 
-                    <InputLogECad
-                        titulo="Email do usuário:"
-                        icon={icoPessoa}
-                        placeholder="Insira o seu email"
-                    />
+                <InputLogECad
+                    titulo="Senha do usuário:"
+                    icon={icoCadeado}
+                    placeholder="Insira a sua senha"
+                    onChange={(evt) => setSenha(evt.target.value)}
+                />
 
-                    <InputLogECad
-                        titulo="Senha do usuário:"
-                        icon={icoCadeado}
-                        placeholder="Insira a sua senha"
-                    />
+                {resposta && <div className={estilos.error}>{resposta}</div>}
 
-                    {/* 
-                <div className="inputWrapper">
-                    <h6 className="titulo">Email do usuário:</h6>
-                    <div className="inputContainer">
-                        <img src={icoPessoa} className="emoji" alt="emojiEmail" />
-                        <input
-                            type="text"
-                            className="inputTexto"
-                            placeholder="Insira o seu email"
-                            value={email}
-                            onChange={(evt) => { setEmail(evt.target.value) }}
-                        />
-                    </div>
-                    <div className="divider"></div>
+                <div>
+                    <a className={estilos.link} onClick={() => navigate('/cadastro')} style={{ cursor: 'pointer' }}>
+                        Você ainda não se CADASTROU?
+                    </a>
                 </div>
 
-                <div className="inputWrapper">
-                    <h6 className="titulo">Senha do usuário:</h6>
-                    <div className="inputContainer">
-                        <img src={icoCadeado} className="emoji" alt="emojiSenha" />
-                        <input
-                            type="text"
-                            className="inputTexto"
-                            placeholder="Insira a sua senha"
-                            value={senha}
-                            onChange={(evt) => { setSenha(evt.target.value) }}
-                        />
-                    </div>
-                    <div className="divider"></div>
-                </div>
-                */}
-
-                    <div>
-                        {/* Substituí o `href` por `onClick` para navegação interna */}
-                        <a className={estilos.link}onClick={NavegarParaCadastro} style={{ cursor: 'pointer' }}>
-                            Você ainda não se CADASTROU?
-                        </a>
-                    </div>
-
-                    <div className={estilos.inputWrapper}>
-                        <button type="button" className={estilos.custombutton} onClick={evtLogin}>
-                            Entrar
-                        </button>
-                    </div>
+                <div className={estilos.inputWrapper}>
+                    <button type="button" className={estilos.custombutton} onClick={requisitaAutenticacao}>
+                        Entrar
+                    </button>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

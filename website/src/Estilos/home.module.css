@@ -1,5 +1,3 @@
-
-
 /* Estilização do cabeçalho */
 .header1 {
     background-color: #0f2a44;
@@ -8,14 +6,14 @@
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     text-align: center;
+    overflow-y: hidden;
+
 }
 
 .header1 h1 {
     margin: 0;
     font-size: 36px;
 }
-
-
 
 .welcomemessage {
     margin-top: 5px;

@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import estilos from '../../../Estilos/simulados.module.css';
+
+import BotaoFechar from '../../../Imagens/BtnFechar.png';
+import BtnAdicionar from '../../../Imagens/BtnAdicionar.png';
+
 
 
 const questoes = [
@@ -43,44 +47,34 @@ const questoes = [
 export default function AddQuestao({ acaoAddQuestao, acaoCancelar }) {
     const [listaQuestoes, setListaQuestoes] = useState(questoes);
 
-    function retornarQuestao() {
-        acaoAddQuestao({
-            id: 1,
-            enunciado,
-            texto,
-            alternativaA,
-            alternativaB,
-            alternativaC,
-            alternativaD,
-            alternativaE
-        });
-    }
-
     return (
         <>
-            <h3>Questões disponíveis:</h3>
             <div className={estilos.simuladoscontainer}>
-                {listaQuestoes.map((questao, index) => (
-                    <div key={index}>
-                        <h5 className={estilos.materiatitulo}>{questao.disciplina}</h5>
-                        <div className={`${estilos.simuladocard} d-flex align-items-center justify-content-between`}>
-                            <div className={`${estilos.descricao} d-flex flex-column`}>
-                                <p className={estilos.descricaosimulado}>{questao.enunciado}</p>
-                            </div>
-                            <div className={estilos.divisor}></div>
-                            <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
-                                <button className="btn me-3 mt-2">
-                                    <img src={BtnAdicionar} />
-                                </button>
+                <div className={estilos.container}>
+                    <div className={estilos.divInicio}>
+                        <button className='btn' onClick={acaoCancelar}>
+                            <img src={BotaoFechar} />
+                        </button>
+                    </div>
+                    <h3>Questões cadastradas:</h3>
+                    {listaQuestoes.map((questao, index) => (
+                        <div key={index}>
+                            <h5 className={estilos.materiatitulo}>{questao.disciplina}</h5>
+                            <div className={`${estilos.simuladocard} d-flex align-items-center justify-content-between`}>
+                                <div className={`${estilos.descricao} d-flex flex-column`}>
+                                    <p className={estilos.descricaosimulado}>{questao.enunciado}</p>
+                                </div>
+                                <div className={estilos.divisor}></div>
+                                <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
+                                    <button className="btn me-3 mt-2">
+                                        <img src={BtnAdicionar} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))} 
+                    ))}
+                </div>
             </div>
-
-
-
-            <button className="btn btn-primary" onClick={acaoCancelar}>Adicionar</button>
         </>
     )
 }
