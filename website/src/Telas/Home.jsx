@@ -51,7 +51,6 @@ export default function Home() {
             <div className={estilos.buttoncontainer}>
                 <BtnNave titulo="Simulados" rota="/simuladosCriados" icone={IcoSimu} />
                 <BtnNave titulo="Raio-X" rota="/" icone={IcoRelatorio} />
-                <BtnNave titulo="Chat" rota="/" icone={IcoChat} />
             </div>
 
             <div className={estilos.divider}></div>

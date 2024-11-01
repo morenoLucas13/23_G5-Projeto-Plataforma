@@ -5,13 +5,18 @@ import { StyleSheet, View } from 'react-native';
 // COMPONENTES
 import CardCabecalho from '../Componentes/CardCabecalho';
 
-export default function Chat() {
+export default function Jogos() {
     return (
         <View style={styles.container}>
             <CardCabecalho
-                texto={'Chat entre Estudantes e Professores'}
+                texto={'SIMON GAME!'}
                 navegacao={'tela_entrada'}
             />
+
+            <View>
+                {/* Coloque o código aqui Código */}
+            </View>
+
             <StatusBar style="auto" />
         </View>
     );

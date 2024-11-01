@@ -80,9 +80,6 @@ export default function CriacaoSimulados() {
                     <button
                         className={`btn btn-primary mx-3 mb-3`}
                         onClick={() => setShowModalAddQuestao(true)}>Adicionar do Banco</button>
-                    <button
-                        className={`btn btn-primary mx-3 mb-3`}
-                        onClick={enviarSimuladorApi}>Criar Simulado</button>
                 </div>
 
                 {/* Renderiza a Modal */}
@@ -124,6 +121,9 @@ export default function CriacaoSimulados() {
                         </div>
                     ))}
                 </div>
+            <button
+                    className={`btn btn-primary`}
+                    onClick={enviarSimuladorApi}>Criar Simulado</button>
             </div>
         </>
     );

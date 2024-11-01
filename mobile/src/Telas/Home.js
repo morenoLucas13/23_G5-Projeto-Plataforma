@@ -65,20 +65,20 @@ export default function Home() {
           icone={require('../Imagens/IconeSimulado.png')}
           texto={'Simulado'}
           navegacao={'tela_simulados'}
-
         />
+
         <BotoesDeNavegacao
           icone={require('../Imagens/IconeRelatorio.png')}
           texto={'Raio-X'}
           navegacao={'tela_relatorio'}
-
         />
-        {/* <BotoesDeNavegacao
-          icone={require('../Imagens/IconeChat.png')}
-          texto={'Bate-papo'}
-          navegacao={'tela_chat'}
 
-        /> */}
+        <BotoesDeNavegacao
+          icone={require('../Imagens/IconeControle.png')}
+          texto={'Jogos'}
+          navegacao={'tela_jogos'}
+        />
+
       </View>
 
       <View style={styles.divisor} />

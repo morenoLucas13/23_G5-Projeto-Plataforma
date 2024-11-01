@@ -18,8 +18,8 @@ const loginSchema = Yup.object().shape({
 });
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
+    const [email, setEmail] = useState("rodrigo.casa@portalsesisp.org.br");
+    const [senha, setSenha] = useState("Sesisp@1234");
     const [resposta, setResposta] = useState("");
     const navigate = useNavigate();
 

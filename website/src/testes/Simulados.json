@@ -1,0 +1,22 @@
+{
+    "descricao": "Simulado mais fácil do mundo.",
+    "turma_id": "1",
+    "status": true,
+    "disciplina_id": "3",
+    "questoes": [
+        {
+            "nivel": "1",
+            "texto": "Era uma vez, um animal que latia.",
+            "enunciado": "Qual o animal late?",
+            "alternativaA": "cachorro", 
+            "alternativaB": "gato", 
+            "alternativaC": "cavalo", 
+            "alternativaD": "vaca", 
+            "alternativaE": "passaro",
+            "alternativaCorreta": "A"
+        },
+        {
+            "id": "10"
+        }
+    ]
+}
