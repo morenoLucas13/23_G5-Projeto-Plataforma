@@ -10,83 +10,141 @@ const rotas = express.Router()
 //  Importando o Model
 const model = require('../models/loginModel')
 
-// Middleware para analisar o corpo da requisição como JSON
-rotas.use(express.json())
 
-// Importando a função que valida os campos
-const { userValidationLogin } = require("../validations/user.validation")
+// Importando os middlewares e funções necessárias pra autenticação
+const { gerarToken, gerarRedefinicaoToken } = require('../ferramentas/token')
+const midVerificarJWToken = require('../middlewares/midVerificarJWToken')
+const { userValidationLogin } = require('../validations/user.validation')
 
-//  Criando a rota de acesso à API para verificação das credenciais do login
+
+//  Rota de acesso à API para verificação das credenciais do login
 rotas.post('/', async (req, res) => {
     console.log(req.body);
 
     try {
-        // Validando o body da requisição
-        await userValidationLogin.validate(req.body, { abortEarly: false });
+        // Validando o body da requisição com Yup
+        await userValidationLogin.validate(req.body, { abortEarly: false })
+    } catch (error) {
+        return res.status(200).json({ sucesso: false, erros: error.errors })
+    }
 
-        // Desestruturando as propriedades corretas
-        const { email, senha } = req.body;
+    try {
+        const { email, senha } = req.body
 
-        let objValidacao = await model.login(email, senha);
+        // Verificando se o email e senha estão corretos
+        let objValidacao = await model.login(email, senha)
 
         if (objValidacao.sucesso) {
-            res.json(objValidacao);
+            // Extraindo o id de objValidacao
+            const token = gerarToken(objValidacao.id, objValidacao.nivel_acesso)
+            // Gerando o token JWT incluindo o nível
+            const redefinirToken = gerarRedefinicaoToken(objValidacao.id)
+
+            return res.json({ sucesso: true, token, redefinirToken })
         } else {
-            res.status(401).json({ sucesso: false, erro: "Erro: Dados inseridos incorretos!" });
+            return res.status(401).json({ sucesso: false, erro: "Erro: Dados inseridos incorretos!" })
         }
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            res.status(400).json({ sucesso: false, erros: error.errors });
-        } else {
-            res.status(500).json({ sucesso: false, erro: 'Erro: Problemas ao comunicar com o servidor :(' });
-            console.log(error);
-        }
+        res.status(500).json({ sucesso: false, erro: 'Erro: Problemas ao comunicar com o servidor :(' })
+        console.log(error)
     }
-
-    console.log('Fim da rota POST de Login!');
 });
 
+console.log('Fim da rota POST de Login!');
+;
 
-// Rota para cadastro de novos usuários
-const { userValidationCadastro } = require("../validations/user.validation")
+// Rota para logout de acesso à API
+rotas.post('/logout', midVerificarJWToken.verifyToken, (req, res) => {
+    res.status(200).json({
+        auth: false,
+        token: null,
+        mensagem: "Logout realizado com sucesso!"
+    });
+});
+
+// Rota para cadastrar um novo professor e gerando um token automaticamente
+const { userValidationCadastro } = require("../validations/user.validation");
+
 rotas.post('/cadastrarUser', async (req, res) => {
-    const { nome, email, senha, nivel_acesso } = req.body;
-    console.log(req.body);
+    const { nome, email, senha } = req.body;
+    const nivel_acesso = 1
 
     try {
-        // Validando o body da requisição
-        await userValidationCadastro.validate(req.body, { abortEarly: false });
-
-        // Chamando a função do model para salvar o usuário no banco de dados
-        const novoUser = await model.cadastrarUser(nome, email, senha, nivel_acesso);
-        res.json({ sucesso: true, usuario: novoUser });
-
-        console.log('Dados recebidos: ', { nome, email, senha, nivel_acesso });
+        // Validando o corpo da requisição
+        await userValidationCadastro.validate(req.body, { abortEarly: false })
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            res.status(400).json({ sucesso: false, erros: error.errors });
-        } else {
-            res.status(500).json({ sucesso: false, erro: 'Erro: Problemas ao comunicar com o servidor :(' });
-            console.log(error);
+        return res.status(400).json({ sucesso: false, erros: error.errors })
+    }
+
+    try {
+        // Verificando se o email já existe no banco de dados
+        const emailExistente = await model.verificarEmailExistente(email)
+        if (emailExistente) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Ops! Outro usuário já está cadastrado com o email informado!'
+            });
         }
-    }
-    console.log('Fim da rota POST de Cadastro!');
-});
 
-// Rota para obter informações do usuário por meio do ID
-rotas.get('/:id', async (req, res) => {
-    const { id } = req.params
-    try {
-        res.json(await model.exibirDadosUser(id))
+        // Cadastrando o novo professor no banco de dados
+        const novoUser = await model.cadastrarUser(nome, email, senha)
+
+        // Gerando o token JWT após o cadastro
+        const token = gerarToken(novoUser.idprofessor, nivel_acesso)
+
+        // Retornando o novo usuário e o seu respectivo token gerado
+        return res.status(201).json({ sucesso: true, usuario: novoUser, token: token })
+
     } catch (error) {
-        console.log('Ops! Erro ao acessar as informações do usuário :(')
-        res.status(500).json({ sucesso: false, erro: 'Erro ao obter detalhes do usuário!' })
+        console.error('Erro ao cadastrar novo usuário:', error)
+        return res.status(500).json({ sucesso: false, mensagem: 'Erro ao cadastrar novo usuário :(' })
     }
-    console.log('Fim da rota GET de exibição dos dados do usuário!')
 })
 
 
 
+
+// Rota para obter informações do usuário por meio do ID
+rotas.get('/dadosUser', midVerificarJWToken.verifyToken, async (req, res) => {
+    try {
+        // Obtendo o id e o nível de acesso a partir do token, armazenado em req.userId e req.nivel_acesso
+        const idUser = req.userId;
+        const nivelAcesso = req.nivel_acesso;
+
+        // Chamando a model para exibir os dados do usuário usando o ID e o nível de acesso do token
+        const dadosUser = await model.exibirDadosUser(idUser, nivelAcesso);
+
+        // Retornando os valores obtidos em formato JSON
+        res.json(dadosUser);
+    } catch (error) {
+        console.log('Ops! Erro ao acessar as informações do usuário :(', error);
+        res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter detalhes do usuário!' });
+    }
+    console.log('Fim da rota GET de exibição dos dados do usuário!');
+});
+
+
+
+// Rota TESTE para uso do Token se ele é válido incluindo middlewares
+rotas.post('/verificarToken', midVerificarJWToken.verifyToken, (req, res) => {
+    res.json({
+        sucesso: true,
+        mensagem: 'O token informado é válido!'
+    });
+});
+
+// Rota TESTE para uso do Token devolvendo uma lista caso seja válido incluindo middlewares
+rotas.post('/listar', midVerificarJWToken.verifyToken, (req, res) => {
+    let elencoTVD = [
+        { "nome": "Elena", "sobrenome": "Gilbert" },
+        { "nome": "Stefan", "sobrenome": "Salvatore" },
+        { "nome": "Damon", "sobrenome": "Salvatore" },
+        { "nome": "Caroline", "sobrenome": "Forbes" },
+        { "nome": "Bonnie", "sobrenome": "Bennett" }
+    ]
+
+    res.json({ elencoTVD });
+});
 
 //  Exportando as rotas
 module.exports = rotas

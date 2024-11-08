@@ -9,13 +9,12 @@ const rankingData = [
     { posicao: 2, nome: 'Lucas Neponuceno Moreno', pontos: 1989 },
     { posicao: 3, nome: 'Alana Silva de Freitas', pontos: 1581 },
     { posicao: 4, nome: 'Maria Heloiza Silva Souza', pontos: 1234 },
-    { posicao: 5, nome: 'Eduan de Faria Tebar', pontos: 1581 },
-    { posicao: 6, nome: 'Marianny Alves Floriano dos Santos', pontos: 1333 },
+    { posicao: 5, nome: 'Eduan de Faria Tebar', pontos: 1201 },
+    { posicao: 6, nome: 'Marianny Alves Floriano dos Santos', pontos: 1133 },
     { posicao: 7, nome: 'Ana Lidia de Oliveira Batista', pontos: 1129 },
     { posicao: 8, nome: 'Matheus Balarim de Sant\'anna', pontos: 999 },
     { posicao: 9, nome: 'Raissa Chagas Furlan', pontos: 991 },
-    { posicao: 10, nome: 'Victor Lucas Jurasseke Sales', pontos: 666 },
-    { posicao: 11, nome: 'Estela Pereira Barbosa', pontos: 567 },
+    { posicao: 10, nome: 'Victor Lucas Jurasseke Sales', pontos: 666 }
 ];
 
 // Componente para renderizar cada item do ranking

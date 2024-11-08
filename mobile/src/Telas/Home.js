@@ -7,27 +7,20 @@ import { useNavigation } from '@react-navigation/native';
 import BotoesDeNavegacao from '../Componentes/BotoesDeNavegacao';
 import CarouselDeImagens from '../Componentes/CarouselDeImagens';
 
-import Enem from '../Imagens/vestibulares/ENEM.png';
-import Fuvest from '../Imagens/vestibulares/fuvestVESTIBULAR.png';
-import Uel from '../Imagens/vestibulares/UELVest.png';
-import Uem from '../Imagens/vestibulares/UEMVest.png';
-import Unesp from '../Imagens/vestibulares/UNESPvesti.png';
-import Unicamp from '../Imagens/vestibulares/UNICAMPvest.png';
-import Unifesp from '../Imagens/vestibulares/UNIFESP.png';
-import Toledo from '../Imagens/vestibulares/vestibularToledo.png';
-import Unoeste from '../Imagens/vestibulares/vestibularUNOESTE.png';
-import IcoSimu from '../Imagens/IconeSimulado.png';
-import IcoRelatorio from '../Imagens/IconeRelatorio.png';
-
 const images = [
-  require('../Imagens/imagem1.jpg'),
-  require('../Imagens/imagem2.jpg'),
-  require('../Imagens/imagem3.jpg'),
+  require('../Imagens/vestibulares/ENEM.png'),
+  require('../Imagens/vestibulares/fuvestVESTIBULAR.png'),
+  require('../Imagens/vestibulares/UELVest.png'),
+  require('../Imagens/vestibulares/UEMVest.png'),
+  require('../Imagens/vestibulares/UNESPvesti.png'),
+  require('../Imagens/vestibulares/UNICAMPvest.png'),
+  require('../Imagens/vestibulares/UNIFESP.png'),
+  require('../Imagens/vestibulares/vestibularToledo.png'),
+  require('../Imagens/vestibulares/vestibularUNOESTE.png'),
 ];
 
 export default function Home() {
   const navigation = useNavigation();
-
 
   return (
     <View style={styles.container}>
@@ -39,7 +32,7 @@ export default function Home() {
 
         <View style={styles.cardPontuacao}>
           <TouchableOpacity style={styles.btnPontuacao}
-          onPress={() => navigation.navigate('tela_ranking')}>
+            onPress={() => navigation.navigate('tela_ranking')}>
             <Image
               style={{ height: 45, width: 45 }}
               source={require('../Imagens/IconePontuacao.png')}
@@ -53,6 +46,7 @@ export default function Home() {
         <Text style={styles.texto}>
           Tá curtindo seu dia?
         </Text>
+
         <Text style={styles.texto}>
           Até as princesas precisam estudar 📚🥺
         </Text>

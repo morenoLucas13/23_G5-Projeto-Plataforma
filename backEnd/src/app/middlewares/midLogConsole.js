@@ -1,3 +1,5 @@
+// middlewares/midLogConsole.js
+
 module.exports = function midLogConsole(req, res, next) {
     let data = new Date()
     console.log('\n \n --------------------')
@@ -11,3 +13,13 @@ module.exports = function midLogConsole(req, res, next) {
     
     next() // Chama o próximo middlewares que estiver empilhado
 }
+
+
+
+
+
+
+
+
+
+

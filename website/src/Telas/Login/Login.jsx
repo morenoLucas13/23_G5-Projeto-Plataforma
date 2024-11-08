@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import icoPessoa from '../../Imagens/IconePessoa.png';
 import icoCadeado from '../../Imagens/IconeCadeado.png';
 import LogoApp from '../../Imagens/LogoDoApp.png';
@@ -6,84 +6,121 @@ import { useNavigate } from 'react-router-dom';
 import InputLogECad from '../../Componentes/InputLogECad';
 import axios from 'axios';
 import * as Yup from 'yup';
+import Swal from 'sweetalert2';
+
 import estilos from './Login.module.css';
 
 // Configurações globais do axios
-axios.defaults.baseURL = "http://10.132.224.72:3901";
+axios.defaults.baseURL = "http://localhost:3901";
 axios.defaults.timeout = 3000;
 
+// Schema de validação com Yup
 const loginSchema = Yup.object().shape({
-    email: Yup.string().email("Email inválido").required("O email é obrigatório"),
-    senha: Yup.string().min(7, "Senha deve ter pelo menos 7 caracteres").required("A senha é obrigatória")
+  email: Yup.string().email("O email é inválido").required("O email é obrigatório"),
+  senha: Yup.string().min(7, "A senha deve ter pelo menos 7 caracteres").required("A senha é obrigatória")
 });
 
 export default function Login() {
-    const [email, setEmail] = useState("rodrigo.casa@portalsesisp.org.br");
-    const [senha, setSenha] = useState("Sesisp@1234");
-    const [resposta, setResposta] = useState("");
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("rodrigo.casa@portalsesisp.org.br");
+  const [senha, setSenha] = useState("Sesisp@1234");
+  const [loading, setLoading] = useState(false);
+  const [ocultarSenha, setOcultarSenha] = useState(true);
 
-    async function requisitaAutenticacao() {
-        try {
-            await loginSchema.validate({ email, senha });
-            const response = await axios.post("/api/login", { email, senha });
+  const navigate = useNavigate();
 
-            if (response.data.sucesso) {
-                const { token, redefinirToken } = response.data;
-                
-                // Armazena o accessToken em sessionStorage e o refreshToken em localStorage
-                sessionStorage.setItem("accessToken", token);
-                localStorage.setItem("refreshToken", redefinirToken);
+  async function requisitaAutenticacao() {
+    setLoading(true);
 
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                setResposta("Login realizado com sucesso!");
-                navigate('/home');
-            } else {
-                setResposta(response.data.mensagem || "Erro ao logar.");
-            }
-        } catch (error) {
-            if (error instanceof Yup.ValidationError) {
-                setResposta(error.message);
-            } else {
-                console.log("Erro ao logar:", error);
-                setResposta("Erro ao logar. Tente novamente.");
-            }
-        }
+    try {
+      // Validação com Yup antes de enviar os dados
+      await loginSchema.validate({ email, senha });
+
+      const response = await axios.post("/api/login", { email, senha });
+
+      if (response && response.data && response.data.token) {
+        const { token } = response.data;
+
+        // Armazenando o token no localStorage
+        localStorage.setItem("token", token);
+
+        // Navega para a tela 'home' após login bem-sucedido
+        navigate("/home");
+        return;
+      }
+
+      throw new Error("Resposta inesperada do servidor.");
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        // Erro de validação do Yup
+        Swal.fire({
+          icon: "error",
+          title: "Erro de validação",
+          text: error.message, // Mensagem do Yup
+        });
+      } else if (error.response && error.response.data && error.response.data.message) {
+        // Erro de resposta do servidor
+        Swal.fire({
+          icon: "error",
+          title: "Erro de autenticação",
+          text: error.response.data.message,
+        });
+      } else {
+        // Erro genérico de autenticação
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Falha na autenticação. Verifique suas credenciais e tente novamente!",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
+  }
 
-    return (
-        <div className={estilos.background}>
-            <div className={estilos.container}>
-                <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
-                
-                <InputLogECad
-                    titulo="Email do usuário:"
-                    icon={icoPessoa}
-                    placeholder="Insira o seu email"
-                    onChange={(evt) => setEmail(evt.target.value)}
-                />
+  return (
+    <div className={estilos.background}>
+      <div className={estilos.container}>
+        <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
 
-                <InputLogECad
-                    titulo="Senha do usuário:"
-                    icon={icoCadeado}
-                    placeholder="Insira a sua senha"
-                    onChange={(evt) => setSenha(evt.target.value)}
-                />
+        <InputLogECad
+          titulo="Email do usuário:"
+          icon={icoPessoa}
+          placeholder="Insira o seu email"
+          valor={email}
+          onChange={(evt) => setEmail(evt)}
+        />
 
-                {resposta && <div className={estilos.error}>{resposta}</div>}
+        <InputLogECad
+          titulo="Senha do usuário:"
+          icon={icoCadeado}
+          placeholder="Insira a sua senha"
+          valor={senha}
+          onChange={(evt) => setSenha(evt)}
+          secureTextEntry={ocultarSenha}
+        />
 
-                <div>
-                    <a className={estilos.link} onClick={() => navigate('/cadastro')} style={{ cursor: 'pointer' }}>
-                        Você ainda não se CADASTROU?
-                    </a>
-                </div>
-
-                <div className={estilos.inputWrapper}>
-                    <button type="button" className={estilos.custombutton} onClick={requisitaAutenticacao}>
-                        Entrar
-                    </button>
-                </div>
-            </div>
+        <div>
+          <a className={estilos.link} onClick={() => navigate('/cadastro')} style={{ cursor: 'pointer' }}>
+            Você ainda não se CADASTROU?
+          </a>
         </div>
-    );
+
+        <div className={estilos.inputWrapper}>
+          <button
+            type="button"
+            className={estilos.custombutton}
+            onClick={() => {
+              setLoading(true);
+              setTimeout(() => {
+                requisitaAutenticacao();
+              }, 3000);
+            }}
+            disabled={loading}
+          >
+            {loading ? "Carregando..." : "Entrar"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }

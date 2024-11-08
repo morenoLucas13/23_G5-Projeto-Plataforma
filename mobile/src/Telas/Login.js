@@ -40,21 +40,21 @@ export default function Login() {
       // if (resp.status == 200) {
       //   if (resp.data.sucesso) {
       //     console.log("+++ SUCESSO +++");
-          navigation.navigate('tela_entrada');
-    //     } else {
-    //       console.log('+++ Login inválido +++')
-    //       console.log(resp.data.erro);
-    //     }
-    //   } else {
-    //     console.log('Não foi possível concluir a operação!');
-    //   }
+      navigation.navigate('tela_entrada');
+      //     } else {
+      //       console.log('+++ Login inválido +++')
+      //       console.log(resp.data.erro);
+      //     }
+      //   } else {
+      //     console.log('Não foi possível concluir a operação!');
+      //   }
     } catch (error) {
-    //   if (error.name === 'ValidationError') {
-    //     Alert.alert('Erro de Validação 🚨', error.errors.join('\n'));
-    //   } else {
-    //     console.log('Ops. Não foi possível se comunicar com o servidor!');
-    //     Alert.alert('Erro de Conexão 🚨', 'Não foi possível se comunicar com o servidor!');
-      }
+      //   if (error.name === 'ValidationError') {
+      //     Alert.alert('Erro de Validação 🚨', error.errors.join('\n'));
+      //   } else {
+      //     console.log('Ops. Não foi possível se comunicar com o servidor!');
+      //     Alert.alert('Erro de Conexão 🚨', 'Não foi possível se comunicar com o servidor!');
+    }
     //   console.log(error);
     // }
   }
@@ -92,9 +92,9 @@ export default function Login() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity onPress={navegar}>
+          {/* <TouchableOpacity onPress={navegar}>
             <Text style={styles.textoBotao}>Você ainda não se CADASTROU?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <TouchableOpacity style={styles.botao} onPress={requisitarAutenticacao}>
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
     top: 15,
     marginBottom: 50,
   },
-  textoBotao: {
-    color: '#132B47',
-    fontSize: 15,
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-  },
+  // textoBotao: {
+  //   color: '#132B47',
+  //   fontSize: 15,
+  //   textAlign: 'center',
+  //   textDecorationLine: 'underline',
+  // },
   botao: {
     backgroundColor: '#132B47',
     width: 271,

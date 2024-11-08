@@ -1,7 +1,7 @@
 import React from 'react'
 import estilos from '../Telas/Login/Login.module.css'
 
-export default function InputLogECad({ placeholder, icon, titulo }) {
+export default function InputLogECad({ placeholder, icon, titulo, valor, onChange, secureTextEntry }) {
     return (
         <div className={estilos.inputWrapper}>
             <h6 className={estilos.titulo}>{titulo}</h6>
@@ -11,8 +11,9 @@ export default function InputLogECad({ placeholder, icon, titulo }) {
                     type="text"
                     className={estilos.inputTexto}
                     placeholder={placeholder}
-                // value={senha}
-                // onChange={(evt) => { setSenha(evt.target.value) }} 
+                    value={valor}
+                    onChange={(evt) => { onChange(evt.target.value) }} // Alterado para onChange
+                    // secureTextEntry={secureTextEntry}
                 />
             </div>
             <div className={estilos.divider}></div>

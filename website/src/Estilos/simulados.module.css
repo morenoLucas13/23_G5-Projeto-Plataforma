@@ -159,3 +159,17 @@
     width: 50px;
     height: 50px;
 }
+
+.container .btnpersonalizado {
+    background-color: #6D72B8 !important;
+    border-color: #6D72B8 !important;
+    border-width: 3px;
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 5px;
+}
+
+.container .btnpersonalizado:hover {
+    background-color: #5A5FA0 !important;
+    border-color: #5A5FA0 !important;
+}

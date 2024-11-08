@@ -65,7 +65,7 @@ export default function CriacaoSimulados() {
 
     return (
         <>
-            <div className={`${estilos.header} align-items-center justify-content-center`}>
+            <div className={`${estilos.header} d-flex align-items-center justify-content-center`}>
                 <button className={estilos.btnNave} onClick={() => navigate('/simuladosCriados')}>
                     <img src={BotaoRetornar} alt="Botão de Retorno" />
                 </button>
@@ -75,10 +75,10 @@ export default function CriacaoSimulados() {
             <div className={`${estilos.container}`}>
                 <div className='d-flex justify-content-around mt-3'>
                     <button
-                        className={`btn btn-primary mx-3 mb-3`}
+                        className={`${estilos.btnpersonalizado}`}
                         onClick={() => setShowModalNovaQuestao(true)}>Criar nova questão</button>
                     <button
-                        className={`btn btn-primary mx-3 mb-3`}
+                        className={`${estilos.btnpersonalizado}`}
                         onClick={() => setShowModalAddQuestao(true)}>Adicionar do Banco</button>
                 </div>
 
@@ -100,7 +100,7 @@ export default function CriacaoSimulados() {
 
                 <div className={`${estilos.divider} mt-3 mb-3`} />
 
-                <h4>Questões {listaQuestoes.length}</h4>
+                <h4>Questões selecionadas: {listaQuestoes.length}</h4>
 
                 <div className={estilos.simuladoscontainer}>
                     {listaQuestoes.map((questao, index) => (

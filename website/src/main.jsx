@@ -10,7 +10,7 @@ import { ativarLogRequisicoes } from './apiAxiosLog.js'
 import axios from 'axios'
 ativarLogRequisicoes(axios);
 
-axios.defaults.baseURL = 'http://10.132.224.34:3313'
+axios.defaults.baseURL = 'http://localhost:3901'
 
 
 createRoot(document.getElementById('root')).render(
