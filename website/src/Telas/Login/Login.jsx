@@ -97,6 +97,7 @@ export default function Login() {
           valor={senha}
           onChange={(evt) => setSenha(evt)}
           secureTextEntry={ocultarSenha}
+          tipo={"password"}
         />
 
         <div>

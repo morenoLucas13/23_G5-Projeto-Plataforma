@@ -1,103 +1,105 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
 
 // COMPONENTES
 import CardCabecalho from '../Componentes/CardCabecalho';
 
-const colors = ['red', 'blue', 'green', 'yellow'];
-
 export default function Jogos() {
-    const [gameSequence, setGameSequence] = useState([]);
-    const [playerSequence, setPlayerSequence] = useState([]);
+    const [sequence, setSequence] = useState([]);
+    const [playerStep, setPlayerStep] = useState(0);
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [flashColor, setFlashColor] = useState("");
 
-    // Função para iniciar o jogo e gerar nova sequência
+    // Função para iniciar o jogo
     const startGame = () => {
-        const newColor = colors[Math.floor(Math.random() * colors.length)];
-        setGameSequence((prevSequence) => [...prevSequence, newColor]);
-        setPlayerSequence([]);
-        setCurrentIndex(0);
+        setSequence([]);
+        setPlayerStep(0);
         setIsPlayerTurn(false);
-
-        setTimeout(() => {
-            playSequence([...gameSequence, newColor]);
-        }, 500);
+        addColorToSequence();
     };
 
-    // Função para tocar a sequência
-    const playSequence = async (sequence) => {
-        for (let color of sequence) {
-            await new Promise((resolve) => {
-                setTimeout(() => {
-                    flashColor(color);
-                    resolve();
-                }, 600);
-            });
+    // Adiciona uma cor aleatória à sequência
+    const addColorToSequence = () => {
+        const colors = ["green", "red", "blue", "yellow"];
+        const randomColor = colors[Math.floor(Math.random() * 4)];
+        setSequence((prevSequence) => [...prevSequence, randomColor]);
+    };
+
+    // Executa a sequência para o jogador
+    const playSequence = () => {
+        setIsPlayerTurn(false);
+        let i = 0;
+
+        const interval = setInterval(() => {
+            setFlashColor(sequence[i]);
+            setTimeout(() => setFlashColor(""), 500); // Remove o flash após 500ms
+            i++;
+
+            if (i >= sequence.length) {
+                clearInterval(interval);
+                setIsPlayerTurn(true);
+                setPlayerStep(0);
+            }
+        }, 1000);
+    };
+
+    // Efeito para tocar a sequência automaticamente após atualização
+    useEffect(() => {
+        if (sequence.length > 0) {
+            playSequence();
         }
-        setIsPlayerTurn(true);
-    };
+    }, [sequence]);
 
-    // Função para piscar a cor do botão
-    const flashColor = (color) => {
-        Alert.alert("Flash", `Flash: ${color}`, [{ text: "OK" }], {
-            cancelable: true,
-        });
-    };
-
-    // Função que trata o clique do jogador
-    const handleColorPress = (color) => {
+    // Verifica se o jogador selecionou a cor correta
+    const handlePlayerInput = (color) => {
         if (!isPlayerTurn) return;
 
-        setPlayerSequence((prevSequence) => [...prevSequence, color]);
-
-        if (color === gameSequence[currentIndex]) {
-            if (currentIndex + 1 === gameSequence.length) {
-                Alert.alert('Success', 'Sequence complete! Adding another color...');
-                startGame();
+        if (color === sequence[playerStep]) {
+            if (playerStep + 1 === sequence.length) {
+                Alert.alert("Boa!", "Continue assim!");
+                setTimeout(() => {
+                    setIsPlayerTurn(false);
+                    addColorToSequence();
+                }, 1000);
             } else {
-                setCurrentIndex((prevIndex) => prevIndex + 1);
+                setPlayerStep(playerStep + 1);
             }
         } else {
-            Alert.alert('Game Over', 'You lost! Try again.');
-            resetGame();
+            Alert.alert("Erro", "Você errou! Tente novamente.");
+            startGame();
         }
-    };
-
-    // Função para reiniciar o jogo
-    const resetGame = () => {
-        setGameSequence([]);
-        setPlayerSequence([]);
-        setIsPlayerTurn(false);
-        setCurrentIndex(0);
     };
 
     return (
         <View style={styles.container}>
-            <CardCabecalho texto={'SIMON GAME!'} navegacao={'tela_entrada'} />
+            <CardCabecalho texto={'Relatório do Estudante'} navegacao={'tela_entrada'} />
 
-            <View style={styles.gameContainer}>
+            <Text style={styles.title}>Simon Game</Text>
+            <Text style={styles.intro}>Teste sua memória e siga a sequência de cores!</Text>
+            <Text style={styles.count}>Nível: {sequence.length}</Text>
+
+            <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: 'red' }]}
-                    onPress={() => handleColorPress('red')}
+                    style={[styles.button, styles.green, flashColor === "green" && styles.flash]}
+                    onPress={() => handlePlayerInput("green")}
                 />
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: 'blue' }]}
-                    onPress={() => handleColorPress('blue')}
+                    style={[styles.button, styles.red, flashColor === "red" && styles.flash]}
+                    onPress={() => handlePlayerInput("red")}
                 />
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: 'green' }]}
-                    onPress={() => handleColorPress('green')}
+                    style={[styles.button, styles.blue, flashColor === "blue" && styles.flash]}
+                    onPress={() => handlePlayerInput("blue")}
                 />
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: 'yellow' }]}
-                    onPress={() => handleColorPress('yellow')}
+                    style={[styles.button, styles.yellow, flashColor === "yellow" && styles.flash]}
+                    onPress={() => handlePlayerInput("yellow")}
                 />
             </View>
 
             <TouchableOpacity style={styles.startButton} onPress={startGame}>
-                <Text style={styles.startButtonText}>Start Game</Text>
+                <Text style={styles.startButtonText}>INICIAR</Text>
             </TouchableOpacity>
 
             <StatusBar style="auto" />
@@ -112,11 +114,28 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
         alignItems: 'center',
     },
-    gameContainer: {
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 20,
+    },
+    intro: {
+        fontSize: 16,
+        color: '#666',
+        marginTop: 10,
+        textAlign: 'center',
+    },
+    count: {
+        fontSize: 24,
+        color: '#333',
+        marginVertical: 20,
+    },
+    buttonContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        width: 240,
         justifyContent: 'center',
-        marginVertical: 20,
+        marginTop: 20,
     },
     button: {
         width: 100,
@@ -124,15 +143,29 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 10,
     },
+    green: {
+        backgroundColor: '#00A74A',
+    },
+    red: {
+        backgroundColor: '#F82A15',
+    },
+    blue: {
+        backgroundColor: '#0297EB',
+    },
+    yellow: {
+        backgroundColor: '#FEF735',
+    },
+    flash: {
+        opacity: 0.5,
+    },
     startButton: {
-        backgroundColor: '#333',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+        backgroundColor: '#444',
+        padding: 10,
         borderRadius: 5,
         marginTop: 20,
     },
     startButtonText: {
-        color: '#fff',
+        color: '#FFF',
         fontSize: 18,
     },
 });

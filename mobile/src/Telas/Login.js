@@ -95,6 +95,7 @@ export default function Login() {
           {/* <TouchableOpacity onPress={navegar}>
             <Text style={styles.textoBotao}>Você ainda não se CADASTROU?</Text>
           </TouchableOpacity> */}
+          
         </View>
 
         <TouchableOpacity style={styles.botao} onPress={requisitarAutenticacao}>

@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 // COMPONENTES
 import CardCabecalho from '../Componentes/CardCabecalho';
+import Graficos from '../Componentes/Graficos.js';
 
 export default function RaioX() {
     return (
@@ -12,6 +13,10 @@ export default function RaioX() {
                 texto={'Relatório do Estudante'}
                 navegacao={'tela_entrada'}
             />
+
+            {/*  */}
+            <Graficos />
+
             <StatusBar style="auto" />
         </View>
     );
