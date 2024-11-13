@@ -25,7 +25,7 @@ module.exports.obterSimuladosAgendados = async () => {
             `
         );
 
-        let retorno = consulta.map(item => (
+        let retornoConsulta = consulta.map(item => (
             {
                 descricao: item.simu_descricao,
                 professor: item.us_nome,
@@ -34,7 +34,7 @@ module.exports.obterSimuladosAgendados = async () => {
             })
         )
 
-        return retorno;
+        return retornoConsulta;
 
 
     } catch (error) {

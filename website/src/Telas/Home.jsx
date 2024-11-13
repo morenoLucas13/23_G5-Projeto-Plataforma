@@ -35,13 +35,13 @@ export default function Home() {
     ];
 
     return (
-        <>
+        <div className={estilos.divMain}>
             <div className={estilos.header1}>
                 <div className={estilos.welcomemessage}>Seja bem-vindo,</div>
                 <h1>Lucas Neponuceno Moreno</h1>
             </div>
 
-            <div className={`${estilos} text-center my-4`}>
+            <div className={`text-center my-4`}>
                 <h3>Tá curtindo seu dia?</h3>
                 <h3>Até as princesas precisam estudar 📚🥺</h3>
             </div>
@@ -88,6 +88,6 @@ export default function Home() {
             </div>
 
             <div className={estilos.header2}></div>
-        </>
+        </div>
     );
 }

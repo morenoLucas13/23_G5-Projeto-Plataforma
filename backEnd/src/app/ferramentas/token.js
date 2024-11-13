@@ -8,7 +8,7 @@ module.exports.gerarToken = (id, nivel_acesso) => {
       }
 
     const token = jwt.sign({ id, nivel_acesso }, process.env.SECRET, {
-        expiresIn: 3600 // Configurando esse token para expirar em 1hs
+        expiresIn: '1d' // Configurando esse token para expirar em 1hs
     })
 
     return token

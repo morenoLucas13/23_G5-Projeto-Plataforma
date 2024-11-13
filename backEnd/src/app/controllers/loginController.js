@@ -42,7 +42,7 @@ rotas.post('/', async (req, res) => {
 
             return res.json({ sucesso: true, token, redefinirToken })
         } else {
-            return res.status(401).json({ sucesso: false, erro: "Erro: Dados inseridos incorretos!" })
+            return res.status(200).json({ sucesso: false, erro: "Erro: Dados inseridos incorretos!" })
         }
     } catch (error) {
         res.status(500).json({ sucesso: false, erro: 'Erro: Problemas ao comunicar com o servidor :(' })

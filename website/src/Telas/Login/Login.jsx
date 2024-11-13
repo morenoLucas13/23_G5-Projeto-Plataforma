@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import icoPessoa from '../../Imagens/IconePessoa.png';
 import icoCadeado from '../../Imagens/IconeCadeado.png';
 import LogoApp from '../../Imagens/LogoDoApp.png';
@@ -12,7 +12,7 @@ import estilos from './Login.module.css';
 
 // Configurações globais do axios
 axios.defaults.baseURL = "http://localhost:3901";
-axios.defaults.timeout = 3000;
+axios.defaults.timeout = 10000;
 
 // Schema de validação com Yup
 const loginSchema = Yup.object().shape({
@@ -25,6 +25,7 @@ export default function Login() {
   const [senha, setSenha] = useState("Sesisp@1234");
   const [loading, setLoading] = useState(false);
   const [ocultarSenha, setOcultarSenha] = useState(true);
+  const [valueLS, setValueLS] = useState()
 
   const navigate = useNavigate();
 
@@ -76,6 +77,17 @@ export default function Login() {
       setLoading(false);
     }
   }
+
+  async function getData() {
+    const resultado = await localStorage.getItem("token")
+
+    if (resultado) {
+      setValueLS(resultado)
+    }
+  }
+
+  // Configurando para assim que carregar a tela, buscar os valores armazenados no localStorage
+  useEffect(() => { getData() }, [])
 
   return (
     <div className={estilos.background}>

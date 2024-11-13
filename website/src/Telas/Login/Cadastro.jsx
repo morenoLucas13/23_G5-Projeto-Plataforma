@@ -6,12 +6,14 @@ import icoCadeado from '../../Imagens/IconeCadeado.png';
 import icoEmail from '../../Imagens/IconeEmail.png';
 import LogoApp from '../../Imagens/LogoDoApp.png';
 import estilos from './Login.module.css';
+
+// === COMPONENTE === //
 import InputLogECad from '../../Componentes/InputLogECad';
 
 export default function Cadastro() {
   const navigate = useNavigate();
-  const [role, setRole] = useState(''); // Aluno ou Professor
-  const [selectedDisciplines, setSelectedDisciplines] = useState([]); // Disciplinas selecionadas
+  const [papel, setPapel] = useState('');
+  const [selecioneDisciplina, setSelecioneDisciplina] = useState([]); // Disciplinas selecionadas
 
   // Lista de disciplinas
   const disciplines = [
@@ -23,7 +25,7 @@ export default function Cadastro() {
   // Abre a modal para escolher Aluno ou Professor e disciplinas
   const InformacoesAdicionais = async () => {
     // Seleção de Professor ou Aluno
-    const { value: selectedRole } = await Swal.fire({
+    const { value: selecioneSuaFuncao } = await Swal.fire({
       title: 'Quem está sendo cadastrado?',
       input: 'radio',
       inputOptions: {
@@ -35,11 +37,11 @@ export default function Cadastro() {
       }
     });
 
-    setRole(selectedRole);
+    setPapel(selecioneSuaFuncao);
 
     // Se o usuário selecionou Professor, abre a seleção de disciplinas
-    if (selectedRole === 'professor') {
-      const { value: selectedDisciplines } = await Swal.fire({
+    if (selecioneSuaFuncao === 'professor') {
+      const { value: selecioneDisciplina } = await Swal.fire({
         title: 'Selecione as disciplinas que leciona',
         html: `
           ${disciplines.map((discipline, index) =>
@@ -60,11 +62,11 @@ export default function Cadastro() {
         confirmButtonText: 'Confirmar',
       });
 
-      if (selectedDisciplines) {
-        setSelectedDisciplines(selectedDisciplines);
-        console.log('Disciplinas selecionadas:', selectedDisciplines); // Exibe as disciplinas selecionadas no console
+      if (selecioneDisciplina) {
+        setSelecioneDisciplina(selecioneDisciplina);
+        console.log('Disciplinas selecionadas:', selecioneDisciplina); // Exibe as disciplinas selecionadas no console
       }
-    } else if (selectedRole === 'aluno') {
+    } else if (selecioneSuaFuncao === 'aluno') {
       Swal.fire('Cadastro como aluno selecionado!');
     }
   };

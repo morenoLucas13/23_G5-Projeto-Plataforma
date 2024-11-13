@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 
 
 const pool = mysql.createPool({
-    host: '10.132.224.59',
+    host: '10.132.224.62',
     user: 'alana',
     password: 'senha', 
     database: 'bd_plataforma',
@@ -13,7 +13,6 @@ const pool = mysql.createPool({
 
 function criarConexao() {
     return pool.getConnection()
-
 }
 
 function liberarConexao(conexao){

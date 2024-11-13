@@ -30,6 +30,9 @@ app.use('/api/simulados', rotasSimulados)
 const rotasQuestoes = require('./src/app/controllers/questoesController');
 app.use('/api/questoes', rotasQuestoes)
 
+const rotasRanking = require('./src/app/controllers/relatoriosController');
+app.use('/api/relatorios', rotasRanking)
+
 
 
 // Inicia o servidor na porta

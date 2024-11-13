@@ -102,39 +102,6 @@ rotas.get('/questoesDisciplina/:disciplinaId',
     }
 );
 
-// Rota para adicionar uma questão a um simulado
-rotas.post('/adicionarQuestaoSimulado',
-    midVerificarJWToken.verifyToken,
-    autorizarNivel(1),
-
-    async (req, res) => {
-        const { simuladoId, questaoId } = req.body;
-
-        try {
-            await addQuestaoSimulado.adicionarQuestaoSimulado(simuladoId, questaoId);
-
-            return res.status(201).json({
-                sucesso: true,
-                mensagem: "Questão adicionada com sucesso ;)"
-            });
-
-        } catch (error) {
-            // Lidando com o erro de questão já existente
-            if (error.mensagem === 'Questão já adicionada ao simulado.') {
-                return res.status(400).json({
-                    sucesso: false,
-                    mensagem: "Questão já adicionada ao simulado."
-                });
-            }
-
-
-            return res.status(500).json({
-                mensagem: 'Ops! Ocorreu um erro ao adicionar a questão!',
-                erro: error
-            });
-        }
-    }
-);
 
 
 
