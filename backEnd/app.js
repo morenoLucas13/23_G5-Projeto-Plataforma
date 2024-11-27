@@ -34,6 +34,14 @@ const rotasRanking = require('./src/app/controllers/relatoriosController');
 app.use('/api/relatorios', rotasRanking)
 
 
+app.use('/api/adm/simulados', rotasRanking)
+
+
+
+app.use('/api/aluno/ranking', rotasRanking)
+
+
+
 
 // Inicia o servidor na porta
 app.listen(porta, () => {

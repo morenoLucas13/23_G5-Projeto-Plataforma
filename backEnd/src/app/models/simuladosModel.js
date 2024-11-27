@@ -156,15 +156,6 @@ module.exports.criarNovoSimulado = async (turma_id, descricao, professor, status
 
 
 
-
-
-
-
-
-
-
-
-
 module.exports.excluirSimulado = async (id) => {
     let conexao
 

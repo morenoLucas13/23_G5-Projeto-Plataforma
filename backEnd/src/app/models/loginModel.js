@@ -66,24 +66,21 @@ module.exports.verificarEmailExistente = async (email) => {
     }
 };
 
-
-
-
-module.exports.cadastrarUser = async (nome, email, senha) => {
+module.exports.cadastrarProfessor = async (nome, email, senha, nivelAcesso, disciplinasAula) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
 
         // Inserção de professores na tabela 'professor'
         const [consulta] = await conexao.execute(
-            `INSERT INTO professor (us_nome, us_email, us_senha, us_nivel_acesso) VALUES (?, ?, ?, ?);`,
-            [nome, email, senha, 1]  // O nível de acesso será sempre 1 para professor
+            `INSERT INTO professor (us_nome, us_email, us_senha, us_nivel_acesso, disciplinas) VALUES (?, ?, ?, ?, ?);`,
+            [nome, email, senha, nivelAcesso, disciplinasAula]
         );
 
         console.log('Resultado da Inserção:', consulta);
 
         // Retornando os dados que foram inseridos
-        return { idprofessor: consulta.insertId, nome, email, senha, nivel_acesso: 1 };
+        return { id: consulta.insertId, nome, email, nivelAcesso, disciplinasAula };
     } catch (error) {
         console.error('Erro ao executar a query:', error);
         throw error; // Repassa o erro para o controlador
@@ -92,6 +89,34 @@ module.exports.cadastrarUser = async (nome, email, senha) => {
         console.log('Conexão finalizada!');
     }
 };
+
+module.exports.cadastrarAluno = async (nome, email, senha, nivelAcesso) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        // Inserção de alunos na tabela 'aluno'
+        const [consulta] = await conexao.execute(
+            `INSERT INTO alunos (us_nome, us_email, us_senha, us_nivel_acesso) VALUES (?, ?, ?, ?);`,
+            [nome, email, senha, nivelAcesso]
+        );
+
+        console.log('Resultado da Inserção:', consulta);
+
+        // Retornando os dados que foram inseridos
+        return { id: consulta.insertId, nome, email, nivelAcesso };
+    } catch (error) {
+        console.error('Erro ao executar a query:', error);
+        throw error; // Repassa o erro para o controlador
+    } finally {
+        db.liberarConexao();
+        console.log('Conexão finalizada!');
+    }
+};
+
+
+
+
 
 
 

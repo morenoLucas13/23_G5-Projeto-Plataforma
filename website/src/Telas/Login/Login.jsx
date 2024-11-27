@@ -10,9 +10,6 @@ import Swal from 'sweetalert2';
 
 import estilos from './Login.module.css';
 
-// Configurações globais do axios
-axios.defaults.baseURL = "http://localhost:3901";
-axios.defaults.timeout = 10000;
 
 // Schema de validação com Yup
 const loginSchema = Yup.object().shape({

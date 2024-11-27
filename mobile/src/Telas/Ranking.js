@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
-import api from '../api/axiosConfig';
+import api from '../api/axiosConfig'; // Instância configurada do Axios
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // MEUS COMPONENTES
@@ -9,6 +9,8 @@ import CardCabecalho from '../Componentes/CardCabecalho';
 
 // Componente para renderizar cada item do ranking
 const RankingItem = ({ posicao, nome, pontos }) => {
+//  console.log("itm rank : ", posicao, nome, pontos);
+
     const EstilosDasPosicoes = (posicao) => {
         switch (posicao) {
             case 1:
@@ -38,56 +40,43 @@ const RankingItem = ({ posicao, nome, pontos }) => {
 };
 
 export default function Ranking() {
-    const [rankingDados, setRankingDados] = useState([]);
-    const [carregando, setCarregando] = useState(true);
+    const [rankingDados, setRankingDados] = useState([]); // Dados do ranking
+    const [carregando, setCarregando] = useState(true);   // Estado de carregamento
 
+    // Função para buscar os dados do ranking
     const buscarRanking = async () => {
         try {
-            const token = await AsyncStorage.getItem('token');
-
-            console.log('Token recuperado no mobile:', token);
-
-
-            if (!token) {
-                throw new Error('Token não encontrado no AsyncStorage!');
-            }
-
-            const resposta = await api.get('/api/relatorios/rankingGeral', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-
-            });
-            
-            console.log('Resposta completa da API:', resposta);
-            console.log('Dados da resposta:', resposta.data);
-
-
-            setRankingDados(resposta.data || [])
-        } catch (error) {
-            console.log('Erro ao buscar dados do ranking:', error.message || error);
-            const mensagemErro =
-                error.response?.status === 401
-                    ? 'Token inválido ou expirado. Por favor, faça login novamente.'
-                    : 'Houve um problema ao carregar o ranking. Tente novamente mais tarde.';
-            Toast.show({
-                type: ALERT_TYPE.WARNING,
-                textBody: mensagemErro,
-            });
-        } finally {
+            const response = await api.get('/api/relatorios/rankingGeral');
+            console.log('Response data:', response.data); // Verifique os dados retornados
+            setRankingDados(response.data.ranking);
             setCarregando(false);
+
+        } catch (error) {
+            console.error("Erro ao buscar dados do ranking:", error || error.response);
+            setCarregando(false);
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Erro ao carregar ranking',
+                textBody: 'Houve um erro ao carregar os dados do ranking.',
+            });
         }
     };
 
+
     useEffect(() => {
-        buscarRanking();
+        (async () => {
+            
+            buscarRanking();
+        })();
     }, []);
 
+
+
+    // Exibe carregamento enquanto os dados não estão disponíveis
     if (carregando) {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator size="large" color="#6D72B8" />
-                <Text>Carregando o ranking...</Text>
+            <View style={styles.carregando}>
+                <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
@@ -95,20 +84,22 @@ export default function Ranking() {
     return (
         <View style={styles.container}>
             <CardCabecalho texto={'Ranking dos Estudantes'} navegacao={'tela_entrada'} />
-
             <View>
                 <Text style={styles.fontEmoji}>👑✨</Text>
             </View>
-
             <View style={styles.divisor} />
-
             {rankingDados.length > 0 ? (
                 <FlatList
                     data={rankingDados}
-                    keyExtractor={(item) => item.posicao.toString()}
-                    renderItem={({ item, index }) => (
-                        <RankingItem posicao={index + 1} nome={item.nome} pontos={item.pontos} />
+                    renderItem={({item, posItem}) => (
+                        <RankingItem
+                            key={posItem}
+                            posicao={posItem}
+                            nome={item.nome}
+                            pontos={item.pontuacao}
+                        />
                     )}
+                    keyExtractor={(item, posItem) => item.nome}
                 />
             ) : (
                 <Text style={styles.textoNenhumDado}>Nenhum dado disponível no ranking.</Text>
@@ -117,6 +108,7 @@ export default function Ranking() {
     );
 }
 
+// Estilos
 const styles = StyleSheet.create({
     container: {
         flex: 1,

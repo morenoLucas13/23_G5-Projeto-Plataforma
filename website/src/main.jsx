@@ -6,11 +6,11 @@ import App from './App.jsx'
 import './estilo.css'
 // import './meutema.css'
 
-import { ativarLogRequisicoes } from './apiAxiosLog.js'
+import { ativarLogRequisicoes } from './api/apiAxiosLog.js'
 import axios from 'axios'
 ativarLogRequisicoes(axios);
 
-axios.defaults.baseURL = 'http://localhost:3901'
+axios.defaults.baseURL = 'http://10.132.224.60:3901'
 
 
 createRoot(document.getElementById('root')).render(

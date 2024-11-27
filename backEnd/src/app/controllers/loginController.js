@@ -66,40 +66,51 @@ rotas.post('/logout', midVerificarJWToken.verifyToken, (req, res) => {
 const { userValidationCadastro } = require("../validations/user.validation");
 
 rotas.post('/cadastrarUser', async (req, res) => {
-    const { nome, email, senha } = req.body;
-    const nivel_acesso = 1
+    const { nome, email, senha, nivelAcesso, disciplinasAula } = req.body;
 
     try {
         // Validando o corpo da requisição
-        await userValidationCadastro.validate(req.body, { abortEarly: false })
+        await userValidationCadastro.validate(req.body, { abortEarly: false });
     } catch (error) {
-        return res.status(400).json({ sucesso: false, erros: error.errors })
+        return res.status(400).json({ sucesso: false, erros: error.errors });
     }
 
     try {
         // Verificando se o email já existe no banco de dados
-        const emailExistente = await model.verificarEmailExistente(email)
+        const emailExistente = await model.verificarEmailExistente(email);
         if (emailExistente) {
             return res.status(400).json({
                 sucesso: false,
-                mensagem: 'Ops! Outro usuário já está cadastrado com o email informado!'
+                mensagem: 'Ops! Outro usuário já está cadastrado com o email informado!',
             });
         }
 
-        // Cadastrando o novo professor no banco de dados
-        const novoUser = await model.cadastrarUser(nome, email, senha)
+        let novoUser;
 
-        // Gerando o token JWT após o cadastro
-        const token = gerarToken(novoUser.idprofessor, nivel_acesso)
+        if (nivelAcesso === 2) {
+            // Cadastrar professor
+            novoUser = await model.cadastrarProfessor(nome, email, senha, nivelAcesso, disciplinasAula);
+        } else if (nivelAcesso === 1) {
+            // Cadastrar aluno
+            novoUser = await model.cadastrarAluno(nome, email, senha, nivelAcesso);
+        } else {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Nível de acesso inválido. Deve ser 1 (Aluno) ou 2 (Professor).',
+            });
+        }
 
-        // Retornando o novo usuário e o seu respectivo token gerado
-        return res.status(201).json({ sucesso: true, usuario: novoUser, token: token })
+        // Gerar token JWT após o cadastro
+        const token = gerarToken(novoUser.id, nivelAcesso);
+
+        // Retornar o novo usuário e seu respectivo token
+        return res.status(201).json({ sucesso: true, usuario: novoUser, token: token });
 
     } catch (error) {
-        console.error('Erro ao cadastrar novo usuário:', error)
-        return res.status(500).json({ sucesso: false, mensagem: 'Erro ao cadastrar novo usuário :(' })
+        console.error('Erro ao cadastrar novo usuário:', error);
+        return res.status(500).json({ sucesso: false, mensagem: 'Erro ao cadastrar novo usuário :(' });
     }
-})
+});
 
 
 

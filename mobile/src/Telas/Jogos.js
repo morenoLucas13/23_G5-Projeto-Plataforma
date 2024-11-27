@@ -57,7 +57,6 @@ export default function Jogos() {
 
         if (color === sequence[playerStep]) {
             if (playerStep + 1 === sequence.length) {
-                Alert.alert("Boa!", "Continue assim!");
                 setTimeout(() => {
                     setIsPlayerTurn(false);
                     addColorToSequence();

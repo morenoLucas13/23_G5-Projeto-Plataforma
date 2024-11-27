@@ -5,24 +5,30 @@ const db = require('../db')
 // Exibir o ranking geral dos 10 melhores alunos a partir de suas pontuações
 module.exports.obterRankingGeral = async () => {
     let conexao;
-
     try {
-        conexao = await db.criarConexao()
+        conexao = await db.criarConexao();
 
-        const [consulta] = await conexao.execute(
-            `SELECT nome, pontuacao FROM alunos ORDER BY pontuacao DESC LIMIT 10;`
-        )
+        // Log para verificar conexão e SQL
+        console.log('Conexão estabelecida para obter ranking geral.');
 
-        return consulta
+        const [consulta] = await conexao.execute(`
+            SELECT nome, pontuacao 
+            FROM alunos 
+            ORDER BY pontuacao DESC 
+            LIMIT 10;
+        `);
+
+        console.log('Dados do ranking:', consulta);
+
+        return consulta;
     } catch (error) {
-        console.log('Ocorreu um erro ao buscar o ranking geral dos alunos:', error)
-        throw error
-
+        console.error('Erro no Model ao obter ranking:', error);
+        throw new Error('Erro ao buscar o ranking no banco de dados.');
     } finally {
-        db.liberarConexao()
-    }   
+        if (conexao) await conexao.release();
+    }
+};
 
-}
 
 module.exports.dadosRespostaAluno = async (idSimulado, userId) => {
     let conexao;

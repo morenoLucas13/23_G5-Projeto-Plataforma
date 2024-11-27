@@ -9,7 +9,7 @@ module.exports.verifyToken = (req, res, next) => {
 
   jwt.verify(token, process.env.SECRET, (err, decoded) => {
     if (err) {
-      return res.status(500).json({ auth: false, mensagem: 'Falha na autenticação do token!' });
+      return res.status(401).json({ auth: false, mensagem: 'Falha na autenticação do token!' });
     }
 
     console.log("Uid" + JSON.stringify(decoded, null, 2))
@@ -28,7 +28,7 @@ module.exports.verifyToken = (req, res, next) => {
     } else if (decoded.nivel_acesso === 1) { // 1 = professor
       req.id_professor = decoded.id
     } else {
-      return res.status(403).json({auth: false, mensagem: 'Acesso inválido!'})
+      return res.status(401).json({auth: false, mensagem: 'Acesso inválido!'})
     }
 
     // Se tudo estiver ok, salva a informação do ID do usuário e o seu respectivo nivel de acesso no request
@@ -37,10 +37,3 @@ module.exports.verifyToken = (req, res, next) => {
     next();
   });
 };
-
-
-
-
-
-
-

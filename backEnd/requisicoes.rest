@@ -1,12 +1,12 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibml2ZWxfYWNlc3NvIjoyLCJpYXQiOjE3MzIyOTYyMDAsImV4cCI6MTczMjM4MjYwMH0.5WldhwoToTrQ_C2bbJ-Rg9YWjzry6v5u98ovY3CIhas
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pdmVsX2FjZXNzbyI6MiwiaWF0IjoxNzMyNzA2MDkzLCJleHAiOjE3MzI3OTI0OTN9.y24IJbLpTOHPJ1wmfB2EQPIcCGtS6IqryhrRABN-sc0
 
 ###########################################
 POST http://localhost:3901/api/login
 Content-Type: application/json
 
 {
-    "email": "rodrigo.casa@portalsesisp.org.br",
-    "senha": "Sesisp34"
+    "email": "lucas.moreno@portalsesisp.org.br",
+    "senha": "Sesisp@2643"
 }
 
 ###########################################
@@ -33,10 +33,10 @@ POST http://localhost:3901/api/login/cadastrarUser
 Content-Type: application/json
 
 {
-    "nome": "Rodrigo Afonso La Casa de Oliveira",
-    "email": "rodrigo.casa@portalsesisp.org.br",
+    "nome": "Melissa Ribeiro da Silva",
+    "email": "melissa.silva@portalsesisp.org.br",
     "senha": "Sesisp@1234",
-    "nivel_acesso": 1
+    "nivelAcesso": 1
 }
 
 ###########################################

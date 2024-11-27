@@ -1,17 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad';
 import axios from 'axios';
-
-axios.defaults.baseURL = "http://10.132.224.72:3901";
-axios.defaults.timeout = 3000;
+import api from '../api/axiosConfig';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -31,20 +29,21 @@ export default function Login() {
     try {
       // Validação com Yup antes de enviar os dados
       await loginSchema.validate({ email, senha });
-
-      const resposta = await axios.post('/api/login', { email, senha }, { abortEarly: false });
-
-
+  
+      const resposta = await api.post('/api/login', { email, senha }, { abortEarly: false }); // Usa 'api' configurado
+  
       if (resposta && resposta.data && resposta.data.token) {
         const { token } = resposta.data;
-
-        // Armazenando o token no asyncStorage
+  
         await AsyncStorage.setItem("token", token);
+        // Armazenando o token no asyncStorage
+        const tokenArmazenado = await AsyncStorage.getItem("token");
 
-
+        console.log("Token recuperado:", tokenArmazenado);
+  
         console.log("Login bem-sucedido!");
         navigation.navigate("tela_entrada");
-
+  
       } else {
         Toast.show({
           type: ALERT_TYPE.DANGER,
@@ -60,7 +59,6 @@ export default function Login() {
           textBody: error.message,
         });
         console.log('Ocorreu um erro de Yup Validação!')
-
       } else {
         console.log("Erro de conexão: ", error);
         Toast.show({
@@ -68,13 +66,10 @@ export default function Login() {
           title: 'Ops! Ocorreu um erro de conexão!',
           textBody: 'Tente novamente mais tarde.',
         });
-
         console.log('Ocorreu um erro de conexão!')
       }
     }
   }
-
-
 
   return (
     <AlertNotificationRoot>

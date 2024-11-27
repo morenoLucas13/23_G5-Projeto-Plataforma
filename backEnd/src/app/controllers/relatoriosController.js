@@ -9,35 +9,43 @@ const rotas = express.Router()
 
 
 // Importanto middlewares e funcionalidades JWT necessárias
-const model = require('../models/relatoriosModel')
+const model = require('../models/relatoriosModel');
 const midVerificarJWToken = require('../middlewares/midVerificarJWToken');
 const { autorizarNivel } = require('../middlewares/midBloquearAcessoPorNivel');
 // const { calcularPontuacaoPorResposta } = require('../ferramentas/pontuacao');
 
 
-rotas.get('/rankingGeral',
+rotas.get(
+    '/rankingGeral',
     midVerificarJWToken.verifyToken,
     autorizarNivel(2),
     async (req, res) => {
         try {
-            const rankingGeralAlunos = await model.obterRankingGeral()
+            // Log para depuração
+            console.log('Token recebido:', req.headers.authorization);
 
+            // Obtenha o ranking geral
+            const rankingGeralAlunos = await model.obterRankingGeral();
+            
+            // Retorne sucesso
             res.status(200).json({
                 sucesso: true,
                 mensagem: 'Ranking geral dos melhores alunos!',
-                ranking: rankingGeralAlunos
-            })
-
+                ranking: rankingGeralAlunos,
+            });
         } catch (error) {
+            // Log detalhado para depuração
+            console.error('Erro ao buscar ranking geral:', error);
+
             res.status(500).json({
                 sucesso: false,
                 mensagem: 'Ops! Ocorreu um erro ao buscar o ranking geral dos alunos!',
-                erro: error
-            })
+                erro: error.message,
+            });
         }
+    }
+);
 
-        console.log('Fim da rota GET do ranking geral dos alunos!')
-    })
 
 // rotas.get('/:idSimulado', midVerificarJWToken.verifyToken, async (req, res) => {
 //     try {

@@ -6,17 +6,49 @@ import icoCadeado from '../../Imagens/IconeCadeado.png';
 import icoEmail from '../../Imagens/IconeEmail.png';
 import LogoApp from '../../Imagens/LogoDoApp.png';
 import estilos from './Login.module.css';
+import * as Yup from 'yup';
+import api from '../../api/axiosConfig.js'
+
 
 // === COMPONENTE === //
 import InputLogECad from '../../Componentes/InputLogECad';
 
-export default function Cadastro() {
-  const navigate = useNavigate();
-  const [papel, setPapel] = useState('');
-  const [selecioneDisciplina, setSelecioneDisciplina] = useState([]); // Disciplinas selecionadas
 
+// Schema de validação do Yup
+const cadastroSchema = Yup.object().shape({
+  nome: Yup.string().required("O campo nome é obrigatório."),
+  email: Yup.string().required('O campo email é obrigatório.').email('Email deve ser um endereço válido.'),
+  senha: Yup.string().required('O campo senha é obrigatório.').min(7, 'A senha deve ter no mínimo 7 caracteres.'),
+  nivel_acesso: Yup.number().required("O campo de nível de acesso é obrigatório.").oneOf([1, 2], "O nível de acesso deve ser 1 ou 2.")
+})
+
+
+
+export default function Cadastro() {
+  const [nome, setNome] = useState('Melissa Oliveira da Costa');
+  const [email, setEmail] = useState('melissa.costa@portalsesisp.org.br');
+  const [senha, setSenha] = useState('MMCC@4014');
+  const [nivelAcesso, setNivelAcesso] = useState()
+
+  const [papel, setPapel] = useState('');
+  const [selecioneDisciplina, setSelecioneDisciplina] = useState([]);
+
+  const navigate = useNavigate();
+
+
+  async function requisitaCadastro() {
+    try {
+      // Validando o Yup antes de enviar os dados
+      await cadastroSchema.validate({ nome, email, senha, nivel_acesso })
+
+      const response = await api.post('/api/login/cadastrarUser')
+
+    } catch (error) {
+
+    }
+  }
   // Lista de disciplinas
-  const disciplines = [
+  const disciplinas = [
     'Biologia', 'Filosofia', 'Física', 'Geografia',
     'História', 'Inglês', 'Língua Portuguesa',
     'Matemática', 'Química', 'Sociologia'
@@ -44,7 +76,7 @@ export default function Cadastro() {
       const { value: selecioneDisciplina } = await Swal.fire({
         title: 'Selecione as disciplinas que leciona',
         html: `
-          ${disciplines.map((discipline, index) =>
+          ${disciplinas.map((discipline, index) =>
           `<div style="text-align:left;">
               <input type="checkbox" class="form-check-input" id="disciplina-${index}" value="${discipline}">
               <label for="disciplina-${index}" class="form-check-label">${discipline}</label>
@@ -52,7 +84,7 @@ export default function Cadastro() {
         ).join('')}
         `,
         preConfirm: () => {
-          const selected = disciplines.filter((_, index) => {
+          const selected = disciplinas.filter((_, index) => {
             const checkbox = document.getElementById(`disciplina-${index}`);
             return checkbox && checkbox.checked;
           });
