@@ -38,6 +38,8 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
                 <button className='btn' onClick={acaoCancelar}>
                     <img src={BotaoFechar} />
                 </button>
+
+                {/* <CreatableSelect isClearable options={colourOptions} />; */}
             </div>
             <h2 className={estilos.textcenter}>Adicione sua própria questão</h2>
 
@@ -56,22 +58,51 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
             />
 
             <div>
-                {['A', 'B', 'C', 'D', 'E'].map((x, index) => (
+                {[{
+                    letra: 'A',
+                    state: alternativaA,
+                    setState: setAlternativaA
+                },
+                {
+                    letra: 'B',
+                    state: alternativaB,
+                    setState: setAlternativaB
+                },
+                {
+                    letra: 'C',
+                    state: alternativaC,
+                    setState: setAlternativaC
+                },
+                {
+                    letra: 'D',
+                    state: alternativaD,
+                    setState: setAlternativaD
+                },
+                {
+                    letra: 'E',
+                    state: alternativaE,
+                    setState: setAlternativaE
+                }].map((x, index) => (
                     <div key={index} className={estilos.alternativa}>
-                        <span className={estilos.alternativalabel}>{x}.</span>
+                        <span className={estilos.alternativalabel}>{x.letra}.</span>
                         <textarea
+                            value={x.state}
+                            onChange={(e) => x.setState(e.target.value)} // Corrigir o onChange
                             className={estilos.formcontrol}
-                            placeholder={`Adicionar Alternativa ${x}`}
-                        />
+                            placeholder={`Adicionar Alternativa ${x.letra}`}/>
                         <button
-                            className={`${estilos.botaocor} ${alternativaCorreta === x ? estilos.botaoverde : estilos.botaovermelho}`}
-                            onClick={() => definirCorreta(x)}
-                        />
+                            className={`${estilos.botaocor} ${
+                                alternativaCorreta === x.letra ? estilos.botaoverde : estilos.botaovermelho
+                            }`}
+                            onClick={() => definirCorreta(x.letra)}
+                        ></button>
                     </div>
                 ))}
             </div>
 
-            <button className={`${estilos.btnpersonalizado}`} onClick={retornarQuestao}>Adicionar</button>
+            <button className={`${estilos.btnpersonalizado}`} onClick={retornarQuestao}>
+                Adicionar
+            </button>
         </div>
     );
 }

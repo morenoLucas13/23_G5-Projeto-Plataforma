@@ -9,8 +9,7 @@ import CardCabecalho from '../Componentes/CardCabecalho';
 
 // Componente para renderizar cada item do ranking
 const RankingItem = ({ posicao, nome, pontos }) => {
-//  console.log("itm rank : ", posicao, nome, pontos);
-
+    // Lógica para aplicar o estilo de Ouro, Prata ou Bronze
     const EstilosDasPosicoes = (posicao) => {
         switch (posicao) {
             case 1:
@@ -26,13 +25,9 @@ const RankingItem = ({ posicao, nome, pontos }) => {
 
     return (
         <View style={styles.rankingItem}>
-            {posicao <= 3 ? (
-                <View style={styles.viewPosicao}>
-                    <Text style={EstilosDasPosicoes(posicao)}>{posicao}</Text>
-                </View>
-            ) : (
+            <View style={styles.viewPosicao}>
                 <Text style={EstilosDasPosicoes(posicao)}>{posicao}</Text>
-            )}
+            </View>
             <Text style={styles.nome}>{nome}</Text>
             <Text style={styles.pontos}>{pontos}</Text>
         </View>
@@ -41,7 +36,6 @@ const RankingItem = ({ posicao, nome, pontos }) => {
 
 export default function Ranking() {
     const [rankingDados, setRankingDados] = useState([]); // Dados do ranking
-    const [carregando, setCarregando] = useState(true);   // Estado de carregamento
 
     // Função para buscar os dados do ranking
     const buscarRanking = async () => {
@@ -49,11 +43,8 @@ export default function Ranking() {
             const response = await api.get('/api/relatorios/rankingGeral');
             console.log('Response data:', response.data); // Verifique os dados retornados
             setRankingDados(response.data.ranking);
-            setCarregando(false);
-
         } catch (error) {
             console.error("Erro ao buscar dados do ranking:", error || error.response);
-            setCarregando(false);
             Toast.show({
                 type: ALERT_TYPE.DANGER,
                 title: 'Erro ao carregar ranking',
@@ -62,24 +53,12 @@ export default function Ranking() {
         }
     };
 
-
     useEffect(() => {
         (async () => {
-            
             buscarRanking();
         })();
     }, []);
 
-
-
-    // Exibe carregamento enquanto os dados não estão disponíveis
-    if (carregando) {
-        return (
-            <View style={styles.carregando}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
-    }
 
     return (
         <View style={styles.container}>
@@ -91,15 +70,15 @@ export default function Ranking() {
             {rankingDados.length > 0 ? (
                 <FlatList
                     data={rankingDados}
-                    renderItem={({item, posItem}) => (
+                    renderItem={({ item, index }) => (
                         <RankingItem
-                            key={posItem}
-                            posicao={posItem}
+                            key={item.nome}
+                            posicao={index + 1}  // Adiciona 1 ao índice para a posição
                             nome={item.nome}
                             pontos={item.pontuacao}
                         />
                     )}
-                    keyExtractor={(item, posItem) => item.nome}
+                    keyExtractor={(item) => item.nome}
                 />
             ) : (
                 <Text style={styles.textoNenhumDado}>Nenhum dado disponível no ranking.</Text>
@@ -202,7 +181,7 @@ const styles = StyleSheet.create({
         color: '#ffff',
         borderRadius: 10,
         width: 50,
-        height: 34,
+        height: 35,
         textAlign: 'center',
         lineHeight: 34,
     },

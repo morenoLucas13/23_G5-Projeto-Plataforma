@@ -24,8 +24,8 @@ app.use(midLogConsole);
 const rotasLogin = require('./src/app/controllers/loginController');
 app.use("/api/login", rotasLogin)
 
-const rotasSimulados = require('./src/app/controllers/simuladosController');
-app.use('/api/simulados', rotasSimulados)
+// const rotasSimulados = require('./src/app/controllers/simuladosController');
+// app.use('/api/simulados', rotasSimulados)
 
 const rotasQuestoes = require('./src/app/controllers/questoesController');
 app.use('/api/questoes', rotasQuestoes)
@@ -40,7 +40,8 @@ app.use('/api/adm/simulados', rotasRanking)
 
 app.use('/api/aluno/ranking', rotasRanking)
 
-
+const rotasAdmSimulados = require('./src/app/controllers/admController/admSimuladosController')
+app.use('/api/adm/simulados', rotasAdmSimulados)
 
 
 // Inicia o servidor na porta

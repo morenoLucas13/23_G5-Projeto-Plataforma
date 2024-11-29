@@ -99,7 +99,7 @@ export const ativarLogRequisicoes = (apiAxiosInstance) => {
                 + `============================================================\n`
                 + dumpDadosRequestConfig(error.config)
                 + `============================================================\n`
-                + dumpDadosResponse(response)
+                // + dumpDadosResponse(response)
                 + `============================================================\n`
                 // + '\n'
             )

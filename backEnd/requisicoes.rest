@@ -1,12 +1,12 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pdmVsX2FjZXNzbyI6MiwiaWF0IjoxNzMyNzA2MDkzLCJleHAiOjE3MzI3OTI0OTN9.y24IJbLpTOHPJ1wmfB2EQPIcCGtS6IqryhrRABN-sc0
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzI4ODYxNDMsImV4cCI6MTczMjk3MjU0M30.DknTJrcB3NYnWWZwWfUyqO6QVJNsKcw7X5CRx1PD7fo
 
 ###########################################
 POST http://localhost:3901/api/login
 Content-Type: application/json
 
 {
-    "email": "lucas.moreno@portalsesisp.org.br",
-    "senha": "Sesisp@2643"
+    "email": "rodrigo.casa@portalsesisp.org.br",
+    "senha": "Sesisp@1234"
 }
 
 ###########################################
@@ -48,7 +48,7 @@ authorization: {{token}}
 GET http://localhost:3901/api/simulados/agendados
 
 ############################################
-POST http://localhost:3901/api/simulados/criarNovoSimulado
+POST http://localhost:3901/api/adm/simulados/criarNovoSimulado
 Content-Type: application/json
 authorization: {{token}}
 
@@ -85,7 +85,7 @@ authorization: {{token}}
 }
 
 ############################################
-DELETE http://localhost:3901/api/simulados/11
+DELETE http://localhost:3901/api/simulados/53
 authorization: {{token}}
 
 
@@ -103,4 +103,8 @@ authorization: {{token}}
 
 ##############################################
 GET http://localhost:3901/api/relatorios/pontuacao/4
+authorization: {{token}}
+
+##############################################
+GET http://localhost:3901/api/adm/simulados/simuladosCriados
 authorization: {{token}}

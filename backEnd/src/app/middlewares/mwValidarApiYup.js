@@ -14,7 +14,7 @@ module.exports.validaEsquemaYupBody = (schema) => {
             next(); // Se a validação passar, chama o próximo middleware ou rota
         } catch (error) {
             // Se a validação falhar, retorna um erro
-            res.status(400).json({ sucesso: false, error: error.errors });
+            res.json({ sucesso: false, error: error.errors });
         }
     };
 };

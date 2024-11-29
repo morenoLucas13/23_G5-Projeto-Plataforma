@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BotaoRetornar from '../Imagens/botaoRetornar.png';
 import IconeLapis from '../Imagens/IconeLapis.png';
+import api from '../../src/api/axiosConfig'
+import Swal from 'sweetalert2';
 
 import { useNavigate } from 'react-router-dom';
 
 import estilos from '../Estilos/simulados.module.css';
 
 export default function SimuladosCriados() {
-    // Dados de exemplo para simulados
-    const simulados = [
-        { id: 1, materia: 'Biologia', descricao: 'Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado...' },
-        { id: 2, materia: 'Biologia', descricao: 'Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado...' },
-        { id: 3, materia: 'Biologia', descricao: 'Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado...' },
-        { id: 4, materia: 'Biologia', descricao: 'Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado...' },
-        { id: 5, materia: 'Biologia', descricao: 'Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado...' },
-        { id: 6, materia: 'Biologia', descricao: 'Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado / Descrição do Simulado...' },
-    ];
+    const [simulados, setSimulados] = useState([]);
+
+    const buscarSimuladosCriados = async () => {
+        try {
+            const response = await api.get('/api/adm/simulados/simuladosCriados')
+            // console.log('Dados da response:', response.data)
+            setSimulados(response.data.simulados)
+        } catch (error) {
+            console.log('Ops! Erro ao buscar simulados criados:', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Ops!',
+                text: 'Ocorreu um erro ao buscar simulados criados. Tente novamente mais tarde.'
+                
+            })
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            buscarSimuladosCriados();
+        })();
+    }, [])
 
     const navigate = useNavigate();
 
@@ -36,40 +52,55 @@ export default function SimuladosCriados() {
 
                 <div className={estilos.simuladoscontainer}>
                     {/* Loop para renderizar cada simulado */}
-                    {simulados.map((simulado, index) => (
-                        <div key={simulado.id}>
-                            {/* Alinhamento à esquerda dos títulos das matérias */}
-                            <h5 className={estilos.materiatitulo}>{simulado.materia}</h5>
-                            <div className={`${estilos.simuladocard} d-flex align-items-center justify-content-between`}>
-                                {/* Texto e Descrição do Simulado */}
-                                <div className={`${estilos.descricao} d-flex flex-column`}>
-                                    <p className={estilos.descricaosimulado}>
-                                        {simulado.descricao}
-                                    </p>
-                                </div> 
+                    <div className={estilos.simuladoscontainer}>
+                        {/* Verifica se há simulados para exibir */}
+                        {simulados.length > 0 ? (
+                            simulados.map((simulado) => (
+                                <div key={simulado.id} className={estilos.simuladocard}>
+                                    {/* Alinhamento à esquerda dos títulos das matérias */}
+                                    <h5 className={estilos.materiatitulo}>{simulado.nomeDisciplina}</h5>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        {/* Texto e Descrição do Simulado */}
+                                        <div className={`${estilos.descricao} d-flex flex-column`}>
+                                            <p className={estilos.descricaosimulado}>
+                                                {simulado.descricao}
+                                            </p>
+                                            <p className={estilos.datacriacao}>
+                                                Criado em: {new Date(simulado.data_criacao).toLocaleDateString()}
+                                            </p>
+                                        </div>
 
-                                {/* Divisor Vertical */}
-                                <div className={estilos.divisor}></div>
+                                        {/* Divisor Vertical */}
+                                        <div className={estilos.divisor}></div>
 
-                                {/* Botões e Switch */}
-                                <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
-                                    {/* Componente de Switch */}
-                                    <div>
-                                        <input type="checkbox" id={`switch${index}`} className={estilos.switchcheckbox} />
-                                        <label htmlFor={`switch${index}`} className={estilos.switchlabel}></label>
+                                        {/* Botões e Switch */}
+                                        <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
+                                            {/* Componente de Switch */}
+                                            <div>
+                                                <input
+                                                    type="checkbox"
+                                                    id={`switch${index}`}
+                                                    className={estilos.switchcheckbox}
+                                                />
+                                                <label htmlFor={`switch${index}`} className={estilos.switchlabel}></label>
+                                            </div>
+
+                                            {/* Botão de Editar */}
+                                            <button className="btn me-3 mt-2">
+                                                <img src={IconeLapis} alt="Ícone de Lápis" />
+                                            </button>
+
+                                            {/* Número de Questões */}
+                                            <span className={`${estilos.numeroquestoes} mt-2`}>16</span>
+                                        </div>
                                     </div>
-
-                                    {/* Botão de Editar */}
-                                    <button className="btn me-3 mt-2">
-                                        <img src={IconeLapis} alt="Ícone de Lápis" />
-                                    </button>
-
-                                    {/* Número de Questões */}
-                                     <span className={`${estilos.numeroquestoes} mt-2`}>16</span>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
+                            ))
+                        ) : (
+                            <p>Nenhum simulado encontrado!</p>
+                        )}
+                    </div>
+
                 </div>
             </div>
         </>

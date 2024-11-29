@@ -47,6 +47,20 @@ const questoes = [
 export default function AddQuestao({ acaoAddQuestao, acaoCancelar }) {
     const [listaQuestoes, setListaQuestoes] = useState(questoes);
 
+    function adicionar() {
+        acaoAddQuestao({
+            id: 10,
+            enunciado: "XXXXXX",
+            texto: "YYYYYY",
+            alternativaA: "AAAAA",
+            alternativaB: "BBBB",
+            alternativaC: "CCCC",
+            alternativaD: "DDDD",
+            alternativaE: "EEEE",
+            alternativaCorreta: "A",
+        })
+    }
+
     return (
         <>
             <div className={estilos.simuladoscontainer}>
@@ -66,7 +80,7 @@ export default function AddQuestao({ acaoAddQuestao, acaoCancelar }) {
                                 </div>
                                 <div className={estilos.divisor}></div>
                                 <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
-                                    <button className="btn me-3 mt-2">
+                                    <button className="btn me-3 mt-2" onClick={adicionar}>
                                         <img src={BtnAdicionar} />
                                     </button>
                                 </div>

@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ALERT_TYPE, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 import CaixaDeTextoLogCad from '../Componentes/CaixaDeTextoLogCad';
-import axios from 'axios';
 import api from '../api/axiosConfig';
 
 export default function Login() {

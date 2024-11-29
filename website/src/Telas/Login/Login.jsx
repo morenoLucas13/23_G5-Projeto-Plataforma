@@ -123,7 +123,7 @@ export default function Login() {
               setLoading(true);
               setTimeout(() => {
                 requisitaAutenticacao();
-              }, 3000);
+              }, 1000);
             }}
             disabled={loading}
           >

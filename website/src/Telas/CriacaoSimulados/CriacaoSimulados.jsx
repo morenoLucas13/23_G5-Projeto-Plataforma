@@ -3,9 +3,11 @@ import BotaoRetornar from '../../Imagens/botaoRetornar.png';
 import BtnLixo from '../../Imagens/BtnLixo.png';
 import { useNavigate } from 'react-router-dom';
 import NovaQuestao from './componentes/NovaQuestao';
-import estilos from '../../Estilos/simulados.module.css';
 import MinhaModal from '../../Componentes/MinhaModal/MinhaModal'
 import AddQuestao from './componentes/AddQuestao';
+import api, { alertas, apiUtils } from '../../api/axiosConfig'
+
+import estilos from '../../Estilos/simulados.module.css';
 
 export default function CriacaoSimulados() {
     const navigate = useNavigate();
@@ -13,44 +15,51 @@ export default function CriacaoSimulados() {
     const [showModalNovaQuestao, setShowModalNovaQuestao] = useState(false);
     const [showModalAddQuestao, setShowModalAddQuestao] = useState(false);
 
-    function enviarSimuladorApi() {
-        {}
+    async function enviarSimuladorApi() {
+        try {
+            let listaProcessada = listaQuestoes.map((q) => (
+                {
+                    ...q,
+                    nivel: 1,
+                    disciplina_id: 3
+                }
+            ));
+
+            let resp = await api.post('/api/adm/simulados/criarNovoSimulado', {
+                turma_id: 1,
+                descricao: "Simulado de Física Moderna",
+                status: 1,
+                disciplina_id: 3,
+                questoes: listaProcessada,
+            })
+
+            if (apiUtils.ok(resp)) {
+
+            } else {
+                alertas.erro("Ops!", );
+            }
+
+        } catch (error) {
+
+        }
     }
 
+    /** adiciona uma questao escolhida nas existentes ao simulado atual */
     function addicionarQuestaoDoBancoAoSimuladoAtual(obj) {
-        setListaQuestoes([
-            ...listaQuestoes,
-            {
-                id: listaQuestoes.length + 1,
-                disciplina: "Biologia",
-                ...obj
-            }
-        ]);
-        setShowModalNovaQuestao(false);
+        obj.disciplina_id = 3; // atribui a disciplina selecionada para o simulado
+        setListaQuestoes([...listaQuestoes, obj]); // adiciona questão selecionada
+        setShowModalNovaQuestao(false); // esconde modal
     }
 
     /**
-     * 
-     * @param {{
-            enunciado,
-            texto,
-            alternativaA,
-            alternativaB,
-            alternativaC,
-            alternativaD,
-            alternativaE,
-            alternativaCorreta
-        }} obj 
+     * Adiciona uma questao recem criado ao simulado atual
+     * @param {} obj 
      */
     function addicionarQuestaoNovaAoSimuladoAtual(obj) {
-        setListaQuestoes([
-            ...listaQuestoes,
-            {
-                id: undefined,
-                disciplina: "Biologia",
-                ...obj
-            }
-        ]);
+        obj.id = undefined;
+        obj.disciplina_id = 1;
+
+        setListaQuestoes([...listaQuestoes, obj]);
         setShowModalNovaQuestao(false);
     }
 
@@ -82,14 +91,15 @@ export default function CriacaoSimulados() {
                         onClick={() => setShowModalAddQuestao(true)}>Adicionar do Banco</button>
                 </div>
 
-                {/* Renderiza a Modal */}
+                {/* Modal de criação de questão */}
                 <MinhaModal visivel={showModalNovaQuestao}>
                     <NovaQuestao
-                        acaoAddNovaQuestao={addicionarQuestaoDoBancoAoSimuladoAtual}
+                        acaoAddNovaQuestao={addicionarQuestaoNovaAoSimuladoAtual}
                         acaoCancelar={() => escodenModais()}
                     />
                 </MinhaModal>
 
+                {/* Modal para escolher e adicionar uma questão existente ao simulado */}
                 <MinhaModal visivel={showModalAddQuestao} >
                     <AddQuestao
                         acaoCancelar={() => escodenModais()}
@@ -113,7 +123,7 @@ export default function CriacaoSimulados() {
 
                                 <div className={estilos.divisor}></div>
                                 <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
-                                    <button className="btn me-3 mt-2" onClick={() => removerQuestao(questao.id)}>
+                                    <button className={`${estilos.btnLixo} btn`} onClick={() => removerQuestao(questao.id)}>
                                         <img src={BtnLixo} alt="Remover Questão" />
                                     </button>
                                 </div>
@@ -121,7 +131,7 @@ export default function CriacaoSimulados() {
                         </div>
                     ))}
                 </div>
-            <button
+                <button
                     className={`btn btn-primary`}
                     onClick={enviarSimuladorApi}>Criar Simulado</button>
             </div>

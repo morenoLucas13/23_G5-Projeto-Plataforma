@@ -141,6 +141,12 @@
     color: #132B47;
 }
 
+.datacriacao {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+
 /* Estilo do container de botões e switch */
 .botoesswitch {
     display: flex;
@@ -172,4 +178,9 @@
 .container .btnpersonalizado:hover {
     background-color: #5A5FA0 !important;
     border-color: #5A5FA0 !important;
+}
+
+.btnLixo {
+    width: 500;
+    height: 500;
 }
