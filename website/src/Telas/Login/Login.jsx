@@ -4,9 +4,9 @@ import icoCadeado from '../../Imagens/IconeCadeado.png';
 import LogoApp from '../../Imagens/LogoDoApp.png';
 import { useNavigate } from 'react-router-dom';
 import InputLogECad from '../../Componentes/InputLogECad';
-import axios from 'axios';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+import api from '../../api/axiosConfig'
 
 import estilos from './Login.module.css';
 
@@ -33,7 +33,7 @@ export default function Login() {
       // Validação com Yup antes de enviar os dados
       await loginSchema.validate({ email, senha });
 
-      const response = await axios.post("/api/login", { email, senha });
+      const response = await api.post("/api/login", { email, senha });
 
       if (response && response.data && response.data.token) {
         const { token } = response.data;

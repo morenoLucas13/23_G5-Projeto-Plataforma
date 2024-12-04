@@ -9,44 +9,51 @@ import estilos from './Login.module.css';
 import * as Yup from 'yup';
 import api from '../../api/axiosConfig.js'
 
-
 // === COMPONENTE === //
 import InputLogECad from '../../Componentes/InputLogECad';
-
 
 // Schema de validação do Yup
 const cadastroSchema = Yup.object().shape({
   nome: Yup.string().required("O campo nome é obrigatório."),
   email: Yup.string().required('O campo email é obrigatório.').email('Email deve ser um endereço válido.'),
   senha: Yup.string().required('O campo senha é obrigatório.').min(7, 'A senha deve ter no mínimo 7 caracteres.'),
-  nivel_acesso: Yup.number().required("O campo de nível de acesso é obrigatório.").oneOf([1, 2], "O nível de acesso deve ser 1 ou 2.")
-})
-
-
+  nivel_acesso: Yup.number().required("O campo de nível de acesso é obrigatório.").oneOf([1, 2], "O nível de acesso deve ser 1 ou 2."),
+  numeroMatricula: Yup.string().required('O número de matrícula é obrigatório.') // Validação para o número de matrícula
+});
 
 export default function Cadastro() {
   const [nome, setNome] = useState('Melissa Oliveira da Costa');
   const [email, setEmail] = useState('melissa.costa@portalsesisp.org.br');
   const [senha, setSenha] = useState('MMCC@4014');
-  const [nivelAcesso, setNivelAcesso] = useState()
-
+  const [numeroMatricula, setNumeroMatricula] = useState('');
   const [papel, setPapel] = useState('');
   const [selecioneDisciplina, setSelecioneDisciplina] = useState([]);
+  const [selecioneTurmas, setSelecioneTurmas] = useState('');
+  const [informacoesPreenchidas, setInformacoesPreenchidas] = useState(false);
 
   const navigate = useNavigate();
-
 
   async function requisitaCadastro() {
     try {
       // Validando o Yup antes de enviar os dados
-      await cadastroSchema.validate({ nome, email, senha, nivel_acesso })
+      await cadastroSchema.validate({ nome, email, senha, nivel_acesso, numeroMatricula });
 
-      const response = await api.post('/api/login/cadastrarUser')
+      const response = await api.post('/api/login/cadastrarUser', {
+        nome,
+        email,
+        senha,
+        nivel_acesso,
+        numeroMatricula,
+        turma: selecioneTurmas, // Adiciona a turma selecionada
+        disciplinas: selecioneDisciplina // Adiciona as disciplinas selecionadas
+      });
 
+      console.log('Cadastro bem-sucedido:', response);
     } catch (error) {
-
+      console.log('Erro ao cadastrar:', error);
     }
   }
+
   // Lista de disciplinas
   const disciplinas = [
     'Biologia', 'Filosofia', 'Física', 'Geografia',
@@ -54,8 +61,16 @@ export default function Cadastro() {
     'Matemática', 'Química', 'Sociologia'
   ];
 
+  // Lista de turmas
+  const turmas = [
+    '3º Ensino Médio', '2º Ensino Médio', '1º Ensino Médio', '9º Ensino Fundamental II',
+    '8º Ensino Fundamental II', '7º Ensino Fundamental II', '6º Ensino Fundamental II'
+  ];
+
   // Abre a modal para escolher Aluno ou Professor e disciplinas
   const InformacoesAdicionais = async () => {
+    if (informacoesPreenchidas) return; // Impede de clicar novamente se já preencheu as informações
+
     // Seleção de Professor ou Aluno
     const { value: selecioneSuaFuncao } = await Swal.fire({
       title: 'Quem está sendo cadastrado?',
@@ -80,9 +95,8 @@ export default function Cadastro() {
           `<div style="text-align:left;">
               <input type="checkbox" class="form-check-input" id="disciplina-${index}" value="${discipline}">
               <label for="disciplina-${index}" class="form-check-label">${discipline}</label>
-            </div>`
-        ).join('')}
-        `,
+            </div>`).join('')
+          }`,
         preConfirm: () => {
           const selected = disciplinas.filter((_, index) => {
             const checkbox = document.getElementById(`disciplina-${index}`);
@@ -96,10 +110,50 @@ export default function Cadastro() {
 
       if (selecioneDisciplina) {
         setSelecioneDisciplina(selecioneDisciplina);
-        console.log('Disciplinas selecionadas:', selecioneDisciplina); // Exibe as disciplinas selecionadas no console
+        console.log('Disciplinas selecionadas:', selecioneDisciplina);
+        setInformacoesPreenchidas(true); // Atualiza para que o botão seja desabilitado
       }
     } else if (selecioneSuaFuncao === 'aluno') {
-      Swal.fire('Cadastro como aluno selecionado!');
+      // Para o aluno, agora será solicitado o número de matrícula e seleção de turmas
+      const { value: numeroMatricula } = await Swal.fire({
+        title: 'Informe o número da matrícula:',
+        input: 'number',
+        inputPlaceholder: 'Número de Matrícula',
+        preConfirm: (value) => {
+          if (!value) {
+            Swal.showValidationMessage('O número de matrícula é obrigatório');
+          }
+          return value;
+        }
+      });
+
+      setNumeroMatricula(numeroMatricula);
+
+      const { value: turmaSelecionada } = await Swal.fire({
+        title: 'Selecione uma turma',
+        html: `
+          ${turmas.map((turma, index) =>
+          `<div style="text-align:left;">
+              <input type="radio" class="form-check-input" id="turma-${index}" name="turma" value="${turma}">
+              <label for="turma-${index}" class="form-check-label">${turma}</label>
+            </div>`).join('')
+          }`,
+        preConfirm: () => {
+          const selectedTurma = turmas.find((_, index) => {
+            const radio = document.getElementById(`turma-${index}`);
+            return radio && radio.checked;
+          });
+
+          return selectedTurma ? selectedTurma : Swal.showValidationMessage('Selecione uma turma');
+        },
+        confirmButtonText: 'Confirmar',
+      });
+
+      if (numeroMatricula && turmaSelecionada) {
+        setSelecioneTurmas(turmaSelecionada);
+        console.log('Número da Matricula:', numeroMatricula, ', Turma selecionada:', turmaSelecionada);
+        setInformacoesPreenchidas(true); // Atualiza para que o botão seja desabilitado
+      }
     }
   };
 
@@ -112,24 +166,29 @@ export default function Cadastro() {
           titulo="Nome do usuário:"
           icon={icoPessoa}
           placeholder="Insira o seu nome"
-        />
+          valor={nome}
+          onChange={(evt) => setNome(evt)} />
+
         <InputLogECad
           titulo="Email do usuário:"
           icon={icoEmail}
           placeholder="Insira o seu email"
-        />
+          valor={email}
+          onChange={(evt) => setEmail(evt)} />
+
         <InputLogECad
           titulo="Senha do usuário:"
           icon={icoCadeado}
           placeholder="Insira a sua senha"
-        />
+          valor={senha}
+          onChange={(evt) => setSenha(evt)} />
 
         {/* Botão que abre o alert de informações adicionais */}
         <button
           type="button"
           onClick={InformacoesAdicionais}
           className={estilos.btnInfo}
-        >
+          disabled={informacoesPreenchidas}>
           Informações Adicionais
         </button>
 
@@ -137,8 +196,7 @@ export default function Cadastro() {
           <button
             type="button"
             className={estilos.custombutton}
-            onClick={() => navigate('/home')}
-          >
+            onClick={requisitaCadastro}>
             Cadastrar
           </button>
         </div>

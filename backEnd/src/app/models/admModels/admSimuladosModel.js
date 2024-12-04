@@ -67,10 +67,10 @@ module.exports.buscarQuestaoPorEnunciado = async (enunciado) => {
         conexao = await db.criarConexao();
         const [linhas] = await conexao.execute(
             `SELECT * FROM questoes WHERE ques_enunciado LIKE ?`,
-            [`%${enunciado}%`] 
+            [`%${enunciado}%`]
         );
 
-        return linhas.length > 0 ? linhas : null; 
+        return linhas.length > 0 ? linhas : null;
     } catch (error) {
         console.log('Ocorreu um erro ao buscar questão por enunciado:', error);
         throw error;
@@ -79,7 +79,7 @@ module.exports.buscarQuestaoPorEnunciado = async (enunciado) => {
     }
 };
 
-module.exports.criarQuestaoDoZero = async ( nivel, disciplina_id, texto, enunciado, alternativaA, alternativaB, alternativaC, alternativaD, alternativaE, alternativaCorreta ) => {
+module.exports.criarQuestaoDoZero = async (nivel, disciplina_id, texto, enunciado, alternativaA, alternativaB, alternativaC, alternativaD, alternativaE, alternativaCorreta) => {
 
     let conexao;
 
@@ -140,7 +140,7 @@ module.exports.criarNovoSimulado = async (turma_id, descricao, professor, status
             descricao,
             professor,
             dataCriacao: data,
-            status, 
+            status,
             concluido: 0
         };
     } catch (error) {
@@ -150,3 +150,71 @@ module.exports.criarNovoSimulado = async (turma_id, descricao, professor, status
         db.liberarConexao(conexao);
     }
 };
+
+module.exports.atualizarQuestaoSimulado = async (
+    questao_id,
+    nivel,
+    texto,
+    enunciado,
+    alternativaA,
+    alternativaB,
+    alternativaC,
+    alternativaD,
+    alternativaE,
+    alternativaCorreta
+) => {
+    let conexao;
+
+    try {
+        conexao = await db.criarConexao();
+        const [consulta] = await conexao.execute(
+            `UPDATE questoes 
+             SET iddisciplina = ?, 
+                ques_triNivel = ?, 
+                 ques_textoQuestao = ?, 
+                 ques_enunciado = ?, 
+                 ques_alternativaA = ?, 
+                 ques_alternativaB = ?, 
+                 ques_alternativaC = ?, 
+                 ques_alternativaD = ?, 
+                 ques_alternativaE = ?, 
+                 ques_alternativaCorreta = ? 
+             WHERE idquestao = ?`,
+
+            [
+                nivel,
+                texto,
+                enunciado,
+                alternativaA,
+                alternativaB,
+                alternativaC,
+                alternativaD,
+                alternativaE,
+                alternativaCorreta,
+                questao_id
+            ]
+        );
+        
+
+        console.log('Resultado da atualização:', consulta)
+
+        if (consulta.affectedRows === 0) {
+            return null;
+        }
+
+        const [questaoAtualizada] = await conexao.execute(
+            `SELECT * FROM questoes WHERE idquestao = ?`,
+            [questao_id]
+        );
+
+        console.log('Questão atualizada:', questaoAtualizada)
+
+        return questaoAtualizada.length > 0 ? questaoAtualizada[0] : null
+    } catch (error) {
+        console.error("Erro ao atualizar questão no banco de dados:", error)
+        throw error;
+    } finally {
+        db.liberarConexao(conexao)
+    }
+};
+

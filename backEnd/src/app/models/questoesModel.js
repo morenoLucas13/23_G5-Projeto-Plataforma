@@ -2,28 +2,6 @@
 
 const db = require('../db/')
 
-// module.exports.buscarQuestaoPorEnunciado = async (enunciado) => {
-//     let conexao
-
-//     try {
-//         conexao = await db.criarConexao()
-
-//         // Verificando se a questão já existe com base no enunciado
-//         const consulta = `SELECT * FROM questoes WHERE ques_enunciado = ?`
-
-//         const [linhas] = await conexao.execute(consulta, [enunciado])
-
-//         // Operador ternário
-//         // Retorna a questão se ela existir, ou null se não encontrada
-//         return linhas.length > 0 ? linhas[0] : null
-
-//     } catch (error) {
-//         console.error('Ocorreu um erro ao buscar questão por enunciado:', error)
-//         throw error
-//     } finally {
-//         db.liberarConexao(conexao)
-//     }
-// };
 
 module.exports.buscarQuestoesPorDisciplina = async (iddisciplina) => {
     let conexao;

@@ -49,7 +49,7 @@
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0px 3px 4px rgba(0, 0, 1, 1);
-    display: flex;
+    /* display: flex; */
 }
 
 .simuladoscontainer {
@@ -141,12 +141,6 @@
     color: #132B47;
 }
 
-.datacriacao {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-
 /* Estilo do container de botões e switch */
 .botoesswitch {
     display: flex;
@@ -180,7 +174,16 @@
     border-color: #5A5FA0 !important;
 }
 
-.btnLixo {
-    width: 500;
-    height: 500;
+.btnFuncao {
+    width: 50px;
+    height: 50px;
+}
+
+.ImgBtn {
+    width: 30px;
+    height: 30px;
+}
+
+.linha {
+    flex-direction: row;
 }

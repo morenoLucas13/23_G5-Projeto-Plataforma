@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BotaoRetornar from '../../Imagens/botaoRetornar.png';
-import BtnLixo from '../../Imagens/BtnLixo.png';
 import { useNavigate } from 'react-router-dom';
 import NovaQuestao from './componentes/NovaQuestao';
 import MinhaModal from '../../Componentes/MinhaModal/MinhaModal'
@@ -9,11 +8,16 @@ import api, { alertas, apiUtils } from '../../api/axiosConfig'
 
 import estilos from '../../Estilos/simulados.module.css';
 
+import BtnLixo from '../../Imagens/BtnLixo.png';
+import BtnAtt from '../../Imagens/eye.png'
+
 export default function CriacaoSimulados() {
     const navigate = useNavigate();
     const [listaQuestoes, setListaQuestoes] = useState([]);
     const [showModalNovaQuestao, setShowModalNovaQuestao] = useState(false);
     const [showModalAddQuestao, setShowModalAddQuestao] = useState(false);
+    const [questaoParaEditar, setQuestaoParaEditar] = useState(null);
+
 
     async function enviarSimuladorApi() {
         try {
@@ -36,7 +40,7 @@ export default function CriacaoSimulados() {
             if (apiUtils.ok(resp)) {
 
             } else {
-                alertas.erro("Ops!", );
+                alertas.erro("Ops!",);
             }
 
         } catch (error) {
@@ -94,10 +98,24 @@ export default function CriacaoSimulados() {
                 {/* Modal de criação de questão */}
                 <MinhaModal visivel={showModalNovaQuestao}>
                     <NovaQuestao
-                        acaoAddNovaQuestao={addicionarQuestaoNovaAoSimuladoAtual}
-                        acaoCancelar={() => escodenModais()}
+                        questao={questaoParaEditar} // Passa a questão para edição
+                        acaoAddNovaQuestao={(questaoAtualizada) => {
+                            if (questaoParaEditar) {
+                                // Atualiza a lista com a questão editada
+                                setListaQuestoes(listaQuestoes.map(q => q.id === questaoParaEditar.id ? questaoAtualizada : q));
+                            } else {
+                                // Adiciona nova questão
+                                addicionarQuestaoNovaAoSimuladoAtual(questaoAtualizada);
+                            }
+                            setQuestaoParaEditar(null); // Reseta o estado da questão para edição
+                        }}
+                        acaoCancelar={() => {
+                            escodenModais();
+                            setQuestaoParaEditar(null); // Reseta o estado ao cancelar
+                        }}
                     />
                 </MinhaModal>
+
 
                 {/* Modal para escolher e adicionar uma questão existente ao simulado */}
                 <MinhaModal visivel={showModalAddQuestao} >
@@ -123,10 +141,19 @@ export default function CriacaoSimulados() {
 
                                 <div className={estilos.divisor}></div>
                                 <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>
-                                    <button className={`${estilos.btnLixo} btn`} onClick={() => removerQuestao(questao.id)}>
-                                        <img src={BtnLixo} alt="Remover Questão" />
+                                    <button
+                                        className={`${estilos.btnFuncao} btn`}
+                                        onClick={() => {
+                                            setQuestaoParaEditar(questao);
+                                            setShowModalNovaQuestao(true);
+                                        }}>
+                                        <img className={`${estilos.ImgBtn}`} src={BtnAtt} alt="Atualizar Questão" />
+                                    </button>
+                                    <button className={`${estilos.btnFuncao} btn`} onClick={() => removerQuestao(questao.id)}>
+                                        <img className={`${estilos.ImgBtn}`} src={BtnLixo} alt="Remover Questão" />
                                     </button>
                                 </div>
+
                             </div>
                         </div>
                     ))}

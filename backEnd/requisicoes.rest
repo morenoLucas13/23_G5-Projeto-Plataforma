@@ -1,7 +1,7 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzI4ODYxNDMsImV4cCI6MTczMjk3MjU0M30.DknTJrcB3NYnWWZwWfUyqO6QVJNsKcw7X5CRx1PD7fo
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzMzMTIyNzAsImV4cCI6MTczMzM5ODY3MH0.EgW_NgCR8Yg0ybwlxn1sw_c7Pq1QozGrRsw4gPvi0M8
 
 ###########################################
-POST http://localhost:3901/api/login
+POST http://10.132.224.60:3901/api/login
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ###########################################
-POST http://localhost:3901/api/login
+POST http://10.132.224.60:3901/api/login
 Content-Type: application/json
 
 {
@@ -19,36 +19,39 @@ Content-Type: application/json
 }
 
 ###########################################
-POST http://localhost:3901/api/login/verificarToken
+POST http://10.132.224.60:3901/api/login/verificarToken
 Content-Type: application/json
 authorization: {{token}}
 
 ###########################################
-POST http://localhost:3901/api/login/listar
+POST http://10.132.224.60:3901/api/login/listar
 Content-Type: application/json
 authorization: {{token}}
 
 ###########################################
-POST http://localhost:3901/api/login/cadastrarUser
+POST http://10.132.224.60:3901/api/login/cadastrarUser
 Content-Type: application/json
 
 {
-    "nome": "Melissa Ribeiro da Silva",
-    "email": "melissa.silva@portalsesisp.org.br",
-    "senha": "Sesisp@1234",
-    "nivelAcesso": 1
+    "nome": "João Silva",
+    "email": "joao.silva@escola.com",
+    "senha": "123456",
+    "nivel_acesso": 2,
+    "disciplinasAula": [1, 2, 3]
 }
 
+
+
 ###########################################
-GET http://localhost:3901/api/login/dadosUser
+GET http://10.132.224.60:3901/api/login/dadosUser
 authorization: {{token}}
 
 
 ###########################################
-GET http://localhost:3901/api/simulados/agendados
+GET http://10.132.224.60:3901/api/simulados/agendados
 
 ############################################
-POST http://localhost:3901/api/adm/simulados/criarNovoSimulado
+POST http://10.132.224.60:3901/api/adm/simulados/criarNovoSimulado
 Content-Type: application/json
 authorization: {{token}}
 
@@ -69,42 +72,51 @@ authorization: {{token}}
             "alternativaD": "9",
             "alternativaE": "10",
             "alternativaCorreta": "C"
-        },
-        {
-            "nivel": "2",
-            "texto": "Se x = 3, qual é o valor de 2x + 4?",
-            "enunciado": "Substitua o valor de x na expressão e resolva.",
-            "alternativaA": "8",
-            "alternativaB": "9",
-            "alternativaC": "10",
-            "alternativaD": "6",
-            "alternativaE": "11",
-            "alternativaCorreta": "C"
-        }
-    ]
+        }]
 }
 
 ############################################
-DELETE http://localhost:3901/api/simulados/53
+DELETE http://10.132.224.60:3901/api/simulados/15
 authorization: {{token}}
 
 
 ############################################
-GET http://localhost:3901/api/questoes/questoesDisciplina/2
+GET http://10.132.224.60:3901/api/questoes/questoesDisciplina/2
 authorization: {{token}}
 
 #############################################
-GET http://localhost:3901/api/relatorios/rankingGeral
+GET http://10.132.224.60:3901/api/relatorios/rankingGeral
 authorization: {{token}}
 
 ##############################################
-GET http://localhost:3901/api/relatorios/2
+GET http://10.132.224.60:3901/api/relatorios/2
 authorization: {{token}}
 
 ##############################################
-GET http://localhost:3901/api/relatorios/pontuacao/4
+GET http://10.132.224.60:3901/api/relatorios/pontuacao/4
 authorization: {{token}}
 
 ##############################################
-GET http://localhost:3901/api/adm/simulados/simuladosCriados
+GET http://10.132.224.60:3901/api/adm/simulados/simuladosCriados
 authorization: {{token}}
+
+##############################################
+PUT http://10.132.224.60:3901/api/adm/simulados/atualizarQuestao
+Content-Type: application/json
+authorization: {{token}}
+
+{
+  "id": 1,
+  "disciplina_id": 3,
+  "nivel": 1,
+  "texto": "Leia atentamente as informações abaixo",
+  "enunciado": "Qual das alternativas a seguir é a capital do Brasil?",
+  "alternativaA": "Moscou",
+  "alternativaB": "Buenos Aires",
+  "alternativaC": "Santiago",
+  "alternativaD": "Brasília",
+  "alternativaE": "Bogotá",
+  "alternativaCorreta": "D"
+}
+
+

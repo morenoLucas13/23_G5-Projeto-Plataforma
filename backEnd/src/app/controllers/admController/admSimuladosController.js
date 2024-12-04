@@ -73,10 +73,6 @@ rotas.post('/criarNovoSimulado',
             for (let i = 0; i < questoes.length; i++) {
                 const questao = questoes[i];
 
-
-
-
-
                 let idQuestao = questao.id
 
                 if (!idQuestao) {
@@ -95,22 +91,12 @@ rotas.post('/criarNovoSimulado',
                     );
                     idQuestao = novaQuestao.id
                 }
+
+
                 await model.adicionarQuestaoExistenteAoSimulado(novoSimulado.id, idQuestao);
 
                 questoesAdicionadas.push({ id: questao.id, tipo: "existente" });
-
-
-
-
-
-
-
-
-
-
-
             }
-
             res.status(201).json({
                 mensagem: "Simulado criado com sucesso",
                 simulado: novoSimulado,
@@ -122,32 +108,128 @@ rotas.post('/criarNovoSimulado',
             res.status(500).json({
                 erro: 'Ops! Ocorreu um erro ao criar um simulado. Tente novamente ;)'
             });
+
         }
     }
 );
 
-// Rota para excluir um simulado
-rotas.delete('/:id',
+const { questoesValidation } = require("../../validations/questoes.validation");
+// Rota para atualizar uma questão de um simulado
+rotas.put('/atualizarQuestao',
     midVerificarJWToken.verifyToken,
+    midValidarApiYup.validaEsquemaYupBody(questoesValidation),
     autorizarNivel(1),
     async (req, res) => {
-        const { id } = req.params;
 
+        const {
+            questao_id,
+            disciplina_id,
+            nivel,
+            texto,
+            enunciado,
+            alternativaA,
+            alternativaB,
+            alternativaC,
+            alternativaD,
+            alternativaE,
+            alternativaCorreta
+        } = req.body
+
+        // Realizar a conversão da letra para número
+        let alternativaCorretaNumero;
+        switch (alternativaCorreta) {
+            case 'A': alternativaCorretaNumero = 1; break;
+            case 'B': alternativaCorretaNumero = 2; break;
+            case 'C': alternativaCorretaNumero = 3; break;
+            case 'D': alternativaCorretaNumero = 4; break;
+            case 'E': alternativaCorretaNumero = 5; break;
+            default: alternativaCorretaNumero = 0; break; // Caso não seja válido
+        }
         try {
-            const resultado = await model.excluirSimulado(id);
-            if (!resultado.affectedRows) {
-                return res.status(404).json({ erro: 'Ops! Simulado não encontrado.' });
+            const questaoAtualizada = await model.atualizarQuestaoSimulado(
+                {
+                    disciplinaId: disciplina_id,
+                    nivel: nivel,
+                    textoQuestao: texto,
+                    enunciado: enunciado,
+                    alternativas: {
+                        A: alternativaA,
+                        B: alternativaB,
+                        C: alternativaC,
+                        D: alternativaD,
+                        E: alternativaE
+                    },
+                    alternativaCorreta: alternativaCorretaNumero
+                },
+                {
+                    where: { id: questao_id }
+                }
+            );
+
+            // Verificar se a questão foi atualizada com sucesso
+            if (questaoAtualizada[0] === 0) {
+                return res.status(400).json({
+                    sucesso: false,
+                    mensagem: 'Não foi possível atualizar a questão.',
+                });
             }
 
-            res.json({ mensagem: 'Simulado excluído com sucesso!', simuladoExcluidoId: id });
+            return res.status(200).json({
+                sucesso: true,
+                mensagem: 'Questão atualizada com sucesso!',
+                questao: {
+                    id: questao_id,
+                    disciplinaId: disciplina_id,
+                    nivel: nivel,
+                    textoQuestao: texto,
+                    enunciado: enunciado,
+                    alternativas: {
+                        A: alternativaA,
+                        B: alternativaB,
+                        C: alternativaC,
+                        D: alternativaD,
+                        E: alternativaE
+                    },
+                    alternativaCorreta: alternativaCorreta
+                }
+            });
         } catch (error) {
-            console.log('Ops! Erro ao apagar um simulado:', error);
-            res.status(500).json({ erro: 'Ocorreu um erro ao remover um simulado. Tente novamente.' });
-        }
-        console.log('Fim da rota DELETE de Simulados!');
-    }
-);
+            console.error('Erro ao atualizar questão:', error);
+            return res.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro interno no servidor.',
+            });
+}})
 
 
-// Exportando as rotas
-module.exports = rotas;
+
+
+
+
+        // Rota para excluir um simulado
+        rotas.delete('/:id',
+            midVerificarJWToken.verifyToken,
+            autorizarNivel(1),
+            async (req, res) => {
+                const { id } = req.params;
+
+                try {
+                    const resultado = await model.excluirSimulado(id);
+                    if (!resultado.affectedRows) {
+                        return res.status(404).json({ erro: 'Ops! Simulado não encontrado.' });
+                    }
+
+                    res.json({ mensagem: 'Simulado excluído com sucesso!', simuladoExcluidoId: id });
+                } catch (error) {
+                    console.log('Ops! Erro ao apagar um simulado:', error);
+                    res.status(500).json({ erro: 'Ocorreu um erro ao remover um simulado. Tente novamente.' });
+                }
+                console.log('Fim da rota DELETE de Simulados!');
+            }
+        );
+
+
+
+
+        // Exportando as rotas
+        module.exports = rotas;

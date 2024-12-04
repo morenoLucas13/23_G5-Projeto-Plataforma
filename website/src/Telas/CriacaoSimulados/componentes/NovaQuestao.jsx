@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import estilos from './criarquestao.module.css';
 
 import BotaoFechar from '../../../Imagens/BtnFechar.png';
 
 
-export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
+
+export default function NovaQuestao({ questao, acaoAddNovaQuestao, acaoCancelar }) {
     const [texto, setTexto] = useState('');
     const [enunciado, setEnunciado] = useState('');
     const [alternativaA, setAlternativaA] = useState('');
@@ -12,35 +13,55 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
     const [alternativaC, setAlternativaC] = useState('');
     const [alternativaD, setAlternativaD] = useState('');
     const [alternativaE, setAlternativaE] = useState('');
+    const [alternativaCorreta, setAlternativaCorreta] = useState(null);
 
-    const [alternativaCorreta, setAlternativaCorreta] = useState(null); // Estado para a alternativa correta
+    // Atualiza os estados com os valores da questão ao iniciar ou ao editar
+    useEffect(() => {
+        if (questao) {
+            setTexto(questao.texto || '');
+            setEnunciado(questao.enunciado || '');
+            setAlternativaA(questao.alternativaA || '');
+            setAlternativaB(questao.alternativaB || '');
+            setAlternativaC(questao.alternativaC || '');
+            setAlternativaD(questao.alternativaD || '');
+            setAlternativaE(questao.alternativaE || '');
+            setAlternativaCorreta(questao.alternativaCorreta || null);
+        }
+    }, [questao]);
 
-    function definirCorreta(alternativa) {
-        setAlternativaCorreta(alternativa);
+    // Define qual é a alternativa correta
+    function definirCorreta(letra) {
+        setAlternativaCorreta(letra); // Atualiza o estado
     }
 
+    // Retorna os dados da questão atualizada
     function retornarQuestao() {
+        if (!alternativaCorreta) {
+            alert('Por favor, selecione uma alternativa correta.');
+            return;
+        }
+
         acaoAddNovaQuestao({
-            enunciado,
+            id: questao?.id || undefined,
             texto,
+            enunciado,
             alternativaA,
             alternativaB,
             alternativaC,
             alternativaD,
             alternativaE,
-            alternativaCorreta
+            alternativaCorreta,
         });
     }
 
     return (
         <div className={estilos.container}>
             <div className={estilos.divInicio}>
-                <button className='btn' onClick={acaoCancelar}>
-                    <img src={BotaoFechar} />
+                <button className="btn" onClick={acaoCancelar}>
+                    <img src={BotaoFechar} alt="Fechar" />
                 </button>
-
-                {/* <CreatableSelect isClearable options={colourOptions} />; */}
             </div>
+
             <h2 className={estilos.textcenter}>Adicione sua própria questão</h2>
 
             <textarea
@@ -58,46 +79,42 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
             />
 
             <div>
-                {[{
-                    letra: 'A',
-                    state: alternativaA,
-                    setState: setAlternativaA
-                },
-                {
-                    letra: 'B',
-                    state: alternativaB,
-                    setState: setAlternativaB
-                },
-                {
-                    letra: 'C',
-                    state: alternativaC,
-                    setState: setAlternativaC
-                },
-                {
-                    letra: 'D',
-                    state: alternativaD,
-                    setState: setAlternativaD
-                },
-                {
-                    letra: 'E',
-                    state: alternativaE,
-                    setState: setAlternativaE
-                }].map((x, index) => (
-                    <div key={index} className={estilos.alternativa}>
-                        <span className={estilos.alternativalabel}>{x.letra}.</span>
-                        <textarea
-                            value={x.state}
-                            onChange={(e) => x.setState(e.target.value)} // Corrigir o onChange
-                            className={estilos.formcontrol}
-                            placeholder={`Adicionar Alternativa ${x.letra}`}/>
-                        <button
-                            className={`${estilos.botaocor} ${
-                                alternativaCorreta === x.letra ? estilos.botaoverde : estilos.botaovermelho
-                            }`}
-                            onClick={() => definirCorreta(x.letra)}
-                        ></button>
-                    </div>
-                ))}
+                {['A', 'B', 'C', 'D', 'E'].map((letra, index) => {
+                    const alternativa = {
+                        A: alternativaA,
+                        B: alternativaB,
+                        C: alternativaC,
+                        D: alternativaD,
+                        E: alternativaE,
+                    }[letra];
+
+                    const setAlternativa = {
+                        A: setAlternativaA,
+                        B: setAlternativaB,
+                        C: setAlternativaC,
+                        D: setAlternativaD,
+                        E: setAlternativaE,
+                    }[letra];
+
+                    return (
+                        <div key={index} className={estilos.alternativa}>
+                            <span className={estilos.alternativalabel}>{letra}.</span>
+                            <textarea
+                                value={alternativa}
+                                onChange={(e) => setAlternativa(e.target.value)}
+                                className={estilos.formcontrol}
+                                placeholder={`Adicionar Alternativa ${letra}`}
+                            />
+                            <button
+                                className={`${estilos.botaocor} ${
+                                    alternativaCorreta === letra ? estilos.botaoverde : estilos.botaovermelho
+                                }`}
+                                onClick={() => definirCorreta(letra)}
+                            >
+                            </button>
+                        </div>
+                    );
+                })}
             </div>
 
             <button className={`${estilos.btnpersonalizado}`} onClick={retornarQuestao}>

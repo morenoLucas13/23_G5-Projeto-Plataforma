@@ -66,21 +66,31 @@ module.exports.verificarEmailExistente = async (email) => {
     }
 };
 
-module.exports.cadastrarProfessor = async (nome, email, senha, nivelAcesso, disciplinasAula) => {
+module.exports.cadastrarProfessor = async (nome, email, senha, nivel_acesso, disciplinasAula) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
 
         // Inserção de professores na tabela 'professor'
-        const [consulta] = await conexao.execute(
-            `INSERT INTO professor (us_nome, us_email, us_senha, us_nivel_acesso, disciplinas) VALUES (?, ?, ?, ?, ?);`,
-            [nome, email, senha, nivelAcesso, disciplinasAula]
+        const [consultaProfessor] = await conexao.execute(
+            `INSERT INTO professor (us_nome, us_email, us_senha, us_nivel_acesso) VALUES (?, ?, ?, ?, ?);`,
+            [nome, email, senha, nivel_acesso]
         );
 
-        console.log('Resultado da Inserção:', consulta);
+        const idProfessor = consultaProfessor.insertId
+
+        for (const disciplina_id of disciplinasAula) {
+            await conexao.execute(
+                `UPDATE disciplinas SET idprofessor = ? WHERE iddisciplina = ?;`,
+                [idProfessor, disciplina_id]
+            )
+            
+        }
+
+        console.log('Professor e disciplinas associadas com sucesso:', consultaProfessor);
 
         // Retornando os dados que foram inseridos
-        return { id: consulta.insertId, nome, email, nivelAcesso, disciplinasAula };
+        return { id: idProfessor, nome, email, nivel_acesso, disciplinasAula };
     } catch (error) {
         console.error('Erro ao executar a query:', error);
         throw error; // Repassa o erro para o controlador
@@ -90,21 +100,21 @@ module.exports.cadastrarProfessor = async (nome, email, senha, nivelAcesso, disc
     }
 };
 
-module.exports.cadastrarAluno = async (nome, email, senha, nivelAcesso) => {
+module.exports.cadastrarAluno = async (nome, email, senha, matricula, turma) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
 
         // Inserção de alunos na tabela 'aluno'
-        const [consulta] = await conexao.execute(
-            `INSERT INTO alunos (us_nome, us_email, us_senha, us_nivel_acesso) VALUES (?, ?, ?, ?);`,
-            [nome, email, senha, nivelAcesso]
+        const [consultaAluno] = await conexao.execute(
+            `INSERT INTO alunos (idturma, nome, email, matricula, senha) VALUES (?, ?, ?, ?, ?);`,
+            [turma, nome, email, matricula, senha ]
         );
 
         console.log('Resultado da Inserção:', consulta);
 
         // Retornando os dados que foram inseridos
-        return { id: consulta.insertId, nome, email, nivelAcesso };
+        return { id: consultaAluno.insertId, nome, email, matricula, senha };
     } catch (error) {
         console.error('Erro ao executar a query:', error);
         throw error; // Repassa o erro para o controlador
