@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import api from '../api/axiosConfig';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -29,14 +30,20 @@ export default function Home() {
     async function buscarNomeToken() {
         try {
             const resposta = await api.get('/api/login/dadosUser');
-            // Supondo que a resposta tenha um campo 'nome' que contém o nome do professor
-            setNomeProfessor(resposta.data.nome);
+
+            // Acessa o primeiro item da matriz retornada e extrai o nome
+            if (resposta.data && resposta.data.length > 0) {
+                setNomeProfessor(resposta.data[0].nome);
+            } else {
+                console.log('Nenhum dado de usuário retornado.');
+            }
         } catch (error) {
-            console.log('Ocorreu um erro ao buscar o nome do usuário a partir do token.');
+            console.log('Ocorreu um erro ao buscar o nome do usuário a partir do token.', error);
         }
     }
 
-    // Chama a função buscarNomeToken assim que o componente for montado
+
+    // Chamando a função buscarNomeToken assim que o componente for montado
     useEffect(() => {
         buscarNomeToken();
     }, []);
@@ -79,12 +86,14 @@ export default function Home() {
                     <div className="carousel-inner">
                         {vestibulares.map((vestibular, index) => (
                             <div
+                                key={index}
                                 className={`carousel-item ${index === 0 ? 'active' : ''} ${estilos.carouselitem}`}
                             >
                                 <img src={vestibular.src} alt={vestibular.alt} className="d-block w-100" />
                             </div>
                         ))}
                     </div>
+
                     <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     </button>

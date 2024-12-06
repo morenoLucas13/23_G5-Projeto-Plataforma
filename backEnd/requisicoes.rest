@@ -1,7 +1,9 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzMzMTIyNzAsImV4cCI6MTczMzM5ODY3MH0.EgW_NgCR8Yg0ybwlxn1sw_c7Pq1QozGrRsw4gPvi0M8
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzM0OTAwOTQsImV4cCI6MTczMzU3NjQ5NH0.OEgWoJ8rqRkC9z18okZdHlRnbW1LGmXkFqag6FM_y9E
+@url=http://10.132.224.60:3901
+
 
 ###########################################
-POST http://10.132.224.60:3901/api/login
+POST {{url}}/api/login
 Content-Type: application/json
 
 {
@@ -10,48 +12,49 @@ Content-Type: application/json
 }
 
 ###########################################
-POST http://10.132.224.60:3901/api/login
-Content-Type: application/json
-
-{
-    "email": "alana.freitas@portalsesisp.org.br",
-    "senha": "Sesisp@2151"
-}
-
-###########################################
-POST http://10.132.224.60:3901/api/login/verificarToken
+POST {{url}}/api/login/verificarToken
 Content-Type: application/json
 authorization: {{token}}
 
 ###########################################
-POST http://10.132.224.60:3901/api/login/listar
+POST {{url}}/api/login/listar
 Content-Type: application/json
 authorization: {{token}}
 
 ###########################################
-POST http://10.132.224.60:3901/api/login/cadastrarUser
+POST {{url}}/api/login/cadastrarUser
 Content-Type: application/json
 
 {
     "nome": "João Silva",
-    "email": "joao.silva@escola.com",
+    "email": "joao.silva@portalsesisp.org.br",
     "senha": "123456",
     "nivel_acesso": 2,
     "disciplinasAula": [1, 2, 3]
 }
 
-
-
 ###########################################
-GET http://10.132.224.60:3901/api/login/dadosUser
+GET {{url}}/api/login/dadosUser
 authorization: {{token}}
 
 
 ###########################################
-GET http://10.132.224.60:3901/api/simulados/agendados
+GET {{url}}/api/alunos/simulados/agendados
 
 ############################################
-POST http://10.132.224.60:3901/api/adm/simulados/criarNovoSimulado
+GET {{url}}/api/alunos/simulados/68/questoes
+
+
+###########################################
+GET {{url}}/api/adm/turmas
+authorization: {{token}}
+
+###########################################
+GET {{url}}/api/adm/disciplinas/buscarPorProfessor
+authorization: {{token}}
+
+############################################
+POST {{url}}/api/adm/simulados/criarNovoSimulado
 Content-Type: application/json
 authorization: {{token}}
 
@@ -76,32 +79,36 @@ authorization: {{token}}
 }
 
 ############################################
-DELETE http://10.132.224.60:3901/api/simulados/15
+DELETE {{url}}/api/adm/simulados/68
 authorization: {{token}}
 
 
 ############################################
-GET http://10.132.224.60:3901/api/questoes/questoesDisciplina/2
+GET {{url}}/api/adm/simulados/68
+authorization: {{token}}
+
+############################################
+GET {{url}}/api/adm/questoes/questoesDisciplina/3
 authorization: {{token}}
 
 #############################################
-GET http://10.132.224.60:3901/api/relatorios/rankingGeral
+GET {{url}}/api/relatorios/rankingGeral
 authorization: {{token}}
 
 ##############################################
-GET http://10.132.224.60:3901/api/relatorios/2
+GET {{url}}/api/relatorios/2
 authorization: {{token}}
 
 ##############################################
-GET http://10.132.224.60:3901/api/relatorios/pontuacao/4
+GET {{url}}/api/relatorios/pontuacao/4
 authorization: {{token}}
 
 ##############################################
-GET http://10.132.224.60:3901/api/adm/simulados/simuladosCriados
+GET {{url}}/api/adm/simulados/simuladosCriados
 authorization: {{token}}
 
 ##############################################
-PUT http://10.132.224.60:3901/api/adm/simulados/atualizarQuestao
+PUT {{url}}/api/adm/simulados/atualizarQuestao
 Content-Type: application/json
 authorization: {{token}}
 
@@ -111,7 +118,7 @@ authorization: {{token}}
   "nivel": 1,
   "texto": "Leia atentamente as informações abaixo",
   "enunciado": "Qual das alternativas a seguir é a capital do Brasil?",
-  "alternativaA": "Moscou",
+  "alternativaA": "Moscousss",
   "alternativaB": "Buenos Aires",
   "alternativaC": "Santiago",
   "alternativaD": "Brasília",

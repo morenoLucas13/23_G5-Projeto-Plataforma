@@ -167,19 +167,18 @@ module.exports.atualizarQuestaoSimulado = async (
 
     try {
         conexao = await db.criarConexao();
-        const [consulta] = await conexao.execute(
+        const sql = conexao.format(
             `UPDATE questoes 
-             SET iddisciplina = ?, 
-                ques_triNivel = ?, 
-                 ques_textoQuestao = ?, 
-                 ques_enunciado = ?, 
-                 ques_alternativaA = ?, 
-                 ques_alternativaB = ?, 
+            SET ques_triNivel = ?, 
+            ques_textoQuestao = ?, 
+            ques_enunciado = ?, 
+            ques_alternativaA = ?, 
+            ques_alternativaB = ?, 
                  ques_alternativaC = ?, 
                  ques_alternativaD = ?, 
                  ques_alternativaE = ?, 
                  ques_alternativaCorreta = ? 
-             WHERE idquestao = ?`,
+                 WHERE idquestao = ?`,
 
             [
                 nivel,
@@ -194,7 +193,10 @@ module.exports.atualizarQuestaoSimulado = async (
                 questao_id
             ]
         );
+
+        console.log("sql a ser executado: \n", sql);
         
+        const [consulta] = await conexao.execute(sql)
 
         console.log('Resultado da atualização:', consulta)
 
@@ -212,6 +214,9 @@ module.exports.atualizarQuestaoSimulado = async (
         return questaoAtualizada.length > 0 ? questaoAtualizada[0] : null
     } catch (error) {
         console.error("Erro ao atualizar questão no banco de dados:", error)
+
+        console.log("JSON ERRO", JSON.stringify(error, null, 2));
+
         throw error;
     } finally {
         db.liberarConexao(conexao)

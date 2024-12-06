@@ -92,6 +92,7 @@ export default function Login() {
         <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
 
         <InputLogECad
+          nome="Email do Usuário"
           titulo="Email do usuário:"
           icon={icoPessoa}
           placeholder="Insira o seu email"
@@ -100,6 +101,7 @@ export default function Login() {
         />
 
         <InputLogECad
+          nome="Nome do Usuário"
           titulo="Senha do usuário:"
           icon={icoCadeado}
           placeholder="Insira a sua senha"

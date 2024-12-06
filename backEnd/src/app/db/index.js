@@ -5,7 +5,7 @@ const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
     host: '10.132.224.60',
     user: 'alana',
-    password: 'senha', 
+    password: 'senha',
     database: 'bd_plataforma',
     port: 3306,
     timezone: '+00:00'
@@ -15,13 +15,15 @@ function criarConexao() {
     return pool.getConnection()
 }
 
-function liberarConexao(conexao){
+function liberarConexao(conexao) {
     if (conexao) {
         conexao.release()
-    } 
+    }
 }
 
-module.exports = {
+const db = {
     criarConexao,
     liberarConexao
 }
+
+module.exports = db

@@ -24,24 +24,32 @@ app.use(midLogConsole);
 const rotasLogin = require('./src/app/controllers/loginController');
 app.use("/api/login", rotasLogin)
 
-// const rotasSimulados = require('./src/app/controllers/simuladosController');
-// app.use('/api/simulados', rotasSimulados)
+/// ============================= ÁREA DO ESTUDANTE ========================================///
+const rotasAlunosSimulados = require('./src/app/controllers/alunosController/alunosSimuladosController')
+app.use('/api/alunos/simulados', rotasAlunosSimulados)
 
-const rotasQuestoes = require('./src/app/controllers/questoesController');
-app.use('/api/questoes', rotasQuestoes)
+// const rotasAlunosSimulados = require('./src/app/controllers/alunosController/alunosSimuladosController')
+// app.use('/api/alunos/simulados', rotasAlunosSimulados)
 
-const rotasRanking = require('./src/app/controllers/relatoriosController');
-app.use('/api/relatorios', rotasRanking)
-
-
-app.use('/api/adm/simulados', rotasRanking)
-
-
-
-app.use('/api/aluno/ranking', rotasRanking)
+/// ============================= ÁREA ADMINISTRATIVA =======================================///
+const midVerificarJWToken = require("./src/app/middlewares/midVerificarJWToken");
 
 const rotasAdmSimulados = require('./src/app/controllers/admController/admSimuladosController')
 app.use('/api/adm/simulados', rotasAdmSimulados)
+
+const rotasAdmQuestoes = require('./src/app/controllers/admController/admQuestoesController')
+app.use('/api/adm/questoes', rotasAdmQuestoes)
+
+const rotasAdmTurmas = require('./src/app/controllers/admController/admTurmasController');
+app.use('/api/adm/turmas',
+    midVerificarJWToken.verifyToken,
+    rotasAdmTurmas)
+
+// app.use('/api/aluno/ranking', rotasRanking)
+
+const rotasAdmDisciplinas = require("./src/app/controllers/admController/admDisciplinasController");
+app.use('/api/adm/disciplinas', rotasAdmDisciplinas)
+
 
 
 // Inicia o servidor na porta

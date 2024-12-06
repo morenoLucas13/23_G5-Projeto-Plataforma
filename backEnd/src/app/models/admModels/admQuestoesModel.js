@@ -1,9 +1,9 @@
-// QUESTÕES MODEL
+// ADM QUESTÕES MODEL
 
-const db = require('../db/')
+const db = require('../../db')
 
 
-module.exports.buscarQuestoesPorDisciplina = async (iddisciplina) => {
+module.exports.buscarQuestoesPorDisciplina = async (disciplinaId) => {
     let conexao;
 
     try {
@@ -11,7 +11,7 @@ module.exports.buscarQuestoesPorDisciplina = async (iddisciplina) => {
 
         const [buscarQuestaoDisciplina] = await conexao.execute(
             `SELECT * FROM questoes WHERE iddisciplina = ?`,
-            [iddisciplina]
+            [disciplinaId]
         )
 
         return buscarQuestaoDisciplina

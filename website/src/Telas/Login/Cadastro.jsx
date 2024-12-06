@@ -163,6 +163,7 @@ export default function Cadastro() {
         <img src={LogoApp} className={estilos.imagemLogo} alt="Logo do aplicativo" />
 
         <InputLogECad
+          nome="Qual é o seu Nome?"
           titulo="Nome do usuário:"
           icon={icoPessoa}
           placeholder="Insira o seu nome"
@@ -170,6 +171,7 @@ export default function Cadastro() {
           onChange={(evt) => setNome(evt)} />
 
         <InputLogECad
+          nome="Passe o Email do Usuário"
           titulo="Email do usuário:"
           icon={icoEmail}
           placeholder="Insira o seu email"
@@ -177,6 +179,7 @@ export default function Cadastro() {
           onChange={(evt) => setEmail(evt)} />
 
         <InputLogECad
+          nome="Crie sua Senha"
           titulo="Senha do usuário:"
           icon={icoCadeado}
           placeholder="Insira a sua senha"

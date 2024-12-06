@@ -1,7 +1,9 @@
 // middlewares/midVerificarJWToken.js
 const jwt = require('jsonwebtoken');
 
-module.exports.verifyToken = (req, res, next) => {
+const midVerificarJWToken = {};
+
+midVerificarJWToken.verifyToken = (req, res, next) => {
   const token = req.headers['authorization'];
   if (!token) {
     return res.status(401).json({ auth: false, mensagem: 'Nenhum token fornecido!' });
@@ -28,7 +30,7 @@ module.exports.verifyToken = (req, res, next) => {
     } else if (decoded.nivel_acesso === 1) { // 1 = professor
       req.id_professor = decoded.id
     } else {
-      return res.status(401).json({auth: false, mensagem: 'Acesso inválido!'})
+      return res.status(401).json({ auth: false, mensagem: 'Acesso inválido!' })
     }
 
     // Se tudo estiver ok, salva a informação do ID do usuário e o seu respectivo nivel de acesso no request
@@ -37,3 +39,5 @@ module.exports.verifyToken = (req, res, next) => {
     next();
   });
 };
+
+module.exports = midVerificarJWToken

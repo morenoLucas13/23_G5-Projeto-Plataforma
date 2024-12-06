@@ -70,10 +70,12 @@ rotas.post('/cadastrarUser', async (req, res) => {
 
     try {
         await userValidationCadastro.validate(req.body, { abortEarly: false })
+
     } catch (error) {
         return res.status(400).json({
             sucesso: false,
-            mensagem: 'Erro'
+            mensagem: 'Erro de validação!',
+            
         })
     }
 

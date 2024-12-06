@@ -59,15 +59,16 @@ export default function SimuladosCriados() {
                             simulados.map((simulado, index) => (
                                 <div key={simulado.id}>
                                     <div className={estilos.linha}>
-                                        <h5 className={estilos.materiatitulo}>{simulado.nomeDisciplina}</h5>
-                                        <h5 className={estilos.materiatitulo}>
+                                        <h5 className={`${estilos.materiatitulo} ${estilos.nomeDisciplina}`}>{simulado.nomeDisciplina}</h5>
+                                        <h5 className={`${estilos.materiatitulo} ${estilos.dataCriacao}`}>
                                             Criado em: {new Date(simulado.data_criacao).toLocaleDateString()}
                                         </h5>
                                     </div>
+
                                     <div className={estilos.simuladocard}>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className={`${estilos.descricao} d-flex flex-column`}>
-                                                <p className={estilos.descricaosimulado}>{simulado.descricao}</p>
+                                                <p className={estilos.descricaosimulado}>Descrição do Simulado: {simulado.descricao}</p>
                                             </div>
                                             <div className={estilos.divisor}></div>
                                             <div className={`${estilos.botoesswitch} d-flex flex-column align-items-center`}>

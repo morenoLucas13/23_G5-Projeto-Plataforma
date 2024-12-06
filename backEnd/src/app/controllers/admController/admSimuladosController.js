@@ -147,23 +147,16 @@ rotas.put('/atualizarQuestao',
         }
         try {
             const questaoAtualizada = await model.atualizarQuestaoSimulado(
-                {
-                    disciplinaId: disciplina_id,
-                    nivel: nivel,
-                    textoQuestao: texto,
-                    enunciado: enunciado,
-                    alternativas: {
-                        A: alternativaA,
-                        B: alternativaB,
-                        C: alternativaC,
-                        D: alternativaD,
-                        E: alternativaE
-                    },
-                    alternativaCorreta: alternativaCorretaNumero
-                },
-                {
-                    where: { id: questao_id }
-                }
+                questao_id,
+                nivel,
+                texto,
+                enunciado,
+                alternativaA,
+                alternativaB,
+                alternativaC,
+                alternativaD,
+                alternativaE,
+                alternativaCorretaNumero
             );
 
             // Verificar se a questão foi atualizada com sucesso
@@ -199,37 +192,33 @@ rotas.put('/atualizarQuestao',
                 sucesso: false,
                 mensagem: 'Erro interno no servidor.',
             });
-}})
+        }
+    })
 
+// Rota para excluir um simulado
+rotas.delete('/:id',
+    midVerificarJWToken.verifyToken,
+    autorizarNivel(1),
+    async (req, res) => {
+        const { id } = req.params;
 
-
-
-
-
-        // Rota para excluir um simulado
-        rotas.delete('/:id',
-            midVerificarJWToken.verifyToken,
-            autorizarNivel(1),
-            async (req, res) => {
-                const { id } = req.params;
-
-                try {
-                    const resultado = await model.excluirSimulado(id);
-                    if (!resultado.affectedRows) {
-                        return res.status(404).json({ erro: 'Ops! Simulado não encontrado.' });
-                    }
-
-                    res.json({ mensagem: 'Simulado excluído com sucesso!', simuladoExcluidoId: id });
-                } catch (error) {
-                    console.log('Ops! Erro ao apagar um simulado:', error);
-                    res.status(500).json({ erro: 'Ocorreu um erro ao remover um simulado. Tente novamente.' });
-                }
-                console.log('Fim da rota DELETE de Simulados!');
+        try {
+            const resultado = await model.excluirSimulado(id);
+            if (!resultado.affectedRows) {
+                return res.status(404).json({ erro: 'Ops! Simulado não encontrado.' });
             }
-        );
+
+            res.json({ mensagem: 'Simulado excluído com sucesso!', simuladoExcluidoId: id });
+        } catch (error) {
+            console.log('Ops! Erro ao apagar um simulado:', error);
+            res.status(500).json({ erro: 'Ocorreu um erro ao remover um simulado. Tente novamente.' });
+        }
+        console.log('Fim da rota DELETE de Simulados!');
+    }
+);
 
 
 
 
-        // Exportando as rotas
-        module.exports = rotas;
+// Exportando as rotas
+module.exports = rotas;

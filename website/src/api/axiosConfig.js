@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 const api = axios.create({
     baseURL: 'http://10.132.224.60:3901',
-    timeout: 5000 // Ajuste o tempo de espera para 5 segundos (ou mais)
+    timeout: 10000
 });
 
 api.interceptors.request.use(async (config) => {
@@ -48,15 +48,25 @@ export const apiUtils = {
      */
     msgErro: (resp) => {
         return resp.data.mensagem;
-    }
+    },
+
+    /**
+     * 
+     * @param {import('axios').AxiosResponse} resp 
+     */
+    dados: (resp) => {
+        return resp.data.dados;
+    },
+
+
 }
 
-export const alertas =  {
+export const alertas = {
     erro: (titulo, texto) => {
         Swal.fire({
             icon: "error",
             title: titulo,
             text: texto, // Mensagem do Yup
-          });
+        });
     }
 }

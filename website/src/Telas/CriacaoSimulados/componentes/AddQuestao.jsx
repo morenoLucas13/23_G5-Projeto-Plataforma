@@ -5,7 +5,6 @@ import BotaoFechar from '../../../Imagens/BtnFechar.png';
 import BtnAdicionar from '../../../Imagens/BtnAdicionar.png';
 
 
-
 const questoes = [
     {
         id: 1,
@@ -69,10 +68,10 @@ export default function AddQuestao({ acaoAddQuestao, acaoCancelar }) {
                         <button className='btn' onClick={acaoCancelar}>
                             <img src={BotaoFechar} />
                         </button>
+                        <h3>Questões cadastradas:</h3>
                     </div>
-                    <h3>Questões cadastradas:</h3>
                     {listaQuestoes.map((questao, index) => (
-                        <div key={index}>
+                        <div key={index} className={estilos.cardQstsBD}>
                             <h5 className={estilos.materiatitulo}>{questao.disciplina}</h5>
                             <div className={`${estilos.simuladocard} d-flex align-items-center justify-content-between`}>
                                 <div className={`${estilos.descricao} d-flex flex-column`}>
