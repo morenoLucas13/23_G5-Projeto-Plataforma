@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import api from '../api/axiosConfig'
 
 // COMPONENTES
 import BotoesDeNavegacao from '../Componentes/BotoesDeNavegacao';
@@ -22,13 +23,41 @@ const images = [
 export default function Home() {
   const navigation = useNavigation();
 
+      // Estado para armazenar o nome do professor
+      const [nomeAluno, setNomeAluno] = useState('');
+      const [pontuacao, setPontuacao] = useState('');
+
+      // Função para buscar o nome do professor
+      async function buscarNomeToken() {
+          try {
+              const resposta = await api.get('/api/login/dadosUser');
+  
+              // Acessa o primeiro item da matriz retornada e extrai o nome
+              if (resposta.data && resposta.data.length > 0) {
+                  setNomeAluno(resposta.data[0].nome);
+                  setPontuacao(resposta.data[0].pontuacao);
+              } else {
+                  console.log('Nenhum dado de usuário retornado.');
+              }
+          } catch (error) {
+              console.log('Ocorreu um erro ao buscar o nome do usuário a partir do token.', error);
+          }
+      }
+  
+  
+      // Chamando a função buscarNomeToken assim que o componente for montado
+      useEffect(() => {
+          buscarNomeToken();
+      }, []);
+
+
   return (
     <View style={styles.container}>
 
       {/* View dos Elementos do Cabeçalho */}
       <View style={styles.cardCabecalho}>
         <Text style={styles.textCabecalho}>Seja bem-vindo,</Text>
-        <Text style={styles.textNome}>Lucas Neponuceno Moreno</Text>
+        <Text style={styles.textNome}>{nomeAluno}</Text>
 
         <View style={styles.cardPontuacao}>
           <TouchableOpacity style={styles.btnPontuacao}
@@ -37,7 +66,7 @@ export default function Home() {
               style={{ height: 45, width: 45 }}
               source={require('../Imagens/IconePontuacao.png')}
             />
-            <Text style={styles.textPontuacao}>66666</Text>
+            <Text style={styles.textPontuacao}>{pontuacao}</Text>
           </TouchableOpacity>
         </View>
       </View>

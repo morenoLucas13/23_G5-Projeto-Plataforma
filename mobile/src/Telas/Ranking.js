@@ -40,7 +40,7 @@ export default function Ranking() {
     // Função para buscar os dados do ranking
     const buscarRanking = async () => {
         try {
-            const response = await api.get('/api/relatorios/rankingGeral');
+            const response = await api.get('/api/alunos/relatorios/rankingGeral');
             console.log('Response data:', response.data); // Verifique os dados retornados
             setRankingDados(response.data.ranking);
         } catch (error) {

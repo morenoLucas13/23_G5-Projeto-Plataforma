@@ -1,6 +1,6 @@
 // RANKING MODEL
 
-const db = require('../db')
+const db = require('../../db')
 
 // Exibir o ranking geral dos 10 melhores alunos a partir de suas pontuações
 module.exports.obterRankingGeral = async () => {
@@ -25,10 +25,9 @@ module.exports.obterRankingGeral = async () => {
         console.error('Erro no Model ao obter ranking:', error);
         throw new Error('Erro ao buscar o ranking no banco de dados.');
     } finally {
-        if (conexao) await conexao.release();
+        db.liberarConexao()
     }
 };
-
 
 module.exports.dadosRespostaAluno = async (idSimulado, userId) => {
     let conexao;
@@ -58,7 +57,7 @@ module.exports.dadosRespostaAluno = async (idSimulado, userId) => {
     }
 }
 
-module.exports.pontuacao = async (idMatricula, userId) => {
+module.exports.pontuacao = async (userId) => {
     let conexao;
 
     try {
@@ -73,10 +72,6 @@ module.exports.pontuacao = async (idMatricula, userId) => {
                    left join simulado_resposta sr on qs.idsimulado = sr.idsimulado and qs.idquestao = sr.idquestao
                    and sr.idmatricula = ?
             `, [idMatricula]);
-
-
-
-
 
         console.log(sqlCommand);
 

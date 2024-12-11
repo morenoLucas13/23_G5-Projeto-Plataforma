@@ -27,31 +27,37 @@ rotas.get('/agendados', async (req, res) => {
     console.log('Fim da rota GET de Simulados Agendados!');
 });
 
+// =======================================================================
+
+// Rota para exibir as questões referentes a um simulado
+// Aluno respondendo
 rotas.get('/:idSimulado/questoes', async (req, res) => {
     const { idSimulado } = req.params;
+    console.log('ID do Simulado recebido no back-end:', idSimulado); // Debug
 
     try {
-        const questoes = await model.buscarQuestoesDoSimulado(idSimulado)
+        const questoes = await model.buscarQuestoesDoSimulado(idSimulado);
 
         if (questoes.length === 0) {
             return res.status(404).json({
                 sucesso: false,
                 mensagem: "Nenhuma questão encontrada para o simulado selecionado :("
-            })
+            });
         }
 
         return res.status(200).json({
             sucesso: true,
             questoesSimulado: questoes
-        })
+        });
     } catch (error) {
-        console.log('Erro ao buscar questões:', error)
+        console.log('Erro ao buscar questões:', error);
         return res.status(500).json({
             sucesso: false,
             mensagem: "Erro ao buscar questões. Tente novamente mais tarde!"
-        })
+        });
     }
-})
+});
+
 
 
 

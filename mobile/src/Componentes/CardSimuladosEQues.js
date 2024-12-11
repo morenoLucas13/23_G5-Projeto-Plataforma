@@ -3,17 +3,20 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function CardSimuladosEQues({disciplina, professor, enunciadoQuestao, quantidadeQuestoes}) {
+
+export default function CardSimuladosEQues({ disciplina, professor, enunciadoQuestao, quantidadeQuestoes, idSimulado }) {
     const navigation = useNavigation();
 
     const iniciarQuestoes = () => {
-        navigation.navigate('tela_questoes')
+        navigation.navigate('tela_questoes', { idSimulado }); // Passa o idSimulado para a tela de questões
     };
+
     return (
         <View style={{ paddingTop: 35 }}>
-
+            
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{disciplina}</Text>
+
                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{professor}</Text>
             </View>
 
@@ -24,14 +27,19 @@ export default function CardSimuladosEQues({disciplina, professor, enunciadoQues
                 <View style={{ backgroundColor: '#BCBCC1', width: 1, height: 110 }} />
 
                 <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
-                    <TouchableOpacity style={{ width: 45, height: 45, paddingBottom: 70 }} onPress={iniciarQuestoes}>
+                    <TouchableOpacity
+                        style={{ width: 45, height: 45, paddingBottom: 70 }}
+                        onPress={iniciarQuestoes}
+                        accessibilityLabel="Iniciar questões"
+                    >
                         <Image source={require('../Imagens/IconeLapis.png')} />
                     </TouchableOpacity>
+
                     <Text style={{ fontSize: 24, fontWeight: '900' }}>{quantidadeQuestoes}</Text>
                 </View>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

@@ -27,6 +27,7 @@
     "react-native-alert-notification": "^0.4.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-image-slider-box": "^2.0.7",
+    "react-native-pagination": "^1.5.5",
     "react-native-paper": "^5.12.5",
     "react-native-pie-chart": "^3.0.2",
     "react-native-vector-icons": "^10.1.0",

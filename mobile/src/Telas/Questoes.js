@@ -1,70 +1,144 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import api from '../api/axiosConfig';
+import CardCabecalho from '../Componentes/CardCabecalho';
 
-//
-import CardCabecalho from '../Componentes/CardCabecalho'
-import Alternativas from '../Componentes/Alternativas'
+export default function Questoes({ route }) {
+  const { idSimulado } = route.params;
+  console.log('ID do Simulado recebido:', idSimulado);
 
-export default function Questoes() {
+  const [questoes, setQuestoes] = useState([]);
+  const [respostaSelecionada, setRespostaSelecionada] = useState({});
+  const [respostaCerta, setRespostaCerta] = useState({});
+  const [questaoRespondida, setQuestaoRespondida] = useState({});
+
+  useEffect(() => {
+    const carregarQuestoes = async () => {
+      try {
+        console.log('URL chamada:', `/api/alunos/simulados/${idSimulado}/questoes`); // Debug
+
+        const response = await api.get(`/api/alunos/simulados/${idSimulado}/questoes`);
+        if (response.data.sucesso) {
+          setQuestoes(response.data.questoesSimulado);
+        } else {
+        }
+      } catch (error) {
+        console.error('Erro ao carregar questões:', error);
+      }
+    };
+
+    carregarQuestoes();
+  }, [idSimulado]);
+
+  const verificarResposta = (idQuestao, alternativaEscolhida, alternativaCorreta) => {
+    if (!questaoRespondida[idQuestao]) {
+      setRespostaSelecionada({ ...respostaSelecionada, [idQuestao]: alternativaEscolhida });
+      setRespostaCerta({ ...respostaCerta, [idQuestao]: alternativaCorreta });
+      setQuestaoRespondida({ ...questaoRespondida, [idQuestao]: true });
+    }
+  };
+
+  const enviarRespostas = async () => {
+    try {
+      const respostas = respostaSelecionada // Coleta todas as respostas do estado
+      console.log('Respostas enviadas:', respostas)
+
+      const response = await api.post(`/api/alunos/simulados/${idSimulado}/pontuacao`, { respostas });
+
+      if (response.data.sucesso) {
+        Alert.alert('Resultado', `Pontuação: ${response.data.pontos}`);
+      } else {
+        Alert.alert('Erro', response.data.mensagem);
+      }
+    } catch (error) {
+      console.error('Erro ao enviar respostas:', error);
+      Alert.alert('Erro', 'Falha ao enviar respostas. Tente novamente.');
+    }
+  };
+
+
   return (
-    <View style={{ alignItems: 'center' }}>
-      <CardCabecalho
-        texto={'Questão'}
-        navegacao={'tela_simulados'}
-      />
+    <View style={{ alignItems: 'center', flex: 1 }}>
+      <CardCabecalho texto="QUESTÕES" navegacao="tela_entrada" />
 
-      <View style={styles.cardQuestao}>
-        <ScrollView>
-          <Text style={styles.txtQuestao}>(ENEM 2023)
-            TEXTO I
-            Como presença consciente no mundo não posso escapar à responsabilidade ética no meu mover-me no mundo. Se sou puro produto da determinação genética ou cultural ou de classe, sou irresponsável pelo que faço no meu mover-me no mundo e, se careço de responsabilidade, não posso falar em ética.
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {questoes.map((questao) => (
+          <View key={questao.id} style={styles.cardQuestao}>
+            <Text style={styles.txtQuestao}>{questao.textoQuestao}</Text>
+            <Text style={styles.txtQuestao}>{questao.enunciado}</Text>
+            <View>
+              {['A', 'B', 'C', 'D', 'E'].map((letra) => {
+                const alternativa = questao[`alternativa${letra}`];
+                const correta = questao.alternativaCorreta;
+                const selecionada = respostaSelecionada[questao.id] === letra;
 
-            FREIRE, P. Pedagogia da autonomia: saberes necessários à prática educativa. São Paulo: Paz e Terra, 1996
+                let corBotao = '#FFFFFF';
+                if (respostaSelecionada[questao.id]) {
+                  if (letra === correta) corBotao = '#32CD32';
+                  else if (selecionada) corBotao = '#FF6347';
+                }
 
-            ТЕХТО II
-            Paulo Freire construiu uma pedagogia da esperança. Na sua concepção, a história não é algo pronto e acabado. As estruturas de opressão e as desigualdades, apesar de serem naturalizadas, são sócio e historicamente construídas. Daí a importância de os educandos tomarem consciência da sua realidade para, assim, transformá-la.
-
-            DEMARCHI, J. L. Paulo Freire. Disponivel em: https://diplomatique.org.br. Acesso em: 6 out. 2021 (adaptado).
-          </Text>
-
-          <Text style={[styles.txtQuestao, { paddingTop: 10 }]}>
-            Com base no conceito de ética pedagógica presente nos textos, os educandos tornam-se responsáveis pela
-          </Text>
-        </ScrollView>
-      </View>
-
-      <ScrollView>
-        <View style={{ marginTop: 20 }}>
-          <Alternativas
-            letraAlternativa={'A.'} />
-          <Alternativas
-            letraAlternativa={'B.'} />
-          <Alternativas
-            letraAlternativa={'C.'} />
-          <Alternativas
-            letraAlternativa={'D.'} />
-          <Alternativas
-            letraAlternativa={'E.'} />
-        </View>
+                return (
+                  <TouchableOpacity
+                    key={letra}
+                    style={[styles.botao, { backgroundColor: corBotao }]}
+                    onPress={() => verificarResposta(questao.id, letra, correta)}
+                    disabled={questaoRespondida[questao.id]} // Desabilita o botão após a primeira seleção
+                  >
+                    <Text>{letra}. {alternativa}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        ))}
       </ScrollView>
+      <TouchableOpacity style={styles.botaoEnviar} onPress={enviarRespostas}>
+        <Text style={styles.txtBotaoEnviar}>Enviar Respostas</Text>
+      </TouchableOpacity>
 
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 20, // Espaço extra para rolagem confortável
+    paddingTop: 10, // Espaço acima para visualização inicial
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 10
+  },
   cardQuestao: {
-    width: 380,
-    height: 400,
-    backgroundColor: '#B6B9EF',
-    borderRadius: 10,
-    marginTop: 45,
+    margin: 10,
     padding: 10,
-    elevation: 10
+    backgroundColor: '#B6B9EF',
+    borderRadius: 10
   },
   txtQuestao: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'justify'
-  }
-})
+  },
+  botao: {
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1
+  },
+  botaoEnviar: {
+    margin: 20,
+    padding: 15,
+    backgroundColor: '#4CAF50',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  txtBotaoEnviar: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
+});

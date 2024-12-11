@@ -12,6 +12,7 @@ module.exports.obterSimuladosAgendados = async () => {
         const [consulta] = await conexao.execute(
             `
             SELECT 
+                s.idsimulado,
                 s.simu_descricao,
                 p.us_nome,
                 d.dis_nome,  
@@ -27,6 +28,7 @@ module.exports.obterSimuladosAgendados = async () => {
 
         let retornoConsulta = consulta.map(item => (
             {
+                id: item.idsimulado,
                 descricao: item.simu_descricao,
                 professor: item.us_nome,
                 disciplina: item.dis_nome,
@@ -67,10 +69,14 @@ module.exports.buscarQuestoesDoSimulado = async (idSimulado) => {
             INNER JOIN 
                 questoes_selecionadas qs ON q.idquestao = qs.idquestao
             WHERE 
-                qs.idsimulado = 68;`,
+                qs.idsimulado = ?;`,
 
             [idSimulado]
         );
+
+        console.log('ID do Simulado no Model:', idSimulado);
+        console.log('Consulta SQL:', consultaQuestoesSimulado);
+
 
         return consultaQuestoesSimulado;
     } catch (error) {

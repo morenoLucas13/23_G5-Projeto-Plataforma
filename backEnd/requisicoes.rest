@@ -11,6 +11,7 @@ Content-Type: application/json
     "senha": "Sesisp@1234"
 }
 
+
 ###########################################
 POST {{url}}/api/login/verificarToken
 Content-Type: application/json
@@ -42,7 +43,7 @@ authorization: {{token}}
 GET {{url}}/api/alunos/simulados/agendados
 
 ############################################
-GET {{url}}/api/alunos/simulados/68/questoes
+GET {{url}}/api/alunos/simulados/2/questoes
 
 
 ###########################################
@@ -96,7 +97,7 @@ GET {{url}}/api/relatorios/rankingGeral
 authorization: {{token}}
 
 ##############################################
-GET {{url}}/api/relatorios/2
+GET {{url}}/api/alunos/relatorios/31
 authorization: {{token}}
 
 ##############################################
@@ -108,22 +109,6 @@ GET {{url}}/api/adm/simulados/simuladosCriados
 authorization: {{token}}
 
 ##############################################
-PUT {{url}}/api/adm/simulados/atualizarQuestao
-Content-Type: application/json
-authorization: {{token}}
 
-{
-  "id": 1,
-  "disciplina_id": 3,
-  "nivel": 1,
-  "texto": "Leia atentamente as informações abaixo",
-  "enunciado": "Qual das alternativas a seguir é a capital do Brasil?",
-  "alternativaA": "Moscousss",
-  "alternativaB": "Buenos Aires",
-  "alternativaC": "Santiago",
-  "alternativaD": "Brasília",
-  "alternativaE": "Bogotá",
-  "alternativaCorreta": "D"
-}
 
 

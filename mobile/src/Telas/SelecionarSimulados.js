@@ -7,20 +7,19 @@ import CardSimuladosEQues from '../Componentes/CardSimuladosEQues';
 export default function SelecionarSimulados() {
     const [simulados, setSimulados] = useState([]);
 
-    // Função para buscar os simulados
     const fetchSimulados = async () => {
         try {
-            const resposta = await api.get('/api/agendados'); // Utiliza a instância configurada do Axios
-
+            const resposta = await api.get('/api/alunos/simulados/agendados');
             if (resposta.data.sucesso) {
                 setSimulados(resposta.data.simulados);
             } else {
-                console.log('Nenhum simulado encontrado.');
+                setSimulados([]); // Evita estado inconsistente
             }
         } catch (error) {
             console.error('Erro ao buscar simulados:', error);
-        } 
+        }
     };
+
 
     // Chamada para obter os simulados quando o componente for montado
     useEffect(() => {
@@ -31,19 +30,30 @@ export default function SelecionarSimulados() {
         <View style={styles.container}>
             <CardCabecalho texto="Selecione o Simulado" navegacao="tela_entrada" />
 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={styles.textIntro}>Qual simulado você deseja realizar? 🤔</Text>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                keyboardShouldPersistTaps="handled"
+            >
 
-                    {simulados.map((simulado, index) => (
+                <Text style={styles.textIntro}>Qual simulado você deseja realizar? 🤔</Text>
+
+                {simulados.map((simulado) => {
+                    const primeiroNomeProfessor = simulado.professor.split(" ")[0];
+                    return (
                         <CardSimuladosEQues
-                            key={index}
+                            key={simulado.id} // Corrigido para usar a propriedade correta
                             disciplina={simulado.disciplina}
-                            professor={simulado.professor}
+                            professor={primeiroNomeProfessor}
                             enunciadoQuestao={simulado.descricao}
-                            quantidadeQuestoes={12} // Alterar conforme o número de questões reais
+                            quantidadeQuestoes={simulado.quantidadeQuestoes}
+                            idSimulado={simulado.id} // Certifique-se de passar o ID corretamente aqui também
                         />
-                    ))}
-                </ScrollView>
+                    );
+                })}
+
+
+            </ScrollView>
 
             <View style={styles.cardFechamentoTela} />
         </View>
