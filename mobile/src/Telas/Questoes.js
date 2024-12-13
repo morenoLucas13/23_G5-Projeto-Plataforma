@@ -7,10 +7,14 @@ export default function Questoes({ route }) {
   const { idSimulado } = route.params;
   console.log('ID do Simulado recebido:', idSimulado);
 
+  /** array com as questoes a serem exibidas para o usuário */
   const [questoes, setQuestoes] = useState([]);
-  const [respostaSelecionada, setRespostaSelecionada] = useState({});
-  const [respostaCerta, setRespostaCerta] = useState({});
-  const [questaoRespondida, setQuestaoRespondida] = useState({});
+
+  /** array com as resposta escolhidas pelo usuário */
+  const [questoesResposta, setQuestoesResposta] = useState([]);
+
+  // const [respostaCerta, setRespostaCerta] = useState({});
+  const [questaoRespondida, setQuestaoRespondida] = useState([]);
 
   useEffect(() => {
     const carregarQuestoes = async () => {
@@ -19,7 +23,12 @@ export default function Questoes({ route }) {
 
         const response = await api.get(`/api/alunos/simulados/${idSimulado}/questoes`);
         if (response.data.sucesso) {
-          setQuestoes(response.data.questoesSimulado);
+          let questoesApi = response.data.questoesSimulado;
+
+          setQuestoes(questoesApi);
+          setQuestoesResposta(questoesApi.map((x) => null))
+
+          console.log("Questoes recebidas API\n", JSON.stringify(response.data.questoesSimulado, null, 2));
         } else {
         }
       } catch (error) {
@@ -30,29 +39,51 @@ export default function Questoes({ route }) {
     carregarQuestoes();
   }, [idSimulado]);
 
-  const verificarResposta = (idQuestao, alternativaEscolhida, alternativaCorreta) => {
-    if (!questaoRespondida[idQuestao]) {
-      setRespostaSelecionada({ ...respostaSelecionada, [idQuestao]: alternativaEscolhida });
-      setRespostaCerta({ ...respostaCerta, [idQuestao]: alternativaCorreta });
-      setQuestaoRespondida({ ...questaoRespondida, [idQuestao]: true });
-    }
+  const verificarResposta = (questao_idx_array, alternativaEscolhida, alternativaCorreta) => {
+
+    // if (!questaoRespondida[idQuestao]) {
+
+    // registrando a resposta do usuario no vetor
+    questoesResposta[questao_idx_array] = alternativaEscolhida;
+
+    // atualizando useState para o react reconhecer que aconteceu uma atualização
+    setQuestoesResposta([...questoesResposta])
+
+
+
+    // setRespostaSelecionada(
+    //   [
+    //     ...respostaSelecionada,
+    //   ]);
+    // // setRespostaCerta({ ...respostaCerta, [idQuestao]: alternativaCorreta });
+    // setQuestaoRespondida({ ...questaoRespondida, [idQuestao]: true });
+    // }
   };
 
   const enviarRespostas = async () => {
-    try {
-      const respostas = respostaSelecionada // Coleta todas as respostas do estado
-      console.log('Respostas enviadas:', respostas)
+    if (questoesResposta.includes(null) == false) {
+      try {
+        let respostas = questoes.map(
+          (q, qIdxAarray) => (
+            {
+              id: q.id,
+              resposta: questoesResposta[qIdxAarray]
+            }
+          ))
 
-      const response = await api.post(`/api/alunos/simulados/${idSimulado}/pontuacao`, { respostas });
+        const response = await api.post(`/api/alunos/relatorios/pontuacao/${idSimulado}`, { respostas });
 
-      if (response.data.sucesso) {
-        Alert.alert('Resultado', `Pontuação: ${response.data.pontos}`);
-      } else {
-        Alert.alert('Erro', response.data.mensagem);
+        if (response.data.sucesso) {
+          Alert.alert('Resultado', `Pontuação: ${response.data.pontuacao.pontos}`);
+        } else {
+          Alert.alert('Erro', response.data.mensagem);
+        }
+      } catch (error) {
+        console.error('Erro ao enviar respostas:', error);
+        Alert.alert('Erro', 'Falha ao enviar respostas. Tente novamente.');
       }
-    } catch (error) {
-      console.error('Erro ao enviar respostas:', error);
-      Alert.alert('Erro', 'Falha ao enviar respostas. Tente novamente.');
+    } else {
+      Alert.alert("Atenção", "Existem questões sem resposta. Por favor verifique antes de enviar");
     }
   };
 
@@ -62,7 +93,7 @@ export default function Questoes({ route }) {
       <CardCabecalho texto="QUESTÕES" navegacao="tela_entrada" />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {questoes.map((questao) => (
+        {questoes.map((questao, questao_idx) => (
           <View key={questao.id} style={styles.cardQuestao}>
             <Text style={styles.txtQuestao}>{questao.textoQuestao}</Text>
             <Text style={styles.txtQuestao}>{questao.enunciado}</Text>
@@ -70,20 +101,22 @@ export default function Questoes({ route }) {
               {['A', 'B', 'C', 'D', 'E'].map((letra) => {
                 const alternativa = questao[`alternativa${letra}`];
                 const correta = questao.alternativaCorreta;
-                const selecionada = respostaSelecionada[questao.id] === letra;
+                const selecionada = questoesResposta[questao_idx];
 
+                // troca cor do botao se tem resposta
                 let corBotao = '#FFFFFF';
-                if (respostaSelecionada[questao.id]) {
+                if (questoesResposta[questao_idx] !== null) { // tem resposta
+
                   if (letra === correta) corBotao = '#32CD32';
-                  else if (selecionada) corBotao = '#FF6347';
+                  else if (letra == selecionada) corBotao = '#FF6347';
                 }
 
                 return (
                   <TouchableOpacity
                     key={letra}
                     style={[styles.botao, { backgroundColor: corBotao }]}
-                    onPress={() => verificarResposta(questao.id, letra, correta)}
-                    disabled={questaoRespondida[questao.id]} // Desabilita o botão após a primeira seleção
+                    onPress={() => verificarResposta(questao_idx, letra, correta)}
+                    disabled={questoesResposta[questao_idx] !== null} // Desabilita o botão após a primeira seleção
                   >
                     <Text>{letra}. {alternativa}</Text>
                   </TouchableOpacity>
@@ -140,5 +173,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  
+
 });

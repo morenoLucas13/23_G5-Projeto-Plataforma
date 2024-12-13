@@ -22,8 +22,3 @@ module.exports.buscarQuestoesPorDisciplina = async (disciplinaId) => {
         db.liberarConexao()
     }
 }
-
-
-
-
-

@@ -26,7 +26,7 @@ rotas.get(
 
             // Obtenha o ranking geral
             const rankingGeralAlunos = await model.obterRankingGeral();
-            
+
             // Retorne sucesso
             res.status(200).json({
                 sucesso: true,
@@ -47,14 +47,17 @@ rotas.get(
 );
 
 // Rota para fazer o aluno pontuar nas questões que ele fez em um simulado
-rotas.post('/pontuacao', midVerificarJWToken.verifyToken, async (req, res) => {
+rotas.post('/pontuacao/:idSimulado', midVerificarJWToken.verifyToken, async (req, res) => {
     try {
         const userId = req.userId
+        const { idSimulado } = req.params
+        const { respostas } = req.body
 
         // Obter pontuação geral
-        const pontuacao = await model.pontuacao(userId)
+        const pontuacao = await model.pontuacao(userId, idSimulado, respostas)
 
         // Obter dados detalhados da resposta do aluno
+        // Número de questões respondidas, erradas e acertadas
         const respostasDetalhadas = await model.dadosRespostaAluno(idSimulado, userId);
 
         if (!pontuacao || !respostasDetalhadas) {
@@ -72,7 +75,7 @@ rotas.post('/pontuacao', midVerificarJWToken.verifyToken, async (req, res) => {
         });
     } catch (error) {
         console.error('Erro na rota de pontuação:', error);
-        res.status(500).json({
+        res.json({
             sucesso: false,
             mensagem: 'Erro ao calcular os dados.'
         });
@@ -81,34 +84,8 @@ rotas.post('/pontuacao', midVerificarJWToken.verifyToken, async (req, res) => {
 
 
 
-rotas.post(
-    '/:idSimulado/enviarRespostas',
-    midVerificarJWToken.verifyToken,
-    async (req, res) => {
-      const { idSimulado } = req.params;
-      const { respostas } = req.body; // Estrutura: { idQuestao: "A", ... }
-  
-      try {
-        const userId = req.userId; // ID do aluno do token JWT
-  
-        // Chamar o model para processar as respostas e calcular a pontuação
-        const resultado = await model.calcularPontuacao(idSimulado, userId, respostas);
-  
-        res.status(200).json({
-          sucesso: true,
-          mensagem: 'Respostas enviadas com sucesso!',
-          dados: resultado,
-        });
-      } catch (error) {
-        console.error('Erro ao processar respostas:', error);
-        res.status(500).json({
-          sucesso: false,
-          mensagem: 'Erro ao processar as respostas do simulado.',
-        });
-      }
-    }
-  );
-  
+
+
 
 
 

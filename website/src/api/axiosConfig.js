@@ -8,8 +8,9 @@ import Swal from 'sweetalert2';
 
 const api = axios.create({
     baseURL: 'http://10.132.224.60:3901',
-    timeout: 10000
+    timeout: 10000,
 });
+
 
 api.interceptors.request.use(async (config) => {
     try {

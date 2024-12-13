@@ -3,8 +3,8 @@ import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import PieChart from 'react-native-pie-chart';
 
 export default function Graficos() {
-    const widthAndHeight = 250
-    const series = [66, 34]
+    const widthAndHeight = 1
+    const series = [1, 1]
     const sliceColor = ['#73EAA1', '#FF4C4C']
 
     return (
@@ -21,7 +21,7 @@ export default function Graficos() {
             <View style={{ alignItems: 'center' }}>
 
                 <Text style={styles.legenda}>
-                    Total de questões do simulado: 4
+                    Total de questões do simulado: 
                 </Text>
 
                 <Text style={styles.legenda}>

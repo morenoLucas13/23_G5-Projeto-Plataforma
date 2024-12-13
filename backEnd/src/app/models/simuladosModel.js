@@ -1,5 +1,3 @@
-
-
 // FUNÇÕES PARA SEREM CHAMADAS DURANTE O PROCESSO DE CRIAÇÃO DE SIMULADO
 module.exports.adicionarQuestaoExistenteAoSimulado = async (novoSimuladoId, questaoId) => {
     let conexao;

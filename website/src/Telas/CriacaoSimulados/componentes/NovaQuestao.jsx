@@ -42,7 +42,7 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
         if (!alternativaCorreta || !selecionarOpcao) {
             return;
         }
-    
+
         acaoAddNovaQuestao({
             texto,
             enunciado,
@@ -55,7 +55,7 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
             nivel: selecionarOpcao.label, // Adiciona o nível
         });
     }
-    
+
 
     return (
         <div className={estilos.container}>
@@ -68,6 +68,7 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
             <h2 className={estilos.textcenter}>Adicione sua própria questão</h2>
 
             <div className={`mb-3`}>
+                <label>Nível da Questão:</label>
                 <Select
                     value={selecionarOpcao}
                     onChange={carregarEscolhas}
@@ -131,9 +132,11 @@ export default function NovaQuestao({ acaoAddNovaQuestao, acaoCancelar }) {
                 })}
             </div>
 
-            <button className={`${estilos.btnpersonalizado}`} onClick={retornarQuestao}>
-                Adicionar
-            </button>
+            <div>
+                <button className={`${estilos.btnpersonalizado}`} onClick={retornarQuestao}>
+                    Adicionar
+                </button>
+            </div>
         </div>
     );
 }

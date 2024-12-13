@@ -117,13 +117,14 @@
     transition: transform 0.3s ease;
 }
 
-.switchcheckbox:checked+.switchlabel {
+.switchcheckbox:checked + .switchlabel {
     background-color: #82B86D;
 }
 
-.switchcheckbox:checked+.switchlabel::before {
+.switchcheckbox:checked + .switchlabel::before {
     transform: translateX(25px);
 }
+
 
 /* Estilo da descrição dos simulados */
 .descricaosimulado {

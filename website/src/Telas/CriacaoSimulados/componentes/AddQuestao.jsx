@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import estilos from '../../../Estilos/simulados.module.css';
 
 import BotaoFechar from '../../../Imagens/BtnFechar.png';
@@ -42,6 +42,8 @@ const questoes = [
         enunciado: "Qual fenômeno explica o transporte de água das raízes até as folhas nas plantas?"
     }
 ];
+
+
 
 export default function AddQuestao({ acaoAddQuestao, acaoCancelar }) {
     const [listaQuestoes, setListaQuestoes] = useState(questoes);

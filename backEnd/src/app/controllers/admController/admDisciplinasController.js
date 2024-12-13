@@ -21,17 +21,20 @@ rotasAdmDisciplinas.get('/', async (req, res) => {
 })
 
 // Buscar as disciplinas das turmas que o professor ministra
-rotasAdmDisciplinas.get('/buscarPorProfessor',
-    async (req, res) => {
-        try {
-            let { id } = req.id_professor;
-            const resultado = await admDiciplinasModel.buscarPorProfessor(id)
-            apiUtils.ok(res, resultado);
-        } catch (error) {
-            console.log('Ocorreu um erro ao buscar turmas!')
-            apiUtils.erro(res, 'Ocorreu um erro ao buscar turmas!')
+const midVerificarJWToken = require('../../middlewares/midVerificarJWToken');
+rotasAdmDisciplinas.get('/buscarPorProfessor', midVerificarJWToken.verifyToken, async (req, res) => {
+    try {
+        const idProfessor = req.id_professor;
+        if (!idProfessor) {
+            return apiUtils.erro(res, 'ID do professor não foi fornecido.');
         }
-    })
+        const resultado = await admDiciplinasModel.buscarPorProfessor(idProfessor);
+        apiUtils.ok(res, resultado);
+    } catch (error) {
+        console.error('Erro ao buscar disciplinas:', error);
+        apiUtils.erro(res, 'Ocorreu um erro ao buscar disciplinas.');
+    }
+});
 
 
 // Exportando as rotas

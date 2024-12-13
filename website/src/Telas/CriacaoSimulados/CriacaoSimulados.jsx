@@ -22,6 +22,8 @@ export default function CriacaoSimulados() {
     const [showModalAddQuestao, setShowModalAddQuestao] = useState(false);
     const [showModalVisualizarQuestao, setShowModalVisualizarQuestao] = useState(false);
     const [questaoSelecionada, setQuestaoSelecionada] = useState(null);
+    const [disciplinas, setDisciplinas] = useState([]);
+
 
 
     // Definindo o estado para armazenar a opção selecionada no Select
@@ -29,22 +31,26 @@ export default function CriacaoSimulados() {
 
 
     useEffect(() => {
-        api.get('/api/adm/disciplinas/porProfessor')
-    }, []);
+        async function fetchDisciplinas() {
+            try {
+                const resposta = await api.get('/api/adm/disciplinas/buscarPorProfessor');
+                if (apiUtils.ok(resposta)) {
+                    const disciplinas = apiUtils.dados(resposta).map(disciplina => ({
+                        value: disciplina.iddisciplina, // Certifique-se de usar a chave correta
+                        label: disciplina.dis_nome,    // Certifique-se de usar a chave correta
+                    }));
+                    setDisciplinas(disciplinas);
+                } else {
+                    alertas.erro("Erro", apiUtils.msgErro(resposta));
+                }
+            } catch (error) {
+                console.error("Erro ao buscar disciplinas:", error);
+                alertas.erro("Erro", "Não foi possível carregar as disciplinas.");
+            }
+        }
 
-    // Definição das opções para o Select
-    const opcoes = [
-        { value: '1', label: 'Biologia' },
-        { value: '2', label: 'Filosofia' },
-        { value: '3', label: 'Física' },
-        { value: '4', label: 'Geografia' },
-        { value: '5', label: 'História' },
-        { value: '6', label: 'Inglês' },
-        { value: '7', label: 'Língua Portuguesa' },
-        { value: '8', label: 'Matemática' },
-        { value: '9', label: 'Química' },
-        { value: '10', label: 'Sociologia' }
-    ];
+        fetchDisciplinas();
+    }, []);
 
     // Função chamada quando uma opção é selecionada no Select
     const carregarEscolhas = (opcaoSelecionada) => {
@@ -53,13 +59,12 @@ export default function CriacaoSimulados() {
 
     async function enviarSimuladorApi() {
         try {
-            let listaProcessada = listaQuestoes.map((q) => (
-                {
-                    ...q,
-                    nivel: 1,
-                    disciplina_id: 3
-                }
-            ));
+            let listaProcessada = listaQuestoes.map((q) => ({
+                ...q,
+                nivel: q.nivel,
+                disciplina_id: selecionarOpcao.value,
+            }));
+
 
             let resp = await api.post('/api/adm/simulados/criarNovoSimulado', {
                 turma_id: 1,
@@ -110,7 +115,6 @@ export default function CriacaoSimulados() {
 
     // ======================================================================
     // ======================================================================
-    // ======================================================================
     return (
         <>
             {/* Cabeçalho da pagina */}
@@ -126,13 +130,42 @@ export default function CriacaoSimulados() {
             <div className={`${estilos.container}`}>
                 {/* Listagem das questoes adicionadas no simulado */}
                 <h2>Adicionando Elementos ao Simulado</h2>
+
+                <div className={`${estilos.divInputs}`}>
+
+                    {/* Descrição do Simulados */}
+                    {!showModalNovaQuestao && !showModalAddQuestao && !showModalVisualizarQuestao && (
+                        <div className={`mt-3 mb-3`}>
+                            <textarea
+                                type="text"
+                                className={`${estilos.textarea} form-control`}
+                                id="descricao"
+                                aria-describedby="descricao"
+                                placeholder="Descrição do Simulado"
+                            // value={ }
+                            // onChange={ }
+                            />
+                        </div>
+                    )}
+
+                    {!showModalNovaQuestao && !showModalAddQuestao && !showModalVisualizarQuestao && (
+                        <Select
+                            value={selecionarOpcao}
+                            onChange={carregarEscolhas}
+                            options={disciplinas}
+                            placeholder="Selecione a Disciplina"
+                        />
+
+                    )}
+                </div>
+
                 <div className='d-flex justify-content-around mt-3'>
                     <button
                         className={`${estilos.btnpersonalizado}`}
-                        onClick={() => setShowModalNovaQuestao(true)}>Criar nova questão</button>
+                        onClick={() => setShowModalNovaQuestao(true)}>Criar Nova Questão</button>
                     <button
                         className={`${estilos.btnpersonalizado}`}
-                        onClick={() => setShowModalAddQuestao(true)}>Adicionar do Banco</button>
+                        onClick={() => setShowModalAddQuestao(true)}>Adicionar já Cadastradas</button>
                 </div>
 
                 {/* Modal de criação de questão */}
@@ -165,32 +198,7 @@ export default function CriacaoSimulados() {
 
 
 
-                <div className={`${estilos.divInputs}`}>
 
-                    {/* Descrição do Simulados */}
-                    {!showModalNovaQuestao && !showModalAddQuestao && !showModalVisualizarQuestao && (
-                        <div className={`mt-3 mb-3`}>
-                            <textarea
-                                type="text"
-                                className={`${estilos.textarea} form-control`}
-                                id="descricao"
-                                aria-describedby="descricao"
-                                placeholder="Descrição do Simulado"
-                            // value={}
-                            // onChange={}
-                            />
-                        </div>
-                    )}
-
-                    {!showModalNovaQuestao && !showModalAddQuestao && !showModalVisualizarQuestao && (
-                        <Select
-                            value={selecionarOpcao}
-                            onChange={carregarEscolhas}
-                            options={opcoes}
-                            placeholder="Selecione a Disciplina"
-                        />
-                    )}
-                </div>
 
                 <div className={`${estilos.divider} mt-3 mb-3`} />
 
@@ -226,7 +234,7 @@ export default function CriacaoSimulados() {
                     ))}
                 </div>
                 <button
-                    className={`btn btn-primary`}
+                    className={`${estilos.btnpersonalizado}`}
                     onClick={enviarSimuladorApi}>Criar Simulado</button>
             </div>
         </>

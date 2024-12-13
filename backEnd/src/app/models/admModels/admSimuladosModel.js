@@ -11,23 +11,26 @@ module.exports.buscarSimuladosCriados = async (userId) => {
         conexao = await db.criarConexao()
 
         const [consulta] = await conexao.execute(
-            `SELECT 
-    s.idsimulado AS id,
-    s.simu_descricao AS descricao,
-    s.simu_dataCriacao AS data_criacao,
-    COUNT(q.idquestao) AS totalQuestoes,
-    d.dis_nome AS nomeDisciplina
-FROM simulados s
-LEFT JOIN questoes_selecionadas qs ON qs.idsimulado = s.idsimulado
-LEFT JOIN questoes q ON qs.idquestao = q.idquestao
-LEFT JOIN disciplinas d ON q.iddisciplina = d.iddisciplina
-WHERE s.idprofessor = 7
-GROUP BY 
-    s.idsimulado, 
-    s.simu_descricao, 
-    s.simu_dataCriacao, 
-    d.dis_nome;`
-        )
+            `			SELECT 
+                s.idsimulado AS id,
+                s.simu_descricao AS descricao,
+                s.simu_dataCriacao AS data_criacao,
+                s.simu_ativo AS status,
+                COUNT(q.idquestao) AS totalQuestoes,
+                d.dis_nome AS nomeDisciplina
+            FROM simulados s
+            LEFT JOIN questoes_selecionadas qs ON qs.idsimulado = s.idsimulado
+            LEFT JOIN questoes q ON qs.idquestao = q.idquestao
+            LEFT JOIN disciplinas d ON q.iddisciplina = d.iddisciplina
+            WHERE s.idprofessor = ?
+            GROUP BY 
+                s.idsimulado, 
+                s.simu_descricao, 
+                s.simu_dataCriacao, 
+                d.dis_nome;`,
+            [userId] // Substitui o ID fixo
+        );
+
 
 
         return consulta
@@ -41,6 +44,25 @@ GROUP BY
     }
 }
 
+
+module.exports.atualizarStatusSimulado = async (idSimulado, status) => {
+    let conexao;
+
+    try {
+        conexao = await db.criarConexao();
+        const [resultado] = await conexao.execute(
+            `UPDATE simulados SET simu_ativo = ? WHERE idsimulado = ?`,
+            [status, idSimulado]
+        );
+
+        return resultado.affectedRows > 0;
+    } catch (error) {
+        console.error('Erro ao atualizar status do simulado:', error);
+        throw error;
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
 
 // FUNÇÕES PARA SEREM CHAMADAS DURANTE O PROCESSO DE CRIAÇÃO DE SIMULADO
 module.exports.adicionarQuestaoExistenteAoSimulado = async (novoSimuladoId, questaoId) => {
@@ -195,7 +217,7 @@ module.exports.atualizarQuestaoSimulado = async (
         );
 
         console.log("sql a ser executado: \n", sql);
-        
+
         const [consulta] = await conexao.execute(sql)
 
         console.log('Resultado da atualização:', consulta)

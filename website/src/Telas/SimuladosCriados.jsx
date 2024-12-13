@@ -28,6 +28,21 @@ export default function SimuladosCriados() {
         }
     }
 
+    const atualizarStatusSimulado = async (id, status) => {
+        try {
+            const response = await api.put(`/api/adm/simulados/atualizarStatus/${id}`, { status });
+            if (response.data.sucesso) {
+                Swal.fire('Sucesso!', response.data.mensagem, 'success');
+                buscarSimuladosCriados(); // Atualiza a lista
+            } else {
+                Swal.fire('Erro!', response.data.mensagem, 'error');
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar status do simulado:', error);
+            Swal.fire('Erro!', 'Não foi possível atualizar o status. Tente novamente.', 'error');
+        }
+    };
+
     useEffect(() => {
         (async () => {
             buscarSimuladosCriados();
@@ -51,15 +66,15 @@ export default function SimuladosCriados() {
                 <button className={`btn mb-4 ${estilos.btnpersonalizado}`} onClick={() => navigate('/criacao')}>Criar Novo Simulado</button>
 
                 <div className={estilos.simuladoscontainer}>
-
-
                     {/* Loop para renderizar cada simulado */}
                     <div className={estilos.simuladoscontainer}>
                         {(simulados && simulados.length > 0) ? (
                             simulados.map((simulado, index) => (
                                 <div key={simulado.id}>
                                     <div className={estilos.linha}>
-                                        <h5 className={`${estilos.materiatitulo} ${estilos.nomeDisciplina}`}>{simulado.nomeDisciplina}</h5>
+                                        <h5 className={`${estilos.materiatitulo} ${estilos.nomeDisciplina}`}>
+                                            {simulado.nomeDisciplina}
+                                        </h5>
                                         <h5 className={`${estilos.materiatitulo} ${estilos.dataCriacao}`}>
                                             Criado em: {new Date(simulado.data_criacao).toLocaleDateString()}
                                         </h5>
@@ -75,11 +90,15 @@ export default function SimuladosCriados() {
                                                 <div>
                                                     <input
                                                         type="checkbox"
-                                                        id={`switch${index}`}
+                                                        id={`switch${simulado.id}`}
                                                         className={estilos.switchcheckbox}
+                                                        checked={simulado.status === 1}
+                                                        onChange={(e) => atualizarStatusSimulado(simulado.id, e.target.checked ? 1 : 0)}
                                                     />
-                                                    <label htmlFor={`switch${index}`} className={estilos.switchlabel}></label>
+                                                    <label htmlFor={`switch${simulado.id}`} className={estilos.switchlabel}></label>
                                                 </div>
+
+
                                                 <button className="btn me-3 mt-2">
                                                     <img src={IconeLapis} alt="Ícone de Lápis" />
                                                 </button>

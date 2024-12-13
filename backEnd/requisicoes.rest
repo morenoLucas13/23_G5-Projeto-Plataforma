@@ -1,4 +1,4 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzM0OTAwOTQsImV4cCI6MTczMzU3NjQ5NH0.OEgWoJ8rqRkC9z18okZdHlRnbW1LGmXkFqag6FM_y9E
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibml2ZWxfYWNlc3NvIjoxLCJpYXQiOjE3MzQwOTYzMTEsImV4cCI6MTczNDE4MjcxMX0.OGKSV6O-35lC507wkJaE5KZQQ8h9sENx2vlaJQvrRik
 @url=http://10.132.224.60:3901
 
 
@@ -61,6 +61,7 @@ authorization: {{token}}
 
 {
     "turma_id": 1,
+    
     "descricao": "Simulado de Matemática Básica",
     "professor": 1,
     "status": 1,
@@ -97,11 +98,12 @@ GET {{url}}/api/relatorios/rankingGeral
 authorization: {{token}}
 
 ##############################################
-GET {{url}}/api/alunos/relatorios/31
+POST  {{url}}/api/alunos/relatorios/pontuacao/1
+Content-Type: application/json
 authorization: {{token}}
 
 ##############################################
-GET {{url}}/api/relatorios/pontuacao/4
+POST  {{url}}/api/relatorios/pontuacao/4
 authorization: {{token}}
 
 ##############################################
@@ -109,6 +111,3 @@ GET {{url}}/api/adm/simulados/simuladosCriados
 authorization: {{token}}
 
 ##############################################
-
-
-

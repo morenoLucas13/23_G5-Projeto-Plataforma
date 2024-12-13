@@ -12,17 +12,20 @@ module.exports.obterSimuladosAgendados = async () => {
         const [consulta] = await conexao.execute(
             `
             SELECT 
-                s.idsimulado,
-                s.simu_descricao,
-                p.us_nome,
-                d.dis_nome,  
-                s.simu_dataCriacao
-            FROM 
-                simulados s
-            JOIN 
-                professor p ON s.idprofessor = p.idprofessor
-            JOIN 
-                disciplinas d ON p.idprofessor = d.idprofessor;
+    s.idsimulado,
+    s.simu_descricao,
+    p.us_nome,
+    d.dis_nome,  
+    s.simu_dataCriacao
+FROM 
+    simulados s
+JOIN 
+    professor p ON s.idprofessor = p.idprofessor
+JOIN 
+    disciplinas d ON p.idprofessor = d.idprofessor
+WHERE 
+    s.simu_ativo = 1;
+
             `
         );
 

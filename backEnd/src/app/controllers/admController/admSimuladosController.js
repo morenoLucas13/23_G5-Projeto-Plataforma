@@ -49,6 +49,29 @@ rotas.get('/simuladosCriados',
 
 )
 
+rotas.put('/atualizarStatus/:id',
+    midVerificarJWToken.verifyToken,
+    autorizarNivel(1),
+    async (req, res) => {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        try {
+            const resultado = await model.atualizarStatusSimulado(id, status);
+
+            if (!resultado) {
+                return res.status(404).json({ sucesso: false, mensagem: 'Simulado não encontrado.' });
+            }
+
+            res.status(200).json({ sucesso: true, mensagem: 'Status atualizado com sucesso.' });
+        } catch (error) {
+            console.error('Erro ao atualizar status do simulado:', error);
+            res.status(500).json({ sucesso: false, mensagem: 'Erro ao atualizar status do simulado.' });
+        }
+    }
+);
+
+
 // Rota para criar um novo simulado
 rotas.post('/criarNovoSimulado',
     midVerificarJWToken.verifyToken,
